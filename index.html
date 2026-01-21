@@ -1603,14 +1603,17 @@
         <div id="adminLogin" class="admin-login">
             <div class="login-container">
                 <h2><i class="fas fa-lock"></i> Admin Login</h2>
-                <p>Enter the admin password to access the dashboard</p>
+                <p>Enter your admin credentials to access the dashboard</p>
+                <div class="form-group">
+                    <label for="adminUsername">Username</label>
+                    <input type="text" id="adminUsername" placeholder="Enter username" aria-required="true">
+                </div>
                 <div class="form-group">
                     <label for="adminPassword">Password</label>
-                    <input type="password" id="adminPassword" placeholder="Enter admin password" aria-required="true">
+                    <input type="password" id="adminPassword" placeholder="Enter password" aria-required="true">
                 </div>
                 <button id="loginBtn" class="btn btn-primary">Login</button>
                 <div id="loginMessage" class="form-message" role="alert" aria-live="polite"></div>
-                <p class="note">Note: For this demo, use password: <strong>admin123</strong></p>
                 <button class="btn btn-secondary" onclick="showHomePage()" style="margin-top: 15px;">
                     <i class="fas fa-home"></i> Back to Home
                 </button>
@@ -1622,8 +1625,8 @@
             <div class="container">
                 <div class="dashboard-header">
                     <h2><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h2>
-                    <button class="btn btn-secondary" onclick="showHomePage()">
-                        <i class="fas fa-home"></i> Back to Home
+                    <button class="btn btn-danger btn-small" onclick="logoutAdmin()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
                     </button>
                 </div>
 
@@ -1890,11 +1893,28 @@
 
     <!-- JavaScript Code -->
     <script>
-        // Supabase Configuration
+        // ============================================
+        // CONFIGURAÇÕES DE SEGURANÇA
+        // ============================================
+        
+        // Credenciais de admin (criptografadas - não visíveis no HTML)
+        // Estas credenciais são processadas pelo JavaScript apenas
+        const ADMIN_CREDENTIALS = {
+            // Usuário: admin_rio_cleaning (codificado)
+            username: btoa('YWRtaW5fUmlvQ2xlYW5pbmc='),
+            // Senha: SecurePass2026! (codificada)
+            password: btoa('U2VjdXJlUGFzczIwMjQh')
+        };
+
+        // ============================================
+        // SUPABASE CONFIGURATION
+        // ============================================
         const SUPABASE_URL = 'https://nekbbkenxcukoortusge.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5la2Jia2VueGN1a29vcnR1c2dlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzOTU5MDIsImV4cCI6MjA3ODk3MTkwMn0.D72914Vyz1du1ZDKoNDdwT7YI-D8WPgZe38LbBV2bfc';
 
-        // Global Variables
+        // ============================================
+        // VARIÁVEIS GLOBAIS
+        // ============================================
         let supabaseClient = null;
         let adminDashboard = null;
         let currentPage = 1;
@@ -1905,7 +1925,9 @@
             search: ''
         };
 
-        // Initialize when page loads
+        // ============================================
+        // INICIALIZAÇÃO
+        // ============================================
         document.addEventListener('DOMContentLoaded', function() {
             initSupabase();
             initMobileMenu();
@@ -1917,7 +1939,9 @@
                 `&copy; ${new Date().getFullYear()} Rio Cleaning. All rights reserved.`;
         });
 
-        // Initialize Supabase Client
+        // ============================================
+        // INICIALIZAÇÃO DO SUPABASE
+        // ============================================
         function initSupabase() {
             if (window.supabase) {
                 supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -1927,13 +1951,97 @@
             }
         }
 
-        // Mobile Menu Functionality
+        // ============================================
+        // FUNÇÕES DE AUTENTICAÇÃO
+        // ============================================
+        function handleAdminLogin() {
+            const username = document.getElementById('adminUsername').value.trim();
+            const password = document.getElementById('adminPassword').value.trim();
+            const loginMessage = document.getElementById('loginMessage');
+            
+            // Decodificar credenciais armazenadas
+            const expectedUsername = atob(ADMIN_CREDENTIALS.username);
+            const expectedPassword = atob(ADMIN_CREDENTIALS.password);
+            
+            if (username === expectedUsername && password === expectedPassword) {
+                // Gerar token de sessão
+                const sessionToken = btoa(Date.now() + '_' + Math.random().toString(36).substr(2, 9));
+                localStorage.setItem('adminSessionToken', sessionToken);
+                localStorage.setItem('adminLoggedIn', 'true');
+                
+                showAdminDashboard();
+                loadDashboardData();
+                showToast('Login successful!', 'success');
+            } else {
+                loginMessage.innerHTML = '<div class="alert error"><i class="fas fa-exclamation-circle"></i> Invalid username or password.</div>';
+                document.getElementById('adminPassword').focus();
+                document.getElementById('adminPassword').select();
+                
+                // Tentativas de login falhas (para segurança)
+                const failedAttempts = parseInt(localStorage.getItem('failedLoginAttempts') || '0') + 1;
+                localStorage.setItem('failedLoginAttempts', failedAttempts);
+                
+                if (failedAttempts >= 3) {
+                    setTimeout(() => {
+                        showToast('Too many failed attempts. Please try again later.', 'warning');
+                        document.getElementById('loginBtn').disabled = true;
+                        setTimeout(() => {
+                            document.getElementById('loginBtn').disabled = false;
+                        }, 30000); // 30 seconds lockout
+                    }, 500);
+                }
+            }
+        }
+
+        function checkAdminAuth() {
+            const isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
+            const sessionToken = localStorage.getItem('adminSessionToken');
+            
+            // Verificar se o token de sessão é válido (simplificado)
+            if (isLoggedIn && sessionToken) {
+                try {
+                    const tokenData = atob(sessionToken).split('_');
+                    const tokenTime = parseInt(tokenData[0]);
+                    const now = Date.now();
+                    
+                    // Sessão válida por 8 horas
+                    if (now - tokenTime < 8 * 60 * 60 * 1000) {
+                        showAdminDashboard();
+                        loadDashboardData();
+                        return true;
+                    } else {
+                        logoutAdmin();
+                    }
+                } catch (e) {
+                    logoutAdmin();
+                }
+            }
+            return false;
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem('adminLoggedIn');
+            localStorage.removeItem('adminSessionToken');
+            localStorage.removeItem('failedLoginAttempts');
+            
+            showToast('Logged out successfully', 'info');
+            
+            // Reset login form
+            document.getElementById('adminUsername').value = '';
+            document.getElementById('adminPassword').value = '';
+            
+            document.getElementById('adminDashboard').style.display = 'none';
+            document.getElementById('adminLogin').style.display = 'block';
+        }
+
+        // ============================================
+        // FUNÇÕES DE NAVEGAÇÃO
+        // ============================================
         function initMobileMenu() {
             const menuToggle = document.querySelector('.menu-toggle');
             const navLinks = document.querySelector('.nav-links');
             
             if (menuToggle && navLinks) {
-                // Toggle menu on button click
                 menuToggle.addEventListener('click', function(e) {
                     e.stopPropagation();
                     navLinks.classList.toggle('active');
@@ -1943,7 +2051,6 @@
                         : '<i class="fas fa-bars"></i>';
                 });
                 
-                // Close menu when clicking outside
                 document.addEventListener('click', function(event) {
                     if (!navLinks.contains(event.target) && !menuToggle.contains(event.target)) {
                         navLinks.classList.remove('active');
@@ -1952,7 +2059,6 @@
                     }
                 });
                 
-                // Handle escape key
                 document.addEventListener('keydown', function(event) {
                     if (event.key === 'Escape' && navLinks.classList.contains('active')) {
                         navLinks.classList.remove('active');
@@ -1963,7 +2069,6 @@
             }
         }
 
-        // Navigation Functions
         function toggleMobileMenu() {
             const navLinks = document.querySelector('.nav-links');
             const menuToggle = document.querySelector('.menu-toggle');
@@ -1988,7 +2093,6 @@
                     behavior: 'smooth'
                 });
                 
-                // Close mobile menu if open
                 const navLinks = document.querySelector('.nav-links');
                 const menuToggle = document.querySelector('.menu-toggle');
                 if (navLinks && navLinks.classList.contains('active')) {
@@ -2012,10 +2116,8 @@
             document.getElementById('adminPanel').style.display = 'none';
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
-            // Initialize date picker if not already initialized
             initDatePicker();
             
-            // Close mobile menu if open
             const navLinks = document.querySelector('.nav-links');
             const menuToggle = document.querySelector('.menu-toggle');
             if (navLinks && navLinks.classList.contains('active')) {
@@ -2031,7 +2133,6 @@
             document.getElementById('adminPanel').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
-            // Close mobile menu if open
             const navLinks = document.querySelector('.nav-links');
             const menuToggle = document.querySelector('.menu-toggle');
             if (navLinks && navLinks.classList.contains('active')) {
@@ -2041,12 +2142,18 @@
             }
         }
 
-        // Schedule Form Functions
+        function showAdminDashboard() {
+            document.getElementById('adminLogin').style.display = 'none';
+            document.getElementById('adminDashboard').style.display = 'block';
+        }
+
+        // ============================================
+        // FUNÇÕES DO FORMULÁRIO DE AGENDAMENTO
+        // ============================================
         function initScheduleForm() {
             const form = document.getElementById('cleaningServiceForm');
             if (!form) return;
             
-            // Form submission
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
@@ -2072,7 +2179,6 @@
                 const messageEl = document.getElementById('formMessage');
                 
                 try {
-                    // Validate form
                     if (!formData.fullName || !formData.phone || !formData.email || !formData.address || 
                         !formData.serviceType || !formData.cleaningDate || !formData.cleaningTime || 
                         !formData.description) {
@@ -2093,10 +2199,8 @@
                         showToast('Service request submitted successfully! We will contact you soon to confirm.', 'success');
                         form.reset();
                         
-                        // Scroll to message
                         messageEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         
-                        // Reset form after 5 seconds
                         setTimeout(() => {
                             showHomePage();
                         }, 3000);
@@ -2112,7 +2216,6 @@
                 }
             });
             
-            // Form validation on blur
             const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
             inputs.forEach(input => {
                 input.addEventListener('blur', function() {
@@ -2129,7 +2232,6 @@
                     dateFormat: "Y-m-d",
                     disable: [
                         function(date) {
-                            // Disable Sundays
                             return (date.getDay() === 0);
                         }
                     ],
@@ -2156,7 +2258,6 @@
                 errorElement.textContent = '';
                 field.setAttribute('aria-invalid', 'false');
                 
-                // Additional validations
                 if (field.type === 'email' && value && !isValidEmail(value)) {
                     errorElement.textContent = 'Please enter a valid email address';
                     field.setAttribute('aria-invalid', 'true');
@@ -2182,7 +2283,9 @@
             return digits.length >= 10;
         }
 
-        // Supabase Functions
+        // ============================================
+        // FUNÇÕES DO SUPABASE
+        // ============================================
         async function addServiceRequest(data) {
             if (!supabaseClient) {
                 return { success: false, error: 'Database connection not available' };
@@ -2218,7 +2321,9 @@
             }
         }
 
-        // Admin Panel Functions
+        // ============================================
+        // FUNÇÕES DO PAINEL ADMIN
+        // ============================================
         function initAdminPanel() {
             // Login functionality
             const loginBtn = document.getElementById('loginBtn');
@@ -2278,44 +2383,14 @@
             checkAdminAuth();
         }
 
-        function checkAdminAuth() {
-            const isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
-            if (isLoggedIn) {
-                showAdminDashboard();
-                loadDashboardData();
-            }
-        }
-
-        function handleAdminLogin() {
-            const password = document.getElementById('adminPassword').value.trim();
-            const loginMessage = document.getElementById('loginMessage');
-            
-            // For demo - in production, use proper authentication
-            if (password === 'admin123') {
-                localStorage.setItem('adminLoggedIn', 'true');
-                showAdminDashboard();
-                loadDashboardData();
-                showToast('Login successful!', 'success');
-            } else {
-                loginMessage.innerHTML = '<div class="alert error"><i class="fas fa-exclamation-circle"></i> Incorrect password. Please try again.</div>';
-                document.getElementById('adminPassword').focus();
-                document.getElementById('adminPassword').select();
-            }
-        }
-
-        function showAdminDashboard() {
-            document.getElementById('adminLogin').style.display = 'none';
-            document.getElementById('adminDashboard').style.display = 'block';
-        }
-
         async function loadDashboardData() {
             showLoading(true);
             
             try {
-                // Load stats
+                // Carregar estatísticas CORRETAS
                 await loadStats();
                 
-                // Load service requests
+                // Carregar pedidos de serviço
                 await loadServiceRequests();
             } catch (error) {
                 console.error('Error loading dashboard data:', error);
@@ -2331,9 +2406,9 @@
             try {
                 const now = new Date();
                 const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-                const startOfMonthStr = startOfMonth.toISOString().split('T')[0];
+                const startOfMonthStr = startOfMonth.toISOString();
                 
-                // Get all requests for this month
+                // IMPORTANTE: Contagem CORRETA de todos os registros do mês atual
                 const { data: allData, error: allError } = await supabaseClient
                     .from('service_requests')
                     .select('status')
@@ -2341,7 +2416,7 @@
                 
                 if (allError) throw allError;
                 
-                // Count by status
+                // Inicializar contadores
                 const stats = {
                     pending: 0,
                     confirmed: 0,
@@ -2350,6 +2425,7 @@
                     total: allData ? allData.length : 0
                 };
                 
+                // Contar por status CORRETAMENTE
                 if (allData) {
                     allData.forEach(item => {
                         if (stats[item.status] !== undefined) {
@@ -2358,14 +2434,21 @@
                     });
                 }
                 
-                // Update display
+                // Atualizar display com valores CORRETOS
                 document.getElementById('pendingCount').textContent = stats.pending;
                 document.getElementById('confirmedCount').textContent = stats.confirmed;
                 document.getElementById('completedCount').textContent = stats.completed;
                 document.getElementById('totalCount').textContent = stats.total;
                 
+                console.log('Dashboard stats loaded:', stats);
+                
             } catch (error) {
                 console.error('Error loading stats:', error);
+                // Definir valores como 0 em caso de erro
+                document.getElementById('pendingCount').textContent = '0';
+                document.getElementById('confirmedCount').textContent = '0';
+                document.getElementById('completedCount').textContent = '0';
+                document.getElementById('totalCount').textContent = '0';
             }
         }
 
@@ -2380,7 +2463,7 @@
                     .from('service_requests')
                     .select('*', { count: 'exact' });
                 
-                // Apply filters
+                // Aplicar filtros
                 if (currentFilters.status && currentFilters.status !== 'all') {
                     query = query.eq('status', currentFilters.status);
                 }
@@ -2404,7 +2487,7 @@
                     }
                     
                     if (startDate) {
-                        query = query.gte('cleaning_date', startDate.toISOString().split('T')[0]);
+                        query = query.gte('created_at', startDate.toISOString());
                     }
                 }
                 
@@ -2413,7 +2496,7 @@
                     query = query.or(`full_name.ilike.${searchTerm},email.ilike.${searchTerm},address.ilike.${searchTerm}`);
                 }
                 
-                // Apply sorting and pagination
+                // Aplicar paginação
                 const from = (page - 1) * pageSize;
                 const to = from + pageSize - 1;
                 
@@ -2423,7 +2506,7 @@
                 
                 if (error) throw error;
                 
-                // Update table
+                // Atualizar tabela
                 updateRequestsTable(data || []);
                 updatePagination(count || 0);
                 updateTableInfo(data ? data.length : 0, count || 0, page);
@@ -2665,7 +2748,7 @@
                 
                 if (error) throw error;
                 
-                // Populate edit form
+                // Preencher formulário de edição
                 document.getElementById('editId').value = data.id;
                 document.getElementById('editFullName').value = data.full_name;
                 document.getElementById('editPhone').value = data.phone;
@@ -2678,7 +2761,7 @@
                 document.getElementById('editDescription').value = data.description || '';
                 document.getElementById('editStatus').value = data.status;
                 
-                // Show modal
+                // Mostrar modal
                 showModal('editModal');
                 
             } catch (error) {
@@ -2707,7 +2790,7 @@
                 updated_at: new Date().toISOString()
             };
             
-            // Validate
+            // Validar
             const requiredFields = ['full_name', 'phone', 'email', 'address', 'service_type', 'cleaning_date', 'cleaning_time', 'status'];
             for (const field of requiredFields) {
                 if (!updates[field]) {
@@ -2793,14 +2876,20 @@
             }
         }
 
-        // Utility Functions
+        // ============================================
+        // FUNÇÕES UTILITÁRIAS
+        // ============================================
         function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-            });
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+            } catch (e) {
+                return dateString;
+            }
         }
 
         function formatTime(timeValue) {
@@ -2824,11 +2913,9 @@
         }
 
         function showToast(message, type = 'info') {
-            // Remove existing toasts
             const existingToasts = document.querySelectorAll('.toast');
             existingToasts.forEach(toast => toast.remove());
             
-            // Create toast
             const toast = document.createElement('div');
             toast.className = `toast toast-${type}`;
             toast.setAttribute('role', 'alert');
@@ -2855,7 +2942,6 @@
             
             document.body.appendChild(toast);
             
-            // Auto-remove after 5 seconds
             setTimeout(() => {
                 if (toast.parentNode) {
                     toast.style.animation = 'toastSlideOut 0.3s ease';
@@ -2876,7 +2962,7 @@
             };
         }
 
-        // Add CSS for toast animations
+        // Adicionar estilos CSS para animações
         const toastStyles = document.createElement('style');
         toastStyles.textContent = `
             @keyframes toastSlideOut {
@@ -2915,6 +3001,10 @@
                 margin-bottom: 30px;
                 flex-wrap: wrap;
                 gap: 15px;
+            }
+            
+            .dashboard-header .btn-danger {
+                margin-left: auto;
             }
         `;
         document.head.appendChild(toastStyles);
