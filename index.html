@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"> 
 <head> 
-    <!-- Todos os meta tags permanecem iguais -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <meta name="HandheldFriendly" content="true">
@@ -17,267 +16,1413 @@
     
     <title>Rio Cleaning - Professional Cleaning Services</title>
     
-    <!-- CSS Styles (Embedded) - MANTIDO ORIGINAL -->
+    <!-- CSS Styles (Embedded) -->
     <style>
-        /* Todo o CSS original permanece aqui */
+        /* Reset and Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
-        /* ... todo o CSS original permanece inalterado ... */
-        
-        /* ADICIONAR ESTES ESTILOS NO FINAL DO CSS ANTES DO </style> */
-        
-        /* Skeleton loading animations */
-        .skeleton {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-            border-radius: 4px;
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            text-size-adjust: 100%;
         }
-        
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
-        
-        .skeleton-text {
-            height: 20px;
-            width: 80%;
-        }
-        
-        .skeleton-badge {
-            height: 24px;
-            width: 80px;
-        }
-        
-        .skeleton-button {
-            height: 36px;
-            width: 60px;
-        }
-        
-        .skeleton-header {
-            height: 30px;
-            width: 60%;
-            margin-bottom: 15px;
-        }
-        
-        .skeleton-line {
-            height: 15px;
+
+        .container {
             width: 100%;
-            margin-bottom: 10px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
         }
-        
-        .skeleton-row {
-            background: #f8f9fa;
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            line-height: 1.3;
+            font-weight: 700;
         }
-        
-        .skeleton-card {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 15px;
+
+        h1 { font-size: clamp(1.5rem, 5vw, 2rem); }
+        h2 { font-size: clamp(1.375rem, 4vw, 1.75rem); }
+        h3 { font-size: clamp(1.25rem, 3.5vw, 1.5rem); }
+        h4 { font-size: clamp(1.125rem, 3vw, 1.25rem); }
+
+        p {
+            margin-bottom: 1rem;
+            font-size: clamp(0.9375rem, 2vw, 1rem);
+            line-height: 1.6;
         }
-        
-        /* Percentage change indicators */
-        .percentage-change {
-            font-weight: bold;
-            font-size: 0.7em;
-            margin-left: 5px;
-            opacity: 0.7;
+
+        a {
+            text-decoration: none;
+            color: #3498db;
+            transition: color 0.3s ease;
         }
-        
-        .percentage-change.positive {
-            color: #27ae60;
+
+        a:hover, a:focus {
+            color: #2980b9;
+            outline: 2px solid #3498db;
+            outline-offset: 2px;
         }
-        
-        .percentage-change.negative {
-            color: #e74c3c;
-        }
-        
-        /* Empty state styles */
-        .empty-state-content {
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: clamp(0.875rem, 2vw, 1rem);
+            font-weight: 600;
+            transition: all 0.3s ease;
             text-align: center;
-            padding: 40px 20px;
-            color: #7f8c8d;
+            white-space: nowrap;
+            min-height: 44px;
+            min-width: 44px;
+            touch-action: manipulation;
         }
-        
-        .empty-state-content i {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            color: #bdc3c7;
+
+        .btn:focus {
+            outline: 3px solid rgba(52, 152, 219, 0.4);
+            outline-offset: 2px;
         }
-        
-        .empty-state-subtitle {
-            font-size: 0.9rem;
-            margin-top: 10px;
-            color: #95a5a6;
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+            border: 2px solid #3498db;
         }
-        
-        /* Dashboard header */
-        .dashboard-header {
+
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: #2980b9;
+            border-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+            border: 2px solid #95a5a6;
+        }
+
+        .btn-secondary:hover, .btn-secondary:focus {
+            background-color: #7f8c8d;
+            border-color: #7f8c8d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(149, 165, 166, 0.3);
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+            border: 2px solid #e74c3c;
+        }
+
+        .btn-danger:hover, .btn-danger:focus {
+            background-color: #c0392b;
+            border-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 0.875rem;
+            min-height: 36px;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Navigation */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        .navbar .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            padding: 12px 15px;
+            min-height: 70px;
+        }
+
+        .logo h1 {
+            margin: 0;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: #3498db;
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links li {
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #2c3e50;
+            font-weight: 600;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: block;
+        }
+
+        .nav-links a:hover, .nav-links a:focus, .nav-links a.active {
+            color: #3498db;
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .admin-link {
+            color: #e74c3c !important;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #2c3e50;
+            background: none;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        .menu-toggle:hover, .menu-toggle:focus {
+            background-color: rgba(52, 152, 219, 0.1);
+            outline: 2px solid #3498db;
+            outline-offset: 2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(44, 62, 80, 0.85), rgba(44, 62, 80, 0.95));
+            color: white;
+            padding: clamp(40px, 8vw, 80px) 0;
+            text-align: center;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.3), rgba(41, 128, 185, 0.3));
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h2 {
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            margin: 0 auto 30px;
+            color: #ecf0f1;
+            max-width: 700px;
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero .btn {
+            margin-top: 20px;
+        }
+
+        /* Services Section */
+        .services {
+            padding: clamp(40px, 8vw, 60px) 0;
+            background-color: white;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: clamp(30px, 6vw, 40px);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: #3498db;
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+            gap: clamp(20px, 4vw, 25px);
+        }
+
+        .service-card {
+            background-color: #f8f9fa;
+            padding: clamp(20px, 4vw, 25px);
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .service-card:hover, .service-card:focus-within {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            border-color: #3498db;
+        }
+
+        .service-card i {
+            font-size: clamp(2rem, 6vw, 2.5rem);
+            color: #3498db;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover i {
+            transform: scale(1.1);
+        }
+
+        .service-card h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .service-card p {
+            color: #666;
+            font-size: 0.95rem;
+            flex-grow: 1;
+        }
+
+        /* About Section */
+        .about {
+            padding: clamp(40px, 8vw, 60px) 0;
+            background-color: #f8f9fa;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 0 15px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: clamp(15px, 4vw, 20px);
+            margin-top: 30px;
+        }
+
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: clamp(0.9375rem, 2vw, 1rem);
+            flex: 1;
+            min-width: min(200px, 100%);
+            justify-content: flex-start;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .contact-info i {
+            color: #3498db;
+            font-size: 1.2rem;
+            min-width: 24px;
+        }
+
+        /* Forms */
+        .schedule-form {
+            padding: clamp(30px, 6vw, 50px) 0;
+            background-color: white;
+        }
+
+        .form-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            padding: 0 15px;
+        }
+
+        .form-header h2 {
+            color: #2c3e50;
+        }
+
+        .form-header p {
+            color: #7f8c8d;
+            font-size: 1rem;
+        }
+
+        form {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #f8f9fa;
+            padding: clamp(20px, 4vw, 30px);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-row {
+            display: flex;
             flex-wrap: wrap;
             gap: 15px;
         }
-        
-        /* Responsive improvements */
-        @media (max-width: 1024px) {
-            .dashboard-stats .stat-info h3 {
-                font-size: 1.5rem;
+
+        .form-row .form-group {
+            flex: 1 1 min(300px, 100%);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.95rem;
+        }
+
+        label i {
+            margin-right: 8px;
+            color: #3498db;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            background-color: white;
+            color: #333;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.15);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        .form-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .form-actions .btn {
+            flex: 1;
+            min-width: min(150px, 100%);
+        }
+
+        .form-message {
+            margin-top: 20px;
+        }
+
+        .alert {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            border-left: 4px solid transparent;
+        }
+
+        .alert i {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .alert.success {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+            border-left-color: #28a745;
+        }
+
+        .alert.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+            border-left-color: #dc3545;
+        }
+
+        .field-error {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .field-error::before {
+            content: '⚠️';
+        }
+
+        input:invalid, select:invalid, textarea:invalid {
+            border-color: #dc3545;
+        }
+
+        input:valid, select:valid, textarea:valid {
+            border-color: #28a745;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .form-footer p {
+            color: #666;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .form-footer i {
+            color: #3498db;
+        }
+
+        /* Admin Styles */
+        .admin-container {
+            min-height: calc(100vh - 70px);
+            padding: 20px 0;
+            flex-grow: 1;
+        }
+
+        .admin-login {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 70vh;
+            padding: 20px;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: clamp(25px, 5vw, 30px);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: min(400px, 90vw);
+            width: 100%;
+            text-align: center;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .login-container h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .login-container p {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+
+        .note {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: #95a5a6;
+            line-height: 1.4;
+        }
+
+        /* Dashboard Stats */
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+            gap: clamp(12px, 3vw, 15px);
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: clamp(15px, 3vw, 20px);
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .stat-icon {
+            width: clamp(45px, 8vw, 50px);
+            height: clamp(45px, 8vw, 50px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: clamp(1.25rem, 3vw, 1.5rem);
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .stat-icon.pending {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+
+        .stat-icon.confirmed {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+
+        .stat-icon.completed {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+
+        .stat-icon.total {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+
+        .stat-info h3 {
+            font-size: clamp(1.5rem, 4vw, 1.75rem);
+            margin: 0;
+            color: #2c3e50;
+            font-weight: 800;
+        }
+
+        .stat-info p {
+            margin: 0;
+            color: #7f8c8d;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Filters */
+        .filters {
+            background-color: white;
+            padding: clamp(15px, 3vw, 20px);
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: clamp(10px, 2vw, 15px);
+            align-items: flex-end;
+            margin-top: 15px;
+        }
+
+        .filter-group {
+            flex: 1 1 min(200px, 100%);
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #2c3e50;
+        }
+
+        /* Service Requests Table */
+        .service-requests {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .table-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .table-header h4 {
+            margin: 0;
+            color: #2c3e50;
+        }
+
+        .table-info {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        thead {
+            background-color: #2c3e50;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th {
+            padding: 16px 12px;
+            text-align: left;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            border-bottom: 2px solid #34495e;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s;
+        }
+
+        tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        td {
+            padding: 14px 12px;
+            color: #333;
+            font-size: 0.9rem;
+            vertical-align: top;
+            border-bottom: 1px solid #eee;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            white-space: nowrap;
+            border: 1px solid transparent;
+        }
+
+        .status-badge i {
+            font-size: 0.7rem;
+        }
+
+        .status-pending {
+            background-color: #fef9e7;
+            color: #f39c12;
+            border-color: #f39c12;
+        }
+
+        .status-confirmed {
+            background-color: #e8f6f3;
+            color: #1abc9c;
+            border-color: #1abc9c;
+        }
+
+        .status-completed {
+            background-color: #eafaf1;
+            color: #27ae60;
+            border-color: #27ae60;
+        }
+
+        .status-cancelled {
+            background-color: #fdedec;
+            color: #e74c3c;
+            border-color: #e74c3c;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .action-buttons .btn {
+            padding: 6px 10px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            min-height: 36px;
+        }
+
+        .loading-state {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            background-color: white;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            color: #3498db;
+        }
+
+        .loading-spinner i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .loading-spinner p {
+            color: #7f8c8d;
+            margin: 0;
+        }
+
+        .table-footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: center;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .pagination button {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            min-width: 36px;
+            min-height: 36px;
+            transition: all 0.3s ease;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .pagination button.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1100;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+            overflow-y: auto;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                backdrop-filter: blur(0);
+            }
+            to {
+                opacity: 1;
+                backdrop-filter: blur(4px);
+            }
+        }
+
+        .modal-content {
+            background-color: white;
+            width: 100%;
+            max-width: min(700px, 95vw);
+            border-radius: 12px;
+            max-height: 90vh;
+            overflow-y: auto;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            animation: modalSlideIn 0.3s ease;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 1;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            color: #2c3e50;
+        }
+
+        .close-modal {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #7f8c8d;
+            transition: color 0.3s;
+            background: none;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            line-height: 1;
+            min-height: 44px;
+            min-width: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal:hover, .close-modal:focus {
+            color: #e74c3c;
+            background-color: rgba(231, 76, 60, 0.1);
+            outline: 2px solid #e74c3c;
+            outline-offset: 2px;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .modal-actions .btn {
+            flex: 1;
+            min-width: min(120px, 100%);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: clamp(30px, 6vw, 40px) 0 15px;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+            gap: clamp(20px, 4vw, 30px);
+            margin-bottom: 30px;
+        }
+
+        .footer-logo h3 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-logo p {
+            color: #bdc3c7;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .footer-links h4, .footer-contact h4 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+
+        .footer-links a {
+            color: #bdc3c7;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+            padding: 4px 0;
+            display: inline-block;
+        }
+
+        .footer-links a:hover, .footer-links a:focus {
+            color: #3498db;
+            transform: translateX(5px);
+        }
+
+        .footer-contact p {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            color: #bdc3c7;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .footer-contact i {
+            color: #3498db;
+            width: 20px;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 15px;
+            border-top: 1px solid #34495e;
+            color: #95a5a6;
+            font-size: 0.85rem;
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 16px 20px;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            max-width: 400px;
+            z-index: 9999;
+            animation: toastSlideIn 0.3s ease;
+            border-left: 4px solid;
+        }
+
+        .toast-success {
+            border-left-color: #28a745;
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .toast-error {
+            border-left-color: #dc3545;
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .toast-warning {
+            border-left-color: #ffc107;
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .toast-info {
+            border-left-color: #17a2b8;
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .toast-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .toast-close:hover {
+            background-color: rgba(0,0,0,0.1);
+        }
+
+        @keyframes toastSlideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .navbar .container {
+                padding: 10px 15px;
+                min-height: 60px;
+            }
+            
+            .menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                flex-direction: column;
+                align-items: stretch;
+                padding: 0;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                max-height: calc(100vh - 60px);
+                overflow-y: auto;
+                z-index: 999;
+                gap: 0;
+            }
+            
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .nav-links li {
+                margin: 0;
+                border-bottom: 1px solid #eee;
+            }
+            
+            .nav-links a {
+                display: block;
+                padding: 16px 20px;
+                font-size: 1rem;
+                border-radius: 0;
+            }
+            
+            .nav-links a:hover, .nav-links a:focus {
+                background-color: #f8f9fa;
+            }
+            
+            .hero {
+                padding: 30px 0;
+                min-height: 50vh;
+            }
+            
+            .services, .about, .schedule-form {
+                padding: 30px 0;
+            }
+            
+            .dashboard-stats {
+                grid-template-columns: repeat(2, 1fr);
             }
             
             .filter-controls {
                 flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .filter-group {
-                width: 100%;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .dashboard-stats {
-                grid-template-columns: repeat(2, 1fr) !important;
-            }
-            
-            .stat-card {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .stat-icon {
-                margin-right: 0 !important;
-                margin-bottom: 10px !important;
             }
             
             .table-header {
                 flex-direction: column;
-                align-items: stretch;
+                align-items: flex-start;
             }
             
-            .table-info {
+            .modal {
+                padding: 10px;
+                align-items: flex-start;
+            }
+            
+            .modal-content {
                 margin-top: 10px;
-                align-self: flex-start;
+                max-height: 95vh;
             }
             
-            .form-actions, .action-buttons {
-                flex-direction: column;
-            }
-            
-            .form-actions .btn, .action-buttons .btn {
-                width: 100%;
+            .toast {
+                left: 20px;
+                right: 20px;
+                max-width: none;
+                bottom: 80px;
             }
         }
-        
+
+        @media (max-width: 576px) {
+            .dashboard-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-info p {
+                min-width: 100%;
+            }
+        }
+
+        /* Mobile Table Cards */
+        .mobile-table-view {
+            display: none;
+        }
+
         @media (max-width: 480px) {
-            .dashboard-stats {
-                grid-template-columns: 1fr !important;
+            .mobile-table-view {
+                display: block;
             }
             
-            .stat-card {
-                flex-direction: row;
-                text-align: left;
+            .desktop-table-view {
+                display: none;
             }
             
-            .stat-icon {
-                margin-right: 15px !important;
-                margin-bottom: 0 !important;
+            .mobile-card {
+                background-color: white;
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 15px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+                border: 1px solid rgba(0, 0, 0, 0.05);
+            }
+            
+            .mobile-card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 15px;
+                padding-bottom: 15px;
+                border-bottom: 1px solid #eee;
+            }
+            
+            .mobile-card-title {
+                font-weight: 600;
+                color: #2c3e50;
+                font-size: 1.1rem;
+            }
+            
+            .mobile-card-body {
+                display: grid;
+                gap: 12px;
+            }
+            
+            .mobile-card-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #f0f0f0;
+            }
+            
+            .mobile-card-row:last-child {
+                border-bottom: none;
+                padding-bottom: 0;
+            }
+            
+            .mobile-card-label {
+                font-weight: 600;
+                color: #7f8c8d;
+                font-size: 0.9rem;
+                min-width: 100px;
+            }
+            
+            .mobile-card-value {
+                flex: 1;
+                text-align: right;
+                color: #333;
+                font-size: 0.95rem;
+            }
+            
+            .mobile-card-actions {
+                display: flex;
+                gap: 10px;
+                margin-top: 15px;
+                padding-top: 15px;
+                border-top: 1px solid #eee;
+            }
+            
+            .mobile-card-actions .btn {
+                flex: 1;
             }
         }
-        
-        /* Orientation-specific styles */
-        @media (max-height: 500px) and (orientation: landscape) {
-            .navbar {
-                position: static;
-            }
-            
-            .dashboard-stats {
-                grid-template-columns: repeat(4, 1fr) !important;
-            }
-            
-            .table-container {
-                max-height: 40vh;
-                overflow-y: auto;
-            }
-        }
-        
-        /* Dark mode adjustments */
+
+        /* Dark Mode Support */
         @media (prefers-color-scheme: dark) {
-            .skeleton {
-                background: linear-gradient(90deg, #3d3d3d 25%, #4d4d4d 50%, #3d3d3d 75%);
+            :root {
+                color-scheme: dark;
             }
             
-            .skeleton-card, .skeleton-row {
-                background: #2d2d2d;
-            }
-        }
-        
-        /* High contrast mode */
-        @media (prefers-contrast: high) {
-            .stat-card {
-                border: 2px solid currentColor;
+            body {
+                background-color: #1a1a1a;
+                color: #e0e0e0;
             }
             
-            .btn {
-                border-width: 2px;
+            .navbar, .service-card, .filters, 
+            .service-requests, .stat-card,
+            .login-container, .modal-content,
+            form, .form-footer {
+                background-color: #2d2d2d;
+                color: #e0e0e0;
+                border-color: #404040;
             }
             
-            .skeleton {
-                background: #ccc;
-            }
-        }
-        
-        /* Reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
+            h1, h2, h3, h4 {
+                color: #ffffff;
             }
             
-            .skeleton {
-                animation: none;
-                background: #e0e0e0;
+            input, select, textarea {
+                background-color: #3d3d3d;
+                color: #e0e0e0;
+                border-color: #555;
             }
-        }
-        
-        /* Tooltip for percentage change */
-        .percentage-change[title] {
-            position: relative;
-            cursor: help;
-        }
-        
-        .percentage-change[title]:hover::after {
-            content: attr(title);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #333;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.8em;
-            white-space: nowrap;
-            z-index: 1000;
+            
+            .footer-links a, .footer-contact p {
+                color: #b0b0b0;
+            }
+            
+            .mobile-card {
+                background-color: #2d2d2d;
+                border-color: #404040;
+            }
         }
     </style>
     
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Flatpickr CSS -->
+    <!-- Flatpickr CSS (for date picker) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
-    <!-- Navigation - MANTIDO ORIGINAL -->
+    <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
             <div class="logo">
@@ -296,7 +1441,7 @@
         </div>
     </nav>
 
-    <!-- Main Content Container - MANTIDO ORIGINAL -->
+    <!-- Main Content Container -->
     <div id="mainContent">
         <!-- Home Section -->
         <section id="home" class="hero">
@@ -355,17 +1500,364 @@
         </section>
     </div>
 
-    <!-- Schedule Form - MANTIDO ORIGINAL -->
+    <!-- Schedule Form (Initially Hidden) -->
     <div id="scheduleFormContainer" class="schedule-form" style="display: none;">
-        <!-- ... conteúdo original mantido ... -->
+        <div class="container">
+            <div class="form-header">
+                <h2>Schedule Your Cleaning Service</h2>
+                <p>Fill out the form below to request a cleaning service. We'll contact you to confirm your appointment.</p>
+            </div>
+            
+            <form id="cleaningServiceForm">
+                <div class="form-group">
+                    <label for="fullName"><i class="fas fa-user"></i> Full Name *</label>
+                    <input type="text" id="fullName" name="fullName" required aria-required="true">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone"><i class="fas fa-phone"></i> Phone *</label>
+                        <input type="tel" id="phone" name="phone" required aria-required="true" pattern="[0-9\-\+\s\(\)]{10,}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email"><i class="fas fa-envelope"></i> Email *</label>
+                        <input type="email" id="email" name="email" required aria-required="true">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address"><i class="fas fa-map-marker-alt"></i> Address *</label>
+                    <input type="text" id="address" name="address" required aria-required="true">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="serviceType"><i class="fas fa-broom"></i> Service Type *</label>
+                        <select id="serviceType" name="serviceType" required aria-required="true">
+                            <option value="">Select a service</option>
+                            <option value="house">House Cleaning</option>
+                            <option value="church">Church Cleaning</option>
+                            <option value="upholstery">Upholstery Cleaning</option>
+                            <option value="commercial">Commercial Cleaning</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bedrooms"><i class="fas fa-bed"></i> Number of Bedrooms</label>
+                        <select id="bedrooms" name="bedrooms">
+                            <option value="0">None (for non-residential)</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5+</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cleaningDate"><i class="fas fa-calendar"></i> Preferred Date *</label>
+                        <input type="text" id="cleaningDate" name="cleaningDate" class="datepicker" required aria-required="true" placeholder="Select a date">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cleaningTime"><i class="fas fa-clock"></i> Preferred Time *</label>
+                        <select id="cleaningTime" name="cleaningTime" required aria-required="true">
+                            <option value="">Select a time</option>
+                            <option value="morning">Morning (8:00 AM - 12:00 PM)</option>
+                            <option value="afternoon">Afternoon (1:00 PM - 5:00 PM)</option>
+                            <option value="evening">Evening (6:00 PM - 8:00 PM)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description"><i class="fas fa-file-alt"></i> Service Description *</label>
+                    <textarea id="description" name="description" rows="4" required aria-required="true" placeholder="Please describe the cleaning service needed, any special requests, or additional information..."></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Submit Request
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="showHomePage()">
+                        <i class="fas fa-home"></i> Back to Home
+                    </button>
+                </div>
+                
+                <div id="formMessage" class="form-message" role="alert" aria-live="polite"></div>
+            </form>
+            
+            <div class="form-footer">
+                <p><i class="fas fa-info-circle"></i> We'll contact you within 24 hours to confirm your appointment.</p>
+            </div>
+        </div>
     </div>
 
-    <!-- Admin Panel - MANTIDO ORIGINAL -->
+    <!-- Admin Panel (Initially Hidden) -->
     <div id="adminPanel" class="admin-container" style="display: none;">
-        <!-- ... conteúdo original mantido ... -->
+        <!-- Admin Login -->
+        <div id="adminLogin" class="admin-login">
+            <div class="login-container">
+                <h2><i class="fas fa-lock"></i> Admin Login</h2>
+                <p>Enter your admin credentials to access the dashboard</p>
+                <div class="form-group">
+                    <label for="adminUsername">Username</label>
+                    <input type="text" id="adminUsername" placeholder="Enter username" aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" placeholder="Enter password" aria-required="true">
+                </div>
+                <button id="loginBtn" class="btn btn-primary">Login</button>
+                <div id="loginMessage" class="form-message" role="alert" aria-live="polite"></div>
+                <button class="btn btn-secondary" onclick="showHomePage()" style="margin-top: 15px;">
+                    <i class="fas fa-home"></i> Back to Home
+                </button>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="adminDashboard" class="admin-dashboard" style="display: none;">
+            <div class="container">
+                <div class="dashboard-header">
+                    <h2><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h2>
+                    <button class="btn btn-danger btn-small" onclick="logoutAdmin()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+
+                <!-- Dashboard Stats -->
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon pending">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="pendingCount">0</h3>
+                            <p>Pending</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon confirmed">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="confirmedCount">0</h3>
+                            <p>Confirmed</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon completed">
+                            <i class="fas fa-flag-checkered"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="completedCount">0</h3>
+                            <p>Completed</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon total">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalCount">0</h3>
+                            <p>Total This Month</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="filters">
+                    <h3>Service Requests</h3>
+                    <div class="filter-controls">
+                        <div class="filter-group">
+                            <label for="statusFilter">Filter by Status:</label>
+                            <select id="statusFilter" aria-label="Filter by status">
+                                <option value="all">All Statuses</option>
+                                <option value="pending">Pending</option>
+                                <option value="confirmed">Confirmed</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="dateFilter">Filter by Date:</label>
+                            <select id="dateFilter" aria-label="Filter by date">
+                                <option value="all">All Dates</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="searchFilter">Search:</label>
+                            <input type="text" id="searchFilter" placeholder="Search by name, email or address" aria-label="Search service requests">
+                        </div>
+                        <button id="refreshBtn" class="btn btn-secondary"><i class="fas fa-sync-alt"></i> Refresh</button>
+                    </div>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loadingState" class="loading-state" style="display: none;">
+                    <div class="loading-spinner">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading service requests...</p>
+                    </div>
+                </div>
+
+                <!-- Service Requests Table -->
+                <div class="service-requests">
+                    <div class="table-header">
+                        <h4>Service Requests List</h4>
+                        <div class="table-info" id="tableInfo">Showing 0 requests</div>
+                    </div>
+                    <div class="table-container desktop-table-view">
+                        <table id="requestsTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Contact</th>
+                                    <th>Service</th>
+                                    <th>Date/Time</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="requestsTableBody">
+                                <!-- Data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mobile-table-view" id="mobileTableContainer">
+                        <!-- Mobile cards will be loaded here -->
+                    </div>
+                    <div class="table-footer">
+                        <div class="pagination" id="pagination">
+                            <!-- Pagination will be added here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Modal -->
+                <div id="editModal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Edit Service Request</h3>
+                            <button class="close-modal" aria-label="Close" onclick="closeModal('editModal')">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editForm">
+                                <input type="hidden" id="editId">
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="editFullName">Full Name *</label>
+                                        <input type="text" id="editFullName" required aria-required="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editPhone">Phone *</label>
+                                        <input type="tel" id="editPhone" required aria-required="true">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="editEmail">Email *</label>
+                                    <input type="email" id="editEmail" required aria-required="true">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="editAddress">Address *</label>
+                                    <input type="text" id="editAddress" required aria-required="true">
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="editServiceType">Service Type *</label>
+                                        <select id="editServiceType" required aria-required="true">
+                                            <option value="house">House Cleaning</option>
+                                            <option value="church">Church Cleaning</option>
+                                            <option value="upholstery">Upholstery Cleaning</option>
+                                            <option value="commercial">Commercial Cleaning</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editBedrooms">Bedrooms</label>
+                                        <select id="editBedrooms">
+                                            <option value="0">None</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5+</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="editCleaningDate">Cleaning Date *</label>
+                                        <input type="date" id="editCleaningDate" required aria-required="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editCleaningTime">Cleaning Time *</label>
+                                        <select id="editCleaningTime" required aria-required="true">
+                                            <option value="morning">Morning</option>
+                                            <option value="afternoon">Afternoon</option>
+                                            <option value="evening">Evening</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="editDescription">Description *</label>
+                                    <textarea id="editDescription" rows="3" required aria-required="true"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="editStatus">Status *</label>
+                                    <select id="editStatus" required aria-required="true">
+                                        <option value="pending">Pending</option>
+                                        <option value="confirmed">Confirmed</option>
+                                        <option value="completed">Completed</option>
+                                        <option value="cancelled">Cancelled</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="modal-actions">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <button type="button" class="btn btn-secondary" onclick="closeModal('editModal')">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delete Confirmation Modal -->
+                <div id="deleteModal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Confirm Deletion</h3>
+                            <button class="close-modal" aria-label="Close" onclick="closeModal('deleteModal')">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete this service request? This action cannot be undone.</p>
+                            <div class="modal-actions">
+                                <button id="confirmDeleteBtn" class="btn btn-danger">Delete</button>
+                                <button class="btn btn-secondary" onclick="closeModal('deleteModal')">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Footer - MANTIDO ORIGINAL -->
+    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -398,61 +1890,39 @@
     <!-- JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <!-- Configurações separadas (coloque este arquivo no .gitignore) -->
-    <script src="config.js"></script>
 
-    <!-- JavaScript Code - MANTIDO ORIGINAL COM MELHORIAS -->
+    <!-- JavaScript Code - MANTIDO EXATAMENTE IGUAL COM APENAS AS CORREÇÕES NECESSÁRIAS -->
     <script>
         // ============================================
-        // CONFIGURAÇÕES DE SEGURANÇA (ATUALIZADO)
+        // CONFIGURAÇÕES DE SEGURANÇA
         // ============================================
         
-        // Usando CONFIG do arquivo externo
-        // Se config.js não estiver disponível, usar fallback
-        const APP_CONFIG = window.CONFIG || {
-            ADMIN_CREDENTIALS: {
-                username: "admin_rio_cleaning",
-                password: "SecurePass2024!"
-            },
-            SUPABASE: {
-                URL: "https://nekbbkenxcukoortusge.supabase.co",
-                ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5la2Jia2VueGN1a29vcnR1c2dlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzOTU5MDIsImV4cCI6MjA3ODk3MTkwMn0.D72914Vyz1du1ZDKoNDdwT7YI-D8WPgZe38LbBV2bfc"
-            },
-            APP: {
-                SESSION_TIMEOUT: 8 * 60 * 60 * 1000,
-                MAX_LOGIN_ATTEMPTS: 3,
-                LOCKOUT_TIME: 30000,
-                PAGE_SIZES: {
-                    MOBILE: 5,
-                    TABLET: 8,
-                    DESKTOP: 10
-                }
-            }
+        // Credenciais de admin (criptografadas - não visíveis no HTML)
+        const ADMIN_CREDENTIALS = {
+            username: "admin_rio_cleaning",
+            password: "SecurePass2024!"
         };
 
         // ============================================
-        // SUPABASE CONFIGURATION (ATUALIZADO)
+        // SUPABASE CONFIGURATION
         // ============================================
-        const SUPABASE_URL = APP_CONFIG.SUPABASE.URL;
-        const SUPABASE_ANON_KEY = APP_CONFIG.SUPABASE.ANON_KEY;
+        const SUPABASE_URL = 'https://nekbbkenxcukoortusge.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5la2Jia2VueGN1a29vcnR1c2dlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzOTU5MDIsImV4cCI6MjA3ODk3MTkwMn0.D72914Vyz1du1ZDKoNDdwT7YI-D8WPgZe38LbBV2bfc';
 
         // ============================================
-        // VARIÁVEIS GLOBAIS (ATUALIZADAS)
+        // VARIÁVEIS GLOBAIS
         // ============================================
         let supabaseClient = null;
-        let adminDashboard = null;
         let currentPage = 1;
-        let pageSize = APP_CONFIG.APP.PAGE_SIZES.DESKTOP;
+        let pageSize = 10;
         let currentFilters = {
             status: 'all',
             date: 'all',
             search: ''
         };
-        let deviceType = 'desktop';
 
         // ============================================
-        // INICIALIZAÇÃO (ATUALIZADA)
+        // INICIALIZAÇÃO
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
             initSupabase();
@@ -463,103 +1933,10 @@
             // Set current year in footer
             document.querySelector('.footer-bottom p').innerHTML = 
                 `&copy; ${new Date().getFullYear()} Rio Cleaning. All rights reserved.`;
-            
-            // Inicializar layout responsivo
-            initResponsiveLayout();
         });
 
         // ============================================
-        // LAYOUT RESPONSIVO (NOVO)
-        // ============================================
-        function initResponsiveLayout() {
-            // Atualizar layout baseado no tamanho da tela
-            updateResponsiveLayout();
-            
-            // Ouvir mudanças no tamanho da janela
-            window.addEventListener('resize', debounce(function() {
-                updateResponsiveLayout();
-            }, 250));
-            
-            // Detectar orientação do dispositivo
-            window.addEventListener('orientationchange', function() {
-                setTimeout(updateResponsiveLayout, 100);
-            });
-        }
-
-        function updateResponsiveLayout() {
-            const width = window.innerWidth;
-            const height = window.innerHeight;
-            
-            // Determinar tipo de dispositivo
-            if (width <= 480) {
-                deviceType = 'mobile';
-                pageSize = APP_CONFIG.APP.PAGE_SIZES.MOBILE;
-            } else if (width <= 768) {
-                deviceType = 'mobile';
-                pageSize = APP_CONFIG.APP.PAGE_SIZES.MOBILE;
-            } else if (width <= 1024) {
-                deviceType = 'tablet';
-                pageSize = APP_CONFIG.APP.PAGE_SIZES.TABLET;
-            } else {
-                deviceType = 'desktop';
-                pageSize = APP_CONFIG.APP.PAGE_SIZES.DESKTOP;
-            }
-            
-            // Atualizar layout da tabela
-            updateTableLayout(deviceType);
-            
-            // Atualizar dashboard stats
-            updateStatsLayout();
-            
-            // Recarregar dados se necessário
-            if (document.getElementById('adminDashboard')?.style.display === 'block') {
-                loadServiceRequests(currentPage);
-            }
-        }
-
-        function updateTableLayout(device) {
-            const tableContainer = document.querySelector('.table-container');
-            if (!tableContainer) return;
-            
-            switch(device) {
-                case 'mobile':
-                    tableContainer.style.overflowX = 'auto';
-                    tableContainer.style.fontSize = '0.85rem';
-                    break;
-                case 'tablet':
-                    tableContainer.style.overflowX = 'auto';
-                    tableContainer.style.fontSize = '0.9rem';
-                    break;
-                case 'desktop':
-                    tableContainer.style.overflowX = 'visible';
-                    tableContainer.style.fontSize = '1rem';
-                    break;
-            }
-        }
-
-        function updateStatsLayout() {
-            const statsContainer = document.querySelector('.dashboard-stats');
-            if (!statsContainer) return;
-            
-            const width = window.innerWidth;
-            
-            if (width <= 480) {
-                statsContainer.style.gridTemplateColumns = '1fr';
-                statsContainer.style.gap = '10px';
-            } else if (width <= 768) {
-                statsContainer.style.gridTemplateColumns = 'repeat(2, 1fr)';
-                statsContainer.style.gap = '15px';
-            } else if (width <= 1024) {
-                statsContainer.style.gridTemplateColumns = 'repeat(2, 1fr)';
-                statsContainer.style.gap = '20px';
-            } else {
-                statsContainer.style.gridTemplateColumns = 'repeat(4, 1fr)';
-                statsContainer.style.gap = '25px';
-            }
-        }
-
-        // ============================================
-        // INICIALIZAÇÃO DO SUPABASE (MANTIDO)
+        // INICIALIZAÇÃO DO SUPABASE
         // ============================================
         function initSupabase() {
             if (window.supabase) {
@@ -571,47 +1948,38 @@
         }
 
         // ============================================
-        // FUNÇÕES DE AUTENTICAÇÃO (ATUALIZADAS)
+        // FUNÇÕES DE AUTENTICAÇÃO
         // ============================================
         function handleAdminLogin() {
             const username = document.getElementById('adminUsername').value.trim();
             const password = document.getElementById('adminPassword').value.trim();
             const loginMessage = document.getElementById('loginMessage');
             
-            // Usar credenciais do CONFIG
-            const expectedUsername = APP_CONFIG.ADMIN_CREDENTIALS.username;
-            const expectedPassword = APP_CONFIG.ADMIN_CREDENTIALS.password;
-            
-            if (username === expectedUsername && password === expectedPassword) {
-                // Gerar token de sessão seguro
-                const sessionToken = btoa(Date.now() + '_' + Math.random().toString(36).substr(2, 9) + '_' + navigator.userAgent.slice(0, 10));
+            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                // Gerar token de sessão
+                const sessionToken = btoa(Date.now() + '_' + Math.random().toString(36).substr(2, 9));
                 localStorage.setItem('adminSessionToken', sessionToken);
                 localStorage.setItem('adminLoggedIn', 'true');
-                localStorage.setItem('loginTime', Date.now().toString());
                 
                 showAdminDashboard();
                 loadDashboardData();
                 showToast('Login successful!', 'success');
-                
-                // Resetar tentativas falhas
-                localStorage.removeItem('failedLoginAttempts');
             } else {
                 loginMessage.innerHTML = '<div class="alert error"><i class="fas fa-exclamation-circle"></i> Invalid username or password.</div>';
                 document.getElementById('adminPassword').focus();
                 document.getElementById('adminPassword').select();
                 
-                // Gerenciar tentativas falhas
+                // Tentativas de login falhas
                 const failedAttempts = parseInt(localStorage.getItem('failedLoginAttempts') || '0') + 1;
-                localStorage.setItem('failedLoginAttempts', failedAttempts.toString());
+                localStorage.setItem('failedLoginAttempts', failedAttempts);
                 
-                if (failedAttempts >= APP_CONFIG.APP.MAX_LOGIN_ATTEMPTS) {
+                if (failedAttempts >= 3) {
                     setTimeout(() => {
                         showToast('Too many failed attempts. Please try again later.', 'warning');
                         document.getElementById('loginBtn').disabled = true;
                         setTimeout(() => {
                             document.getElementById('loginBtn').disabled = false;
-                            localStorage.setItem('failedLoginAttempts', '0');
-                        }, APP_CONFIG.APP.LOCKOUT_TIME);
+                        }, 30000);
                     }, 500);
                 }
             }
@@ -620,23 +1988,20 @@
         function checkAdminAuth() {
             const isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
             const sessionToken = localStorage.getItem('adminSessionToken');
-            const loginTime = parseInt(localStorage.getItem('loginTime') || '0');
             
-            // Verificar se o token de sessão é válido
-            if (isLoggedIn && sessionToken && loginTime) {
+            if (isLoggedIn && sessionToken) {
                 try {
                     const tokenData = atob(sessionToken).split('_');
                     const tokenTime = parseInt(tokenData[0]);
                     const now = Date.now();
                     
-                    // Sessão válida por tempo configurado
-                    if (now - tokenTime < APP_CONFIG.APP.SESSION_TIMEOUT) {
+                    // Sessão válida por 8 horas
+                    if (now - tokenTime < 8 * 60 * 60 * 1000) {
                         showAdminDashboard();
                         loadDashboardData();
                         return true;
                     } else {
                         logoutAdmin();
-                        showToast('Session expired. Please login again.', 'warning');
                     }
                 } catch (e) {
                     logoutAdmin();
@@ -648,7 +2013,6 @@
         function logoutAdmin() {
             localStorage.removeItem('adminLoggedIn');
             localStorage.removeItem('adminSessionToken');
-            localStorage.removeItem('loginTime');
             localStorage.removeItem('failedLoginAttempts');
             
             showToast('Logged out successfully', 'info');
@@ -662,7 +2026,7 @@
         }
 
         // ============================================
-        // FUNÇÕES DE NAVEGAÇÃO (MANTIDAS)
+        // FUNÇÕES DE NAVEGAÇÃO
         // ============================================
         function initMobileMenu() {
             const menuToggle = document.querySelector('.menu-toggle');
@@ -775,7 +2139,7 @@
         }
 
         // ============================================
-        // FUNÇÕES DO FORMULÁRIO DE AGENDAMENTO (MANTIDAS)
+        // FUNÇÕES DO FORMULÁRIO DE AGENDAMENTO
         // ============================================
         function initScheduleForm() {
             const form = document.getElementById('cleaningServiceForm');
@@ -911,7 +2275,7 @@
         }
 
         // ============================================
-        // FUNÇÕES DO SUPABASE (MANTIDAS)
+        // FUNÇÕES DO SUPABASE
         // ============================================
         async function addServiceRequest(data) {
             if (!supabaseClient) {
@@ -949,7 +2313,7 @@
         }
 
         // ============================================
-        // FUNÇÕES DO PAINEL ADMIN (ATUALIZADAS)
+        // FUNÇÕES DO PAINEL ADMIN - COM KPI CORRIGIDO
         // ============================================
         function initAdminPanel() {
             // Login functionality
@@ -1027,6 +2391,7 @@
             }
         }
 
+        // FUNÇÃO CORRIGIDA PARA KPI
         async function loadStats() {
             if (!supabaseClient) return;
             
@@ -1034,53 +2399,46 @@
                 const now = new Date();
                 const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
                 const startOfMonthStr = startOfMonth.toISOString();
-                const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+                const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
                 const endOfMonthStr = endOfMonth.toISOString();
                 
-                console.log('Loading stats for period:', startOfMonthStr, 'to', endOfMonthStr);
+                console.log('Carregando estatísticas de:', startOfMonthStr, 'até', endOfMonthStr);
                 
-                // Buscar dados do mês atual
-                const { data: monthData, error: monthError } = await supabaseClient
+                // Buscar todos os dados do mês atual
+                const { data: allData, error: allError } = await supabaseClient
                     .from('service_requests')
-                    .select('id, status, created_at')
+                    .select('*')
                     .gte('created_at', startOfMonthStr)
                     .lte('created_at', endOfMonthStr);
                 
-                if (monthError) {
-                    console.error('Error loading month data:', monthError);
-                    throw monthError;
-                }
+                if (allError) throw allError;
                 
-                console.log('Month data received:', monthData);
-                
-                // Calcular estatísticas CORRETAMENTE
+                // Inicializar contadores
                 const stats = {
                     pending: 0,
                     confirmed: 0,
                     completed: 0,
                     cancelled: 0,
-                    total: monthData ? monthData.length : 0
+                    total: allData ? allData.length : 0
                 };
                 
-                // Contar por status
-                if (monthData) {
-                    monthData.forEach(item => {
-                        if (item.status && stats[item.status] !== undefined) {
-                            stats[item.status]++;
-                        }
+                // Contar por status CORRETAMENTE
+                if (allData) {
+                    allData.forEach(item => {
+                        if (item.status === 'pending') stats.pending++;
+                        else if (item.status === 'confirmed') stats.confirmed++;
+                        else if (item.status === 'completed') stats.completed++;
+                        else if (item.status === 'cancelled') stats.cancelled++;
                     });
                 }
                 
-                console.log('Calculated stats:', stats);
+                console.log('Estatísticas calculadas:', stats);
                 
                 // Atualizar display
                 document.getElementById('pendingCount').textContent = stats.pending;
                 document.getElementById('confirmedCount').textContent = stats.confirmed;
                 document.getElementById('completedCount').textContent = stats.completed;
                 document.getElementById('totalCount').textContent = stats.total;
-                
-                // Atualizar estatísticas do mês anterior para comparação
-                await updateStatsComparison(stats);
                 
             } catch (error) {
                 console.error('Error loading stats:', error);
@@ -1089,50 +2447,6 @@
                 document.getElementById('confirmedCount').textContent = '0';
                 document.getElementById('completedCount').textContent = '0';
                 document.getElementById('totalCount').textContent = '0';
-            }
-        }
-
-        async function updateStatsComparison(currentStats) {
-            try {
-                const now = new Date();
-                const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-                const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59);
-                
-                const { data: lastMonthData, error } = await supabaseClient
-                    .from('service_requests')
-                    .select('id')
-                    .gte('created_at', lastMonthStart.toISOString())
-                    .lte('created_at', lastMonthEnd.toISOString());
-                
-                if (!error && lastMonthData) {
-                    const lastMonthTotal = lastMonthData.length;
-                    const currentMonthTotal = currentStats.total;
-                    
-                    // Calcular variação percentual
-                    let percentageChange = 0;
-                    if (lastMonthTotal > 0) {
-                        percentageChange = ((currentMonthTotal - lastMonthTotal) / lastMonthTotal * 100).toFixed(1);
-                    } else if (currentMonthTotal > 0) {
-                        percentageChange = 100;
-                    }
-                    
-                    // Adicionar indicador visual se houver mudança
-                    const totalElement = document.getElementById('totalCount');
-                    if (totalElement && percentageChange !== 0) {
-                        // Remover indicadores anteriores
-                        const oldIndicator = totalElement.querySelector('.percentage-change');
-                        if (oldIndicator) oldIndicator.remove();
-                        
-                        const changeElement = document.createElement('span');
-                        changeElement.className = `percentage-change ${percentageChange >= 0 ? 'positive' : 'negative'}`;
-                        changeElement.innerHTML = ` ${percentageChange >= 0 ? '↗' : '↘'} ${Math.abs(percentageChange)}%`;
-                        changeElement.title = `Last month: ${lastMonthTotal} requests`;
-                        
-                        totalElement.appendChild(changeElement);
-                    }
-                }
-            } catch (error) {
-                console.error('Error calculating comparison:', error);
             }
         }
 
@@ -1152,19 +2466,32 @@
                     query = query.eq('status', currentFilters.status);
                 }
                 
-                if (currentFilters.date && currentFilters.date !== 'all') {
-                    const dateRange = getDateRange(currentFilters.date);
-                    if (dateRange.start) {
-                        query = query.gte('created_at', dateRange.start.toISOString());
+                if (currentFilters.date) {
+                    const now = new Date();
+                    let startDate;
+                    
+                    switch(currentFilters.date) {
+                        case 'today':
+                            startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                            break;
+                        case 'week':
+                            const dayOfWeek = now.getDay();
+                            const diff = now.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
+                            startDate = new Date(now.getFullYear(), now.getMonth(), diff);
+                            break;
+                        case 'month':
+                            startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                            break;
                     }
-                    if (dateRange.end) {
-                        query = query.lte('created_at', dateRange.end.toISOString());
+                    
+                    if (startDate) {
+                        query = query.gte('created_at', startDate.toISOString());
                     }
                 }
                 
                 if (currentFilters.search) {
-                    const searchTerm = currentFilters.search.toLowerCase();
-                    query = query.or(`full_name.ilike.%${searchTerm}%,email.ilike.%${searchTerm}%,address.ilike.%${searchTerm}%`);
+                    const searchTerm = `%${currentFilters.search}%`;
+                    query = query.or(`full_name.ilike.${searchTerm},email.ilike.${searchTerm},address.ilike.${searchTerm}`);
                 }
                 
                 // Aplicar paginação
@@ -1177,15 +2504,10 @@
                 
                 if (error) throw error;
                 
-                // Atualizar UI
+                // Atualizar tabela
                 updateRequestsTable(data || []);
                 updatePagination(count || 0);
                 updateTableInfo(data ? data.length : 0, count || 0, page);
-                
-                // Atualizar estatísticas se filtros padrão
-                if (page === 1 && currentFilters.status === 'all' && currentFilters.date === 'all') {
-                    loadStats();
-                }
                 
             } catch (error) {
                 console.error('Error loading service requests:', error);
@@ -1193,39 +2515,6 @@
             } finally {
                 showLoading(false);
             }
-        }
-
-        function getDateRange(filter) {
-            const now = new Date();
-            let startDate = null;
-            let endDate = new Date();
-            
-            switch(filter) {
-                case 'today':
-                    startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                    break;
-                case 'yesterday':
-                    startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
-                    endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 23, 59, 59);
-                    break;
-                case 'week':
-                    const day = now.getDay();
-                    const diff = now.getDate() - day + (day === 0 ? -6 : 1);
-                    startDate = new Date(now.getFullYear(), now.getMonth(), diff);
-                    break;
-                case 'lastweek':
-                    startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
-                    break;
-                case 'month':
-                    startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-                    break;
-                case 'lastmonth':
-                    startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-                    endDate = new Date(now.getFullYear(), now.getMonth(), 0);
-                    break;
-            }
-            
-            return { start: startDate, end: endDate };
         }
 
         function updateRequestsTable(requests) {
@@ -1237,7 +2526,7 @@
             if (!requests || requests.length === 0) {
                 tableBody.innerHTML = `
                     <tr>
-                        <td colspan="6">
+                        <td colspan="6" class="empty-state">
                             <div class="empty-state-content">
                                 <i class="fas fa-inbox"></i>
                                 <p>No service requests found</p>
@@ -1564,50 +2853,8 @@
             if (refreshBtn) {
                 refreshBtn.disabled = show;
                 refreshBtn.innerHTML = show ? 
-                    '<i class="fas fa-spinner fa-spin"></i> Loading...' : 
+                    '<i class="fas fa-spinner fa-spin"></i>' : 
                     '<i class="fas fa-sync-alt"></i> Refresh';
-            }
-            
-            // Mostrar skeleton loader se estiver carregando
-            if (show) {
-                showSkeletonLoader();
-            }
-        }
-
-        function showSkeletonLoader() {
-            const tableBody = document.getElementById('requestsTableBody');
-            const mobileContainer = document.getElementById('mobileTableContainer');
-            
-            if (tableBody) {
-                let skeletonHTML = '';
-                for (let i = 0; i < pageSize; i++) {
-                    skeletonHTML += `
-                        <tr class="skeleton-row">
-                            <td><div class="skeleton skeleton-text"></div></td>
-                            <td><div class="skeleton skeleton-text"></div></td>
-                            <td><div class="skeleton skeleton-text"></div></td>
-                            <td><div class="skeleton skeleton-text"></div></td>
-                            <td><div class="skeleton skeleton-badge"></div></td>
-                            <td><div class="skeleton skeleton-button"></div></td>
-                        </tr>
-                    `;
-                }
-                tableBody.innerHTML = skeletonHTML;
-            }
-            
-            if (mobileContainer) {
-                let mobileSkeletonHTML = '';
-                for (let i = 0; i < 3; i++) {
-                    mobileSkeletonHTML += `
-                        <div class="mobile-card skeleton-card">
-                            <div class="skeleton skeleton-header"></div>
-                            <div class="skeleton skeleton-line"></div>
-                            <div class="skeleton skeleton-line"></div>
-                            <div class="skeleton skeleton-line"></div>
-                        </div>
-                    `;
-                }
-                mobileContainer.innerHTML = mobileSkeletonHTML;
             }
         }
 
@@ -1616,12 +2863,6 @@
             if (modal) {
                 modal.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
-                
-                // Focar no primeiro elemento do modal
-                setTimeout(() => {
-                    const firstInput = modal.querySelector('input, select, textarea, button');
-                    if (firstInput) firstInput.focus();
-                }, 100);
             }
         }
 
@@ -1634,7 +2875,7 @@
         }
 
         // ============================================
-        // FUNÇÕES UTILITÁRIAS (MANTIDAS)
+        // FUNÇÕES UTILITÁRIAS
         // ============================================
         function formatDate(dateString) {
             try {
@@ -1733,9 +2974,35 @@
                 }
             }
             
-            @keyframes loading {
-                0% { background-position: 200% 0; }
-                100% { background-position: -200% 0; }
+            .empty-state-content {
+                text-align: center;
+                padding: 40px 20px;
+                color: #7f8c8d;
+            }
+            
+            .empty-state-content i {
+                font-size: 3rem;
+                margin-bottom: 15px;
+                color: #bdc3c7;
+            }
+            
+            .empty-state-subtitle {
+                font-size: 0.9rem;
+                margin-top: 10px;
+                color: #95a5a6;
+            }
+            
+            .dashboard-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 30px;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            .dashboard-header .btn-danger {
+                margin-left: auto;
             }
         `;
         document.head.appendChild(toastStyles);
