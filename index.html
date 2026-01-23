@@ -226,7 +226,7 @@
         }
 
         /* =========================================== */
-        /* NAVIGATION */
+        /* NAVIGATION - COM CORREÇÃO MOBILE */
         /* =========================================== */
         .navbar {
             background: rgba(255, 255, 255, 0.95);
@@ -280,6 +280,7 @@
             background-clip: text;
         }
 
+        /* Desktop Navigation */
         .nav-links {
             display: flex;
             list-style: none;
@@ -326,8 +327,9 @@
             color: var(--danger-color) !important;
         }
 
+        /* Menu Toggle - Visível apenas em mobile */
         .menu-toggle {
-            display: none;
+            display: none; /* Escondido no desktop */
             font-size: 1.5rem;
             cursor: pointer;
             color: var(--dark-color);
@@ -375,6 +377,11 @@
         @keyframes pulse {
             0% { opacity: 0.5; transform: scale(1); }
             100% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .hero-content {
@@ -1406,7 +1413,7 @@
         }
 
         /* =========================================== */
-        /* MOBILE STYLES */
+        /* MOBILE STYLES - CORREÇÃO DO MENU */
         /* =========================================== */
         @media (max-width: 768px) {
             .navbar .container {
@@ -1414,12 +1421,14 @@
                 min-height: 70px;
             }
             
+            /* Mostrar botão do menu */
             .menu-toggle {
-                display: flex;
+                display: flex !important; /* Força a exibição */
                 align-items: center;
                 justify-content: center;
             }
             
+            /* Esconder navegação desktop */
             .nav-links {
                 position: fixed;
                 top: 70px;
@@ -1457,10 +1466,15 @@
                 padding: 20px;
                 font-size: 1rem;
                 border-radius: 0;
+                text-align: center;
             }
             
             .nav-links a:hover, .nav-links a:focus {
                 background: var(--gray-100);
+            }
+            
+            .nav-links a::after {
+                display: none; /* Remove a linha animada no mobile */
             }
             
             .hero {
@@ -1511,7 +1525,19 @@
             }
         }
 
-        @media (max-width: 576px) {
+        /* Ajustes para telas muito pequenas */
+        @media (max-width: 480px) {
+            .menu-toggle {
+                padding: 8px;
+                min-height: 40px;
+                min-width: 40px;
+            }
+            
+            .nav-links {
+                top: 60px;
+                max-height: calc(100vh - 60px);
+            }
+            
             .dashboard-stats {
                 grid-template-columns: 1fr;
             }
@@ -1658,7 +1684,7 @@
         }
 
         /* =========================================== */
-        /* ANIMATIONS DELAYS */
+        /* ANIMAÇÕES DELAYS */
         /* =========================================== */
         .service-card:nth-child(1) { animation-delay: 0.1s; }
         .service-card:nth-child(2) { animation-delay: 0.2s; }
@@ -1764,6 +1790,17 @@
             opacity: 1;
             visibility: visible;
             bottom: calc(100% + 10px);
+        }
+
+        /* =========================================== */
+        /* ANIMAÇÃO PARA O ÍCONE DO MENU */
+        /* =========================================== */
+        .menu-toggle i {
+            transition: transform 0.3s ease;
+        }
+
+        .menu-toggle[aria-expanded="true"] i {
+            transform: rotate(90deg);
         }
 
         /* =========================================== */
@@ -2383,118 +2420,38 @@
         }
 
         // ============================================
-        // FUNÇÕES DE AUTENTICAÇÃO
-        // ============================================
-        function handleAdminLogin() {
-            const username = document.getElementById('adminUsername').value.trim();
-            const password = document.getElementById('adminPassword').value.trim();
-            const loginMessage = document.getElementById('loginMessage');
-            
-            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
-                // Gerar token de sessão
-                const sessionToken = btoa(Date.now() + '_' + Math.random().toString(36).substr(2, 9));
-                localStorage.setItem('adminSessionToken', sessionToken);
-                localStorage.setItem('adminLoggedIn', 'true');
-                
-                showAdminDashboard();
-                loadDashboardData();
-                showToast('Login successful!', 'success');
-            } else {
-                loginMessage.innerHTML = '<div class="alert error"><i class="fas fa-exclamation-circle"></i> Invalid username or password.</div>';
-                document.getElementById('adminPassword').focus();
-                document.getElementById('adminPassword').select();
-                
-                // Adicionar animação shake
-                loginMessage.classList.add('shake');
-                setTimeout(() => loginMessage.classList.remove('shake'), 500);
-                
-                // Tentativas de login falhas
-                const failedAttempts = parseInt(localStorage.getItem('failedLoginAttempts') || '0') + 1;
-                localStorage.setItem('failedLoginAttempts', failedAttempts);
-                
-                if (failedAttempts >= 3) {
-                    setTimeout(() => {
-                        showToast('Too many failed attempts. Please try again later.', 'warning');
-                        document.getElementById('loginBtn').disabled = true;
-                        setTimeout(() => {
-                            document.getElementById('loginBtn').disabled = false;
-                        }, 30000);
-                    }, 500);
-                }
-            }
-        }
-
-        function checkAdminAuth() {
-            const isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
-            const sessionToken = localStorage.getItem('adminSessionToken');
-            
-            if (isLoggedIn && sessionToken) {
-                try {
-                    const tokenData = atob(sessionToken).split('_');
-                    const tokenTime = parseInt(tokenData[0]);
-                    const now = Date.now();
-                    
-                    // Sessão válida por 8 horas
-                    if (now - tokenTime < 8 * 60 * 60 * 1000) {
-                        showAdminDashboard();
-                        loadDashboardData();
-                        return true;
-                    } else {
-                        logoutAdmin();
-                    }
-                } catch (e) {
-                    logoutAdmin();
-                }
-            }
-            return false;
-        }
-
-        function logoutAdmin() {
-            localStorage.removeItem('adminLoggedIn');
-            localStorage.removeItem('adminSessionToken');
-            localStorage.removeItem('failedLoginAttempts');
-            
-            showToast('Logged out successfully', 'info');
-            
-            // Reset login form
-            document.getElementById('adminUsername').value = '';
-            document.getElementById('adminPassword').value = '';
-            
-            document.getElementById('adminDashboard').style.display = 'none';
-            document.getElementById('adminLogin').style.display = 'block';
-        }
-
-        // ============================================
-        // FUNÇÕES DE NAVEGAÇÃO
+        // FUNÇÕES DE NAVEGAÇÃO - CORREÇÃO MOBILE
         // ============================================
         function initMobileMenu() {
             const menuToggle = document.querySelector('.menu-toggle');
             const navLinks = document.querySelector('.nav-links');
             
             if (menuToggle && navLinks) {
+                // Adicionar evento de clique
                 menuToggle.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    navLinks.classList.toggle('active');
-                    menuToggle.setAttribute('aria-expanded', navLinks.classList.contains('active'));
-                    menuToggle.innerHTML = navLinks.classList.contains('active') 
-                        ? '<i class="fas fa-times"></i>' 
-                        : '<i class="fas fa-bars"></i>';
+                    toggleMobileMenu();
                 });
                 
+                // Fechar menu ao clicar fora
                 document.addEventListener('click', function(event) {
-                    if (!navLinks.contains(event.target) && !menuToggle.contains(event.target)) {
-                        navLinks.classList.remove('active');
-                        menuToggle.setAttribute('aria-expanded', 'false');
-                        menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                    if (!navLinks.contains(event.target) && !menuToggle.contains(event.target) && navLinks.classList.contains('active')) {
+                        closeMobileMenu();
                     }
                 });
                 
+                // Fechar menu com tecla ESC
                 document.addEventListener('keydown', function(event) {
                     if (event.key === 'Escape' && navLinks.classList.contains('active')) {
-                        navLinks.classList.remove('active');
-                        menuToggle.setAttribute('aria-expanded', 'false');
-                        menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                        closeMobileMenu();
                     }
+                });
+                
+                // Fechar menu ao clicar em um link
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        closeMobileMenu();
+                    });
                 });
             }
         }
@@ -2504,11 +2461,37 @@
             const menuToggle = document.querySelector('.menu-toggle');
             
             if (navLinks && menuToggle) {
-                navLinks.classList.toggle('active');
-                menuToggle.setAttribute('aria-expanded', navLinks.classList.contains('active'));
-                menuToggle.innerHTML = navLinks.classList.contains('active') 
-                    ? '<i class="fas fa-times"></i>' 
-                    : '<i class="fas fa-bars"></i>';
+                const isOpen = navLinks.classList.contains('active');
+                
+                if (isOpen) {
+                    closeMobileMenu();
+                } else {
+                    openMobileMenu();
+                }
+            }
+        }
+
+        function openMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (navLinks && menuToggle) {
+                navLinks.classList.add('active');
+                menuToggle.setAttribute('aria-expanded', 'true');
+                menuToggle.innerHTML = '<i class="fas fa-times"></i>';
+                document.body.style.overflow = 'hidden'; // Previne scroll
+            }
+        }
+
+        function closeMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (navLinks && menuToggle) {
+                navLinks.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                document.body.style.overflow = ''; // Restaura scroll
             }
         }
 
@@ -2523,13 +2506,8 @@
                     behavior: 'smooth'
                 });
                 
-                const navLinks = document.querySelector('.nav-links');
-                const menuToggle = document.querySelector('.menu-toggle');
-                if (navLinks && navLinks.classList.contains('active')) {
-                    navLinks.classList.remove('active');
-                    menuToggle.setAttribute('aria-expanded', 'false');
-                    menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-                }
+                // Fechar menu mobile se estiver aberto
+                closeMobileMenu();
             }
         }
 
@@ -2538,6 +2516,7 @@
             document.getElementById('scheduleFormContainer').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'none';
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            closeMobileMenu();
         }
 
         function showScheduleForm() {
@@ -2547,14 +2526,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
             initDatePicker();
-            
-            const navLinks = document.querySelector('.nav-links');
-            const menuToggle = document.querySelector('.menu-toggle');
-            if (navLinks && navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-                menuToggle.setAttribute('aria-expanded', 'false');
-                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-            }
+            closeMobileMenu();
         }
 
         function showAdminPanel() {
@@ -2562,14 +2534,7 @@
             document.getElementById('scheduleFormContainer').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            
-            const navLinks = document.querySelector('.nav-links');
-            const menuToggle = document.querySelector('.menu-toggle');
-            if (navLinks && navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-                menuToggle.setAttribute('aria-expanded', 'false');
-                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-            }
+            closeMobileMenu();
         }
 
         function showAdminDashboard() {
@@ -3306,6 +3271,88 @@
                 modal.style.display = 'none';
                 document.body.style.overflow = '';
             }
+        }
+
+        // ============================================
+        // FUNÇÕES DE AUTENTICAÇÃO
+        // ============================================
+        function handleAdminLogin() {
+            const username = document.getElementById('adminUsername').value.trim();
+            const password = document.getElementById('adminPassword').value.trim();
+            const loginMessage = document.getElementById('loginMessage');
+            
+            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                // Gerar token de sessão
+                const sessionToken = btoa(Date.now() + '_' + Math.random().toString(36).substr(2, 9));
+                localStorage.setItem('adminSessionToken', sessionToken);
+                localStorage.setItem('adminLoggedIn', 'true');
+                
+                showAdminDashboard();
+                loadDashboardData();
+                showToast('Login successful!', 'success');
+            } else {
+                loginMessage.innerHTML = '<div class="alert error"><i class="fas fa-exclamation-circle"></i> Invalid username or password.</div>';
+                document.getElementById('adminPassword').focus();
+                document.getElementById('adminPassword').select();
+                
+                // Adicionar animação shake
+                loginMessage.classList.add('shake');
+                setTimeout(() => loginMessage.classList.remove('shake'), 500);
+                
+                // Tentativas de login falhas
+                const failedAttempts = parseInt(localStorage.getItem('failedLoginAttempts') || '0') + 1;
+                localStorage.setItem('failedLoginAttempts', failedAttempts);
+                
+                if (failedAttempts >= 3) {
+                    setTimeout(() => {
+                        showToast('Too many failed attempts. Please try again later.', 'warning');
+                        document.getElementById('loginBtn').disabled = true;
+                        setTimeout(() => {
+                            document.getElementById('loginBtn').disabled = false;
+                        }, 30000);
+                    }, 500);
+                }
+            }
+        }
+
+        function checkAdminAuth() {
+            const isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
+            const sessionToken = localStorage.getItem('adminSessionToken');
+            
+            if (isLoggedIn && sessionToken) {
+                try {
+                    const tokenData = atob(sessionToken).split('_');
+                    const tokenTime = parseInt(tokenData[0]);
+                    const now = Date.now();
+                    
+                    // Sessão válida por 8 horas
+                    if (now - tokenTime < 8 * 60 * 60 * 1000) {
+                        showAdminDashboard();
+                        loadDashboardData();
+                        return true;
+                    } else {
+                        logoutAdmin();
+                    }
+                } catch (e) {
+                    logoutAdmin();
+                }
+            }
+            return false;
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem('adminLoggedIn');
+            localStorage.removeItem('adminSessionToken');
+            localStorage.removeItem('failedLoginAttempts');
+            
+            showToast('Logged out successfully', 'info');
+            
+            // Reset login form
+            document.getElementById('adminUsername').value = '';
+            document.getElementById('adminPassword').value = '';
+            
+            document.getElementById('adminDashboard').style.display = 'none';
+            document.getElementById('adminLogin').style.display = 'block';
         }
 
         // ============================================
