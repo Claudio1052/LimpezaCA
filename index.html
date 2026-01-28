@@ -1,46 +1,21 @@
 <!DOCTYPE html>
-<html lang="en"> 
-<head> 
+<html lang="pt-br">
+<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-    <meta name="HandheldFriendly" content="true">
-    <meta name="MobileOptimized" content="width">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="color-scheme" content="light dark">
-    <meta name="theme-color" content="#4361ee" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#1a1a2e" media="(prefers-color-scheme: dark)">
-    <meta name="apple-mobile-web-app-title" content="Rio Cleaning">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="description" content="Professional cleaning services in Calgary, Chestermere, Airdrie and Okotoks. Get your free quote today!">
-    
-    <title>Rio Cleaning Services - Professional Cleaning in Calgary</title>
-    
-    <!-- CSS Styles (Embedded) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rio Cleaning Services - Limpeza Profissional em Calgary</title>
     <style>
-        /* =========================================== */
-        /* VARIÁVEIS CSS E RESET - MANTIDO ORIGINAL */
-        /* =========================================== */
         :root {
-            --primary-color: #4361ee;
-            --primary-dark: #3a56d4;
-            --secondary-color: #7209b7;
-            --accent-color: #4cc9f0;
-            --dark-color: #1a1a2e;
-            --light-color: #f8f9fa;
-            --success-color: #06d6a0;
-            --warning-color: #ffd166;
-            --danger-color: #ef476f;
-            --gray-100: #f8f9fa;
-            --gray-200: #e9ecef;
-            --gray-300: #dee2e6;
-            --gray-600: #6c757d;
-            --gray-800: #343a40;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
-            --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
-            --border-radius: 12px;
-            --border-radius-lg: 20px;
+            --primary: #0056b3; /* Azul mais forte e profissional */
+            --primary-light: #e6f0ff;
+            --secondary: #28a745; /* Verde para ênfase em confiança/OK */
+            --accent: #ffc107; /* Amarelo para destaques */
+            --dark: #343a40;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
         }
 
         * {
@@ -49,21 +24,11 @@
             box-sizing: border-box;
         }
 
-        html {
-            font-size: 16px;
-            scroll-behavior: smooth;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            line-height: 1.7;
-            color: var(--gray-800);
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--white);
         }
 
         .container {
@@ -73,1200 +38,1138 @@
             padding: 0 20px;
         }
 
-        /* =========================================== */
-        /* ESTILO DE DOBRAS - NOVO LAYOUT */
-        /* =========================================== */
-        .fold {
-            min-height: 100vh;
+        /* ===== TOP BAR & NAV ===== (Estilo Prime Clean) */
+        .top-contact-bar {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 10px 0;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .top-contact-bar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .top-contact-bar a {
+            color: var(--white);
+            text-decoration: none;
+            margin: 0 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-contact-bar a:hover {
+            text-decoration: underline;
+        }
+
+        .main-header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
             display: flex;
             align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .main-nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 8px 0;
             position: relative;
+            transition: var(--transition);
+        }
+
+        .main-nav a:hover,
+        .main-nav a.active {
+            color: var(--primary);
+        }
+
+        .main-nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark);
+            cursor: pointer;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            color: var(--white);
+            text-align: center;
+            padding: 120px 20px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 18px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background-color: #218838;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
+        /* ===== SESSÕES DE CONTEÚDO ===== */
+        section {
             padding: 80px 0;
         }
 
-        .fold-content {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Primeira Dobra - Header/Hero */
-        #fold-1 {
-            background: linear-gradient(135deg, var(--dark-color) 0%, #16213e 100%);
-            color: white;
+        .section-title {
             text-align: center;
+            margin-bottom: 60px;
         }
 
-        .header-contact {
-            position: absolute;
-            top: 20px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 0.9rem;
-        }
-
-        .header-contact a {
-            color: var(--accent-color);
-            text-decoration: none;
-            margin: 0 15px;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .logo-large {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .logo-large i {
-            color: var(--accent-color);
-        }
-
-        .service-areas {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            display: inline-block;
-            padding: 10px 30px;
-            border-radius: 50px;
-            margin: 30px 0;
-            font-weight: 600;
-        }
-
-        /* Segunda Dobra - Por que somos diferentes */
-        #fold-2 {
-            background: white;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .feature-box {
-            background: var(--gray-100);
-            border-radius: var(--border-radius-lg);
-            padding: 40px 30px;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .feature-box:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary-color);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-        }
-
-        /* Terceira Dobra - Serviços Principais */
-        #fold-3 {
-            background: linear-gradient(135deg, var(--gray-100) 0%, #f0f2f5 100%);
-        }
-
-        .services-grid-main {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 25px;
-            margin-top: 50px;
-        }
-
-        .service-box {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 30px;
-            text-align: center;
-            box-shadow: var(--shadow-md);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .service-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-        }
-
-        .service-box:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        /* Quarta Dobra - Serviços Especializados */
-        #fold-4 {
-            background: white;
-        }
-
-        .tabbed-services {
-            max-width: 900px;
-            margin: 50px auto 0;
-        }
-
-        .tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 40px;
-        }
-
-        .tab {
-            padding: 15px 30px;
-            background: white;
-            border: 2px solid var(--gray-300);
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            min-width: 180px;
-            text-align: center;
-        }
-
-        .tab.active {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border-color: transparent;
-        }
-
-        .tab-content {
-            background: white;
-            border-radius: var(--border-radius-lg);
-            padding: 50px;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--gray-200);
-        }
-
-        .tab-pane {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .tab-pane.active {
-            display: block;
-        }
-
-        .tab-pane h3 {
-            color: var(--primary-color);
-            margin-bottom: 20px;
-        }
-
-        /* Quinta Dobra - Agendamento */
-        #fold-5 {
-            background: linear-gradient(135deg, var(--dark-color) 0%, #16213e 100%);
-            color: white;
-        }
-
-        .fold-5-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        /* Sexta Dobra - Contato */
-        #fold-6 {
-            background: white;
-        }
-
-        .contact-info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .contact-card {
-            background: var(--gray-100);
-            border-radius: var(--border-radius);
-            padding: 30px;
-            text-align: center;
-        }
-
-        .contact-card i {
+        .section-title h2 {
             font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-        }
-
-        /* =========================================== */
-        /* NAVEGAÇÃO ENTRE DOBRAS */
-        /* =========================================== */
-        .fold-nav {
-            position: fixed;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .fold-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(67, 97, 238, 0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .fold-dot.active {
-            background: var(--primary-color);
-            transform: scale(1.3);
-        }
-
-        .fold-dot::after {
-            content: attr(data-title);
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: var(--primary-color);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .fold-dot:hover::after {
-            opacity: 1;
-            visibility: visible;
-            right: 25px;
-        }
-
-        /* =========================================== */
-        /* COMPONENTES REUTILIZÁVEIS - MANTIDOS DO ORIGINAL */
-        /* =========================================== */
-        h1, h2, h3, h4 {
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-        }
-
-        h1 { 
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        h2 { 
-            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            color: var(--dark);
+            margin-bottom: 15px;
             position: relative;
             display: inline-block;
-            color: var(--dark-color);
         }
 
-        h2::after {
+        .section-title h2::after {
             content: '';
             position: absolute;
             bottom: -10px;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-            border-radius: 2px;
-        }
-
-        .fold-5-content h2::after,
-        .text-center h2::after {
             left: 50%;
             transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary);
         }
 
-        .text-center {
+        .section-title p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Vantagens/Features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
             text-align: center;
+            transition: var(--transition);
+            border-top: 5px solid var(--primary);
         }
 
-        .text-white {
-            color: white !important;
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
 
-        .text-white h2 {
-            color: white;
+        .feature-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 25px;
         }
 
-        .text-white h2::after {
-            background: linear-gradient(90deg, var(--accent-color), white);
+        /* Serviços */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
         }
 
-        p {
-            margin-bottom: 1rem;
-            font-size: clamp(0.9375rem, 2vw, 1rem);
-            line-height: 1.6;
-            color: var(--gray-600);
-        }
-
-        .text-white p {
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        /* Botões - Mantidos do original */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 14px 32px;
-            border: none;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-align: center;
-            text-decoration: none;
-            position: relative;
+        .service-card {
+            background: var(--white);
+            border-radius: 8px;
             overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            box-shadow: 0 4px 20px rgba(67, 97, 238, 0.3);
+        .service-card:hover {
+            transform: translateY(-10px);
         }
 
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(67, 97, 238, 0.4);
+        .service-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
         }
 
-        .btn-secondary {
-            background: white;
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
+        .service-card-content {
+            padding: 30px;
         }
 
-        .btn-secondary:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: translateY(-3px);
+        .service-card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
         }
 
-        /* =========================================== */
-        /* FORMULÁRIOS - MANTIDOS DO ORIGINAL */
-        /* =========================================== */
-        form {
-            background: white;
-            border-radius: var(--border-radius-lg);
-            padding: 40px;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--gray-200);
+        /* ===== FORMULÁRIO (AGENDAMENTO E LOGIN) ===== */
+        .form-section {
+            background-color: var(--light);
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
         }
 
         .form-group {
             margin-bottom: 25px;
         }
 
-        label {
+        .form-group label {
             display: block;
             margin-bottom: 10px;
             font-weight: 600;
-            color: var(--gray-800);
+            color: var(--dark);
         }
 
-        input, select, textarea {
+        .form-control {
             width: 100%;
-            padding: 16px 20px;
-            border: 2px solid var(--gray-300);
-            border-radius: var(--border-radius);
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
             font-size: 1rem;
-            transition: all 0.3s ease;
-            font-family: inherit;
+            transition: var(--transition);
         }
 
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--primary-color);
+        .form-control:focus {
+            border-color: var(--primary);
             outline: none;
-            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
+            box-shadow: 0 0 0 3px rgba(0,86,179,0.2);
         }
 
         .form-row {
             display: flex;
-            flex-wrap: wrap;
             gap: 20px;
         }
 
         .form-row .form-group {
-            flex: 1 1 min(300px, 100%);
+            flex: 1;
         }
 
-        /* =========================================== */
-        /* PAINEL ADMIN - MANTIDO DO ORIGINAL */
-        /* =========================================== */
-        .admin-container {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
         }
 
-        /* =========================================== */
-        /* ANIMAÇÕES */
-        /* =========================================== */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .btn {
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
         }
 
-        .animate-in {
-            animation: fadeIn 0.6s ease-out forwards;
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
         }
 
-        /* =========================================== */
-        /* RESPONSIVIDADE */
-        /* =========================================== */
+        .btn-primary:hover {
+            background-color: #004494;
+        }
+
+        .btn-secondary {
+            background-color: var(--light);
+            color: var(--dark);
+            border: 1px solid #ddd;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e9ecef;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* ===== DASHBOARD ADMIN ===== */
+        .admin-dashboard {
+            padding: 40px 0;
+            min-height: 80vh;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .stat-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--white);
+        }
+
+        .icon-pending { background: #ffc107; }
+        .icon-confirmed { background: #17a2b8; }
+        .icon-completed { background: #28a745; }
+        .icon-total { background: var(--primary); }
+
+        .stat-info h3 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+        }
+
+        /* Tabela de Pedidos */
+        .table-container {
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 20px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-pending { background: #fff3cd; color: #856404; }
+        .badge-confirmed { background: #d1ecf1; color: #0c5460; }
+        .badge-completed { background: #d4edda; color: #155724; }
+        .badge-cancelled { background: #f8d7da; color: #721c24; }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            color: var(--white);
+            margin-bottom: 25px;
+            font-size: 1.3rem;
+        }
+
+        .footer-column a, .footer-column p {
+            color: #adb5bd;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 12px;
+            transition: var(--transition);
+        }
+
+        .footer-column a:hover {
+            color: var(--white);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #495057;
+            color: #adb5bd;
+            font-size: 0.9rem;
+        }
+
+        /* ===== RESPONSIVIDADE ===== */
         @media (max-width: 992px) {
-            .features-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .services-grid-main {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .tab {
-                min-width: 160px;
-            }
+            .hero h1 { font-size: 2.8rem; }
+            .section-title h2 { font-size: 2.2rem; }
         }
 
         @media (max-width: 768px) {
-            .fold {
-                padding: 60px 0;
-                min-height: auto;
-            }
-            
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .services-grid-main {
-                grid-template-columns: 1fr;
-            }
-            
-            .tabs {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .tab {
-                width: 100%;
-                max-width: 300px;
-            }
-            
-            .fold-nav {
+            .menu-toggle { display: block; }
+            .main-nav ul {
                 display: none;
-            }
-            
-            .header-contact {
-                font-size: 0.8rem;
-            }
-            
-            .logo-large {
-                font-size: 2.5rem;
                 flex-direction: column;
-                gap: 10px;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                padding: 20px;
             }
-            
-            .tab-content {
-                padding: 30px 20px;
+            .main-nav.active ul {
+                display: flex;
             }
+            .top-contact-bar .container { justify-content: center; }
+            .top-contact-bar .area { display: none; }
+            .form-row { flex-direction: column; gap: 0; }
+            .hero { padding: 80px 20px; }
+            .hero h1 { font-size: 2.3rem; }
+            section { padding: 60px 0; }
+            .form-container { padding: 30px; }
         }
 
-        @media (max-width: 480px) {
-            form {
-                padding: 25px;
-            }
-            
-            .service-box, .feature-box {
-                padding: 25px 20px;
-            }
+        @media (max-width: 576px) {
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 1rem; }
+            .cta-button { padding: 15px 30px; }
+            .stats-grid { grid-template-columns: 1fr; }
         }
     </style>
-    
-    <!-- Font Awesome Icons -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Flatpickr para datas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
-    <!-- Navegação entre dobras -->
-    <div class="fold-nav">
-        <div class="fold-dot active" data-title="Home" onclick="scrollToFold(0)"></div>
-        <div class="fold-dot" data-title="Why Different" onclick="scrollToFold(1)"></div>
-        <div class="fold-dot" data-title="Main Services" onclick="scrollToFold(2)"></div>
-        <div class="fold-dot" data-title="Specialized" onclick="scrollToFold(3)"></div>
-        <div class="fold-dot" data-title="Schedule" onclick="scrollToFold(4)"></div>
-        <div class="fold-dot" data-title="Contact" onclick="scrollToFold(5)"></div>
-    </div>
-
-    <!-- PRIMEIRA DOBRA - HERO -->
-    <section id="fold-1" class="fold">
-        <div class="header-contact">
-            <div class="container">
-                <a href="mailto:riocleanigvyc@gmail.com"><i class="fas fa-envelope"></i> riocleanigvyc@gmail.com</a>
-                <a href="tel:5192806261"><i class="fas fa-phone"></i> (519) 280-6261</a>
-                <span>Serving: Calgary, Chestermere, Airdrie, Okotoks</span>
-            </div>
-        </div>
-        
-        <div class="fold-content">
-            <div class="logo-large">
-                <i class="fas fa-broom"></i>
-                <h1>Rio Cleaning</h1>
-            </div>
-            
-            <div class="service-areas">
-                <i class="fas fa-map-marker-alt"></i> Calgary • Chestermere • Airdrie • Okotoks
-            </div>
-            
-            <h2 style="color: white; margin-bottom: 20px;">Professional Cleaning Services</h2>
-            <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto 30px;">
-                Consistent, reliable cleaning service. We clean thousands of homes, but when we're cleaning yours, it's the only one that matters.
-            </p>
-            
-            <div style="display: flex; gap: 20px; justify-content: center; margin-top: 40px;">
-                <button class="btn btn-primary" onclick="scrollToFold(4)">
-                    <i class="fas fa-quote-left"></i> Get Free Quote
-                </button>
-                <button class="btn btn-secondary" onclick="scrollToFold(1)">
-                    <i class="fas fa-info-circle"></i> Learn More
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- SEGUNDA DOBRA - WHY DIFFERENT -->
-    <section id="fold-2" class="fold">
-        <div class="fold-content">
-            <div class="text-center">
-                <h2>Why is different about Rio Cleaning Services?</h2>
-                <p>We don't believe that a quick wipe is enough. Our service goes beyond the surface.</p>
-            </div>
-            
-            <div class="features-grid">
-                <div class="feature-box">
-                    <div class="feature-icon">
-                        <i class="fas fa-sparkles"></i>
-                    </div>
-                    <h3>A REAL CLEANING</h3>
-                    <p>Our service goes beyond the surface and focuses on real, detailed deep cleaning. You won't need to worry about the small things because we take care of them.</p>
-                </div>
-                
-                <div class="feature-box">
-                    <div class="feature-icon">
-                        <i class="fas fa-hand-holding-usd"></i>
-                    </div>
-                    <h3>AFFORDABLE</h3>
-                    <p>Affordability means receiving high-quality service for a fair and honest price. We offer free quotes so you can clearly understand what you are getting.</p>
-                </div>
-                
-                <div class="feature-box">
-                    <div class="feature-icon">
-                        <i class="fas fa-handshake"></i>
-                    </div>
-                    <h3>TRUSTWORTHY</h3>
-                    <p>Trust is at the heart of everything we do. Rio Cleaning is a professional, reliable, and responsible company. Your home is treated with care and respect.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- TERCEIRA DOBRA - SERVIÇOS PRINCIPAIS -->
-    <section id="fold-3" class="fold">
-        <div class="fold-content">
-            <div class="text-center">
-                <h2>Our Main Services</h2>
-                <p>Comprehensive cleaning solutions for every need</p>
-            </div>
-            
-            <div class="services-grid-main">
-                <div class="service-box">
-                    <i class="fas fa-calendar-check" style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 20px;"></i>
-                    <h3>Routine Cleaning</h3>
-                    <p>Exclusive for recurring clients who've completed a deep clean with us. Keep your home consistently fresh at a discounted rate.</p>
-                </div>
-                
-                <div class="service-box">
-                    <i class="fas fa-broom" style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 20px;"></i>
-                    <h3>Deep Cleaning</h3>
-                    <p>A complete reset for your furnished home. Perfect for eliminating hidden dust, grime, and buildup. Ideal for new clients.</p>
-                </div>
-                
-                <div class="service-box">
-                    <i class="fas fa-truck-moving" style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 20px;"></i>
-                    <h3>Move In/Out Cleaning</h3>
-                    <p>Designed for unfinished spaces during transitions. We sanitize and deep-clean every inch for a spotless home.</p>
-                </div>
-                
-                <div class="service-box">
-                    <i class="fas fa-home" style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 20px;"></i>
-                    <h3>Airbnb Cleaning</h3>
-                    <p>Host like a pro with our guest-ready cleaning services. We ensure impeccable cleanliness for 5-star reviews.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- QUARTA DOBRA - SERVIÇOS ESPECIALIZADOS -->
-    <section id="fold-4" class="fold">
-        <div class="fold-content">
-            <div class="text-center">
-                <h2>Specialized Services</h2>
-                <p>Professional cleaning for specific needs</p>
-            </div>
-            
-            <div class="tabbed-services">
-                <div class="tabs">
-                    <div class="tab active" data-tab="post-construction">Post-Construction</div>
-                    <div class="tab" data-tab="commercial">Commercial</div>
-                    <div class="tab" data-tab="worship">Worship Facilities</div>
-                    <div class="tab" data-tab="residential">Residential</div>
-                    <div class="tab" data-tab="carpet">Carpet Cleaning</div>
-                    <div class="tab" data-tab="rv">RV Cleaning</div>
-                </div>
-                
-                <div class="tab-content">
-                    <div id="post-construction" class="tab-pane active">
-                        <h3>Post-Construction & Renovation Cleaning</h3>
-                        <p>After construction or renovation, dust and debris can settle everywhere. Rio Cleaning provides detailed post-construction and post-renovation cleaning services in Calgary and surrounding areas.</p>
-                        <p>We remove fine dust, residues, and construction leftovers from floors, walls, surfaces, and fixtures, delivering a polished and professional final result that allows you to fully enjoy your newly finished space.</p>
-                    </div>
-                    
-                    <div id="commercial" class="tab-pane">
-                        <h3>Commercial Cleaning</h3>
-                        <p>A clean workplace creates a better experience for employees and clients. Rio Cleaning offers reliable commercial cleaning services in Calgary tailored to offices, retail spaces, and business environments.</p>
-                        <p>Our team focuses on consistency, attention to detail, and professional standards, helping maintain a clean, organized, and welcoming space that reflects positively on your business.</p>
-                    </div>
-                    
-                    <div id="worship" class="tab-pane">
-                        <h3>Worship Facility Cleaning Services</h3>
-                        <p>Rio Cleaning provides professional worship facility cleaning services and already serves multiple churches and places of worship. Our experience working in active worship environments allows us to deliver consistent, respectful, and high-quality cleaning.</p>
-                        <p>We clean sanctuaries, seating areas, stages, altars, classrooms, restrooms, and common areas with discretion and attention to detail.</p>
-                    </div>
-                    
-                    <div id="residential" class="tab-pane">
-                        <h3>Residential Cleaning</h3>
-                        <p>Your home deserves more than a surface clean. Rio Cleaning provides high-quality residential cleaning services designed to keep your living space fresh, comfortable, and truly clean.</p>
-                        <p>We focus on detailed cleaning that enhances your home's environment, giving you more time to enjoy your space without the stress of upkeep.</p>
-                    </div>
-                    
-                    <div id="carpet" class="tab-pane">
-                        <h3>Professional Carpet Cleaning</h3>
-                        <p>Carpets collect dirt, dust, and allergens over time. Our professional carpet cleaning services restore freshness, improve appearance, and help maintain a healthier indoor environment.</p>
-                        <p>We use professional-grade equipment, including the Ninja Steam Carpet Cleaner with 500 PSI, to deliver a deep and effective clean that removes embedded dirt and revitalizes carpet fibers.</p>
-                    </div>
-                    
-                    <div id="rv" class="tab-pane">
-                        <h3>RV Cleaning</h3>
-                        <p>Travel with comfort and confidence. We offer detailed RV interior cleaning services focusing on living spaces, kitchens, bathrooms, and sleeping areas.</p>
-                        <p>Whether preparing for a trip or maintaining your RV, we ensure a clean, fresh, and well-cared-for interior so you can enjoy the journey worry-free.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- QUINTA DOBRA - FORMULÁRIO DE AGENDAMENTO -->
-    <section id="fold-5" class="fold">
-        <div class="fold-content">
-            <div class="fold-5-content">
-                <div class="text-center text-white">
-                    <h2>Get Your Free Quote</h2>
-                    <p>Fill out the form below to request a cleaning service. We'll contact you to confirm your appointment.</p>
-                </div>
-                
-                <!-- FORMULÁRIO ORIGINAL MANTIDO -->
-                <form id="cleaningServiceForm">
-                    <div class="form-group">
-                        <label for="fullName" class="text-white"><i class="fas fa-user"></i> Full Name *</label>
-                        <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="phone" class="text-white"><i class="fas fa-phone"></i> Phone *</label>
-                            <input type="tel" id="phone" name="phone" required placeholder="(519) 280-6261">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email" class="text-white"><i class="fas fa-envelope"></i> Email *</label>
-                            <input type="email" id="email" name="email" required placeholder="your@email.com">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="address" class="text-white"><i class="fas fa-map-marker-alt"></i> Address *</label>
-                        <input type="text" id="address" name="address" required placeholder="Enter your full address">
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="serviceType" class="text-white"><i class="fas fa-broom"></i> Service Type *</label>
-                            <select id="serviceType" name="serviceType" required>
-                                <option value="">Select a service</option>
-                                <option value="routine">Routine Cleaning</option>
-                                <option value="deep">Deep Cleaning</option>
-                                <option value="move">Move In/Out Cleaning</option>
-                                <option value="airbnb">Airbnb Cleaning</option>
-                                <option value="post-construction">Post-Construction</option>
-                                <option value="commercial">Commercial Cleaning</option>
-                                <option value="worship">Worship Facility</option>
-                                <option value="residential">Residential Cleaning</option>
-                                <option value="carpet">Carpet Cleaning</option>
-                                <option value="rv">RV Cleaning</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="propertyType" class="text-white"><i class="fas fa-home"></i> Property Type</label>
-                            <select id="propertyType" name="propertyType">
-                                <option value="house">House</option>
-                                <option value="apartment">Apartment</option>
-                                <option value="condo">Condo</option>
-                                <option value="commercial">Commercial</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="cleaningDate" class="text-white"><i class="fas fa-calendar"></i> Preferred Date *</label>
-                            <input type="date" id="cleaningDate" name="cleaningDate" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="cleaningTime" class="text-white"><i class="fas fa-clock"></i> Preferred Time *</label>
-                            <select id="cleaningTime" name="cleaningTime" required>
-                                <option value="">Select a time</option>
-                                <option value="morning">Morning (8:00 AM - 12:00 PM)</option>
-                                <option value="afternoon">Afternoon (1:00 PM - 5:00 PM)</option>
-                                <option value="evening">Evening (6:00 PM - 8:00 PM)</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="description" class="text-white"><i class="fas fa-file-alt"></i> Service Description *</label>
-                        <textarea id="description" name="description" rows="4" required placeholder="Please describe the cleaning service needed..."></textarea>
-                    </div>
-                    
-                    <div class="form-actions" style="display: flex; gap: 15px; margin-top: 30px;">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-paper-plane"></i> Submit Request
-                        </button>
-                        <button type="button" class="btn btn-secondary" onclick="scrollToFold(0)">
-                            <i class="fas fa-home"></i> Back to Home
-                        </button>
-                    </div>
-                    
-                    <div id="formMessage" class="form-message" style="margin-top: 20px;"></div>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- SEXTA DOBRA - CONTATO -->
-    <section id="fold-6" class="fold">
-        <div class="fold-content">
-            <div class="text-center">
-                <h2>Contact Us</h2>
-                <p>Get in touch for your free, no-obligation in-home estimate</p>
-            </div>
-            
-            <div class="contact-info-grid">
-                <div class="contact-card">
-                    <i class="fas fa-phone-alt"></i>
-                    <h3>Call Us</h3>
-                    <p><strong>Phone:</strong> (519) 280-6261</p>
-                    <p>Call us today to arrange for your free estimate. We'll assess your individual cleaning needs.</p>
-                </div>
-                
-                <div class="contact-card">
-                    <i class="fas fa-envelope"></i>
-                    <h3>Email Us</h3>
-                    <p><strong>Email:</strong> riocleanigvyc@gmail.com</p>
-                    <p>Send us an email with your cleaning requirements and we'll get back to you with a customized quote.</p>
-                </div>
-                
-                <div class="contact-card">
-                    <i class="fas fa-map-marked-alt"></i>
-                    <h3>Service Areas</h3>
-                    <p><strong>Serving:</strong> Calgary, Chestermere, Airdrie, Okotoks</p>
-                    <p>We provide our own transportation, environmentally preferable cleaning products, and all equipment needed.</p>
-                </div>
-            </div>
-            
-            <div style="text-align: center; margin-top: 50px;">
-                <h3>Ready to get started?</h3>
-                <p style="margin-bottom: 30px;">Contact us today for a sparkling clean home or business.</p>
-                <button class="btn btn-primary" onclick="scrollToFold(4)">
-                    <i class="fas fa-quote-left"></i> Get Your Free Quote
-                </button>
-                <button class="btn btn-secondary" onclick="showAdminPanel()" style="margin-left: 15px;">
-                    <i class="fas fa-lock"></i> Admin Login
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- PAINEL ADMIN - MANTIDO COMPLETO DO ORIGINAL -->
-    <div id="adminPanel" class="admin-container" style="display: none;">
-        <!-- Todo o conteúdo do admin panel original será inserido aqui via JavaScript -->
-    </div>
-
-    <!-- FOOTER -->
-    <footer style="background: var(--dark-color); color: white; padding: 40px 0; text-align: center;">
+    <!-- Top Contact Bar -->
+    <div class="top-contact-bar">
         <div class="container">
-            <div style="margin-bottom: 30px;">
-                <h3 style="color: white; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px;">
-                    <i class="fas fa-broom"></i> Rio Cleaning Services
-                </h3>
-                <p style="color: rgba(255, 255, 255, 0.8); max-width: 600px; margin: 0 auto;">
-                    Professional cleaning services with over 10 years of experience. Quality service guaranteed for residential, commercial, and worship facilities.
-                </p>
+            <div class="contact-info">
+                <a href="tel:5192806261"><i class="fas fa-phone"></i> (519) 280-6261</a>
+                <a href="mailto:riocleanigvyc@gmail.com"><i class="fas fa-envelope"></i> riocleanigvyc@gmail.com</a>
             </div>
-            
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin-bottom: 30px;">
-                <div>
-                    <h4 style="color: white; margin-bottom: 15px;">Contact Info</h4>
-                    <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 5px;"><i class="fas fa-phone"></i> (519) 280-6261</p>
-                    <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 5px;"><i class="fas fa-envelope"></i> riocleanigvyc@gmail.com</p>
+            <div class="area">
+                <span><i class="fas fa-map-marker-alt"></i> Servimos: Calgary, Chestermere, Airdrie, Okotoks</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation -->
+    <header class="main-header">
+        <div class="container nav-container">
+            <a href="#" class="logo" onclick="showHomePage(); return false;">
+                <i class="fas fa-broom"></i>
+                Rio <span>Cleaning</span>
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav class="main-nav" id="mainNav">
+                <ul>
+                    <li><a href="#home" class="active" onclick="showHomePage(); toggleMenu(); return false;">Início</a></li>
+                    <li><a href="#services" onclick="scrollToSection('services'); toggleMenu(); return false;">Serviços</a></li>
+                    <li><a href="#why-us" onclick="scrollToSection('why-us'); toggleMenu(); return false;">Vantagens</a></li>
+                    <li><a href="#about" onclick="scrollToSection('about'); toggleMenu(); return false;">Sobre</a></li>
+                    <li><a href="#" onclick="showScheduleForm(); toggleMenu(); return false;">Orçamento Grátis</a></li>
+                    <li><a href="#" onclick="showAdminPanel(); toggleMenu(); return false;" style="color: var(--secondary);"><i class="fas fa-lock"></i> Admin</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="mainContent">
+
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="container">
+                <h1>Serviços de Limpeza Profissional em Calgary</h1>
+                <p>Consistente, confiável e com atenção aos detalhes. Limpamos milhares de casas, mas quando estamos limpando a sua, é a única que importa.</p>
+                <button class="cta-button" onclick="showScheduleForm()">
+                    <i class="fas fa-quote-left"></i> Solicite Seu Orçamento Grátis
+                </button>
+            </div>
+        </section>
+
+        <!-- Why Us / Vantagens -->
+        <section id="why-us">
+            <div class="container">
+                <div class="section-title">
+                    <h2>O Que Nos Diferencia?</h2>
+                    <p>Não acreditamos que uma limpeza rápida seja suficiente. Nosso serviço vai além da superfície.</p>
                 </div>
-                
-                <div>
-                    <h4 style="color: white; margin-bottom: 15px;">Service Areas</h4>
-                    <p style="color: rgba(255, 255, 255, 0.8);">Calgary • Chestermere • Airdrie • Okotoks</p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-sparkles"></i>
+                        <h3>Limpeza Real e Profunda</h3>
+                        <p>Foco em limpeza detalhada e profunda, cuidando de cada pequeno detalhe que faz a diferença em seu espaço.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <h3>Preço Justo e Transparente</h3>
+                        <p>Qualidade de alto nível por um preço honesto. Oferecemos orçamentos gratuitos para você entender exatamente o que receberá.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-handshake"></i>
+                        <h3>Confiabilidade Total</h3>
+                        <p>Somos uma empresa profissional, confiável e responsável. Sua casa e pertences são tratados com cuidado e respeito.</p>
+                    </div>
                 </div>
             </div>
-            
-            <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px;">
-                <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;">
-                    &copy; <span id="currentYear"></span> Rio Cleaning Services. All rights reserved.
-                </p>
+        </section>
+
+        <!-- Services -->
+        <section id="services" style="background-color: var(--light);">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Nossos Serviços Principais</h2>
+                    <p>Soluções completas de limpeza para todas as necessidades.</p>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-card-content">
+                            <h3><i class="fas fa-calendar-check"></i> Limpeza de Rotina</h3>
+                            <p>Para clientes recorrentes. Mantenha seu lar consistentemente fresco e profissionalmente cuidado com uma taxa especial.</p>
+                        </div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-card-content">
+                            <h3><i class="fas fa-broom"></i> Limpeza Profunda</h3>
+                            <p>Um reset completo para sua casa mobiliada. Ideal para eliminar poeira oculta, sujeira e acúmulos, perfeito para novos clientes.</p>
+                        </div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-card-content">
+                            <h3><i class="fas fa-truck-moving"></i> Limpeza pós-obra</h3>
+                            <p>Remoção completa de poeira fina, resíduos e sobras de construção de pisos, paredes e superfícies.</p>
+                        </div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-card-content">
+                            <h3><i class="fas fa-hotel"></i> Limpeza para Airbnb</h3>
+                            <p>Hospede como um profissional. Garantimos limpeza impecável para ajudar a conseguir avaliações de 5 estrelas.</p>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 50px;">
+                    <button class="btn btn-secondary" onclick="showScheduleForm()">
+                        <i class="fas fa-list"></i> Ver Todos os Serviços e Orçar
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- About / Contact -->
+        <section id="about">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Entre em Contato</h2>
+                    <p>Estamos prontos para deixar seu espaço brilhando.</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <h3>Área de Atendimento</h3>
+                        <p><strong>Calgary, Chestermere, Airdrie, Okotoks</strong></p>
+                        <p>Levamos nosso próprio transporte, produtos de limpeza preferenciais ao meio ambiente e todo o equipamento necessário.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Equipe Profissional</h3>
+                        <p><strong>Segura e Segurada</strong></p>
+                        <p>Nossa equipe treinada profissionalmente é vinculada e possui seguro. Você pode confiar em nós para entrar em sua casa.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-clock"></i>
+                        <h3>Disponibilidade</h3>
+                        <p><strong>Orçamento Sem Compromisso</strong></p>
+                        <p>Ligue hoje para agendar sua estimativa gratuita em casa. Avaliamos suas necessidades individuais para encontrar a solução ideal.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Form Section (Initially Hidden) -->
+    <section id="scheduleFormSection" class="form-section" style="display: none;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Solicite um Orçamento Grátis</h2>
+                <p>Preencha o formulário abaixo e entraremos em contato para confirmar os detalhes.</p>
+            </div>
+            <div class="form-container">
+                <form id="serviceRequestForm">
+                    <div class="form-group">
+                        <label for="fullName"><i class="fas fa-user"></i> Nome Completo *</label>
+                        <input type="text" id="fullName" class="form-control" required placeholder="Seu nome completo">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone"><i class="fas fa-phone"></i> Telefone *</label>
+                            <input type="tel" id="phone" class="form-control" required placeholder="(00) 00000-0000">
+                        </div>
+                        <div class="form-group">
+                            <label for="email"><i class="fas fa-envelope"></i> E-mail *</label>
+                            <input type="email" id="email" class="form-control" required placeholder="seu@email.com">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="address"><i class="fas fa-map-marker-alt"></i> Endereço Completo *</label>
+                        <input type="text" id="address" class="form-control" required placeholder="Rua, número, bairro, cidade">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="serviceType"><i class="fas fa-broom"></i> Tipo de Serviço *</label>
+                            <select id="serviceType" class="form-control" required>
+                                <option value="">Selecione...</option>
+                                <option value="Rotina">Limpeza de Rotina</option>
+                                <option value="Profunda">Limpeza Profunda</option>
+                                <option value="MoveInOut">Limpeza para Mudança</option>
+                                <option value="Airbnb">Limpeza para Airbnb</option>
+                                <option value="PosObra">Limpeza Pós-Obra</option>
+                                <option value="Comercial">Limpeza Comercial</option>
+                                <option value="Tapetes">Limpeza de Tapetes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="propertyType"><i class="fas fa-home"></i> Tipo de Imóvel</label>
+                            <select id="propertyType" class="form-control">
+                                <option value="Casa">Casa</option>
+                                <option value="Apartamento">Apartamento</option>
+                                <option value="Comercial">Espaço Comercial</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cleaningDate"><i class="fas fa-calendar"></i> Data Preferencial *</label>
+                            <input type="text" id="cleaningDate" class="form-control datepicker" required placeholder="Escolha uma data">
+                        </div>
+                        <div class="form-group">
+                            <label for="cleaningTime"><i class="fas fa-clock"></i> Período Preferencial *</label>
+                            <select id="cleaningTime" class="form-control" required>
+                                <option value="">Selecione...</option>
+                                <option value="Manhã (8h-12h)">Manhã (8h-12h)</option>
+                                <option value="Tarde (13h-17h)">Tarde (13h-17h)</option>
+                                <option value="Noite (18h-20h)">Noite (18h-20h)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description"><i class="fas fa-file-alt"></i> Detalhes Adicionais *</label>
+                        <textarea id="description" class="form-control" rows="4" required placeholder="Descreva o serviço necessário, pedidos especiais ou informações adicionais..."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Enviar Solicitação
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="showHomePage()">
+                            <i class="fas fa-arrow-left"></i> Voltar para o Início
+                        </button>
+                    </div>
+                </form>
+                <div id="formMessage" class="alert"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Panel (Initially Hidden) -->
+    <section id="adminPanel" class="form-section" style="display: none;">
+        <div class="container admin-dashboard">
+            <!-- Admin Login Screen -->
+            <div id="adminLoginScreen">
+                <div class="section-title">
+                    <h2><i class="fas fa-lock"></i> Acesso Administrativo</h2>
+                    <p>Insira suas credenciais para acessar o painel.</p>
+                </div>
+                <div class="form-container" style="max-width: 500px;">
+                    <div class="form-group">
+                        <label for="adminUsername">Nome de Usuário</label>
+                        <input type="text" id="adminUsername" class="form-control" placeholder="admin_rio_cleaning">
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword">Senha</label>
+                        <input type="password" id="adminPassword" class="form-control" placeholder="••••••••">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-primary" onclick="attemptAdminLogin()">
+                            <i class="fas fa-sign-in-alt"></i> Entrar
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="showHomePage()">
+                            <i class="fas fa-home"></i> Voltar ao Site
+                        </button>
+                    </div>
+                    <div id="loginMessage" class="alert" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+
+            <!-- Admin Dashboard (Initially Hidden) -->
+            <div id="adminDashboardScreen" style="display: none;">
+                <div class="dashboard-header">
+                    <div>
+                        <h2><i class="fas fa-tachometer-alt"></i> Painel de Controle</h2>
+                        <p>Gerencie as solicitações de serviço.</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="logoutAdmin()">
+                        <i class="fas fa-sign-out-alt"></i> Sair
+                    </button>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon icon-pending">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="statPending">0</h3>
+                            <p>Pendentes</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon icon-confirmed">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="statConfirmed">0</h3>
+                            <p>Confirmados</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon icon-completed">
+                            <i class="fas fa-flag-checkered"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="statCompleted">0</h3>
+                            <p>Concluídos</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon icon-total">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="statTotal">0</h3>
+                            <p>Total (Mês)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters and Table -->
+                <div style="background: white; padding: 30px; border-radius: 8px; box-shadow: var(--shadow); margin-bottom: 30px;">
+                    <h3 style="margin-bottom: 20px;">Filtros</h3>
+                    <div style="display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-end;">
+                        <div style="flex: 1; min-width: 200px;">
+                            <label>Status:</label>
+                            <select id="filterStatus" class="form-control" onchange="filterRequests()">
+                                <option value="all">Todos os Status</option>
+                                <option value="pending">Pendente</option>
+                                <option value="confirmed">Confirmado</option>
+                                <option value="completed">Concluído</option>
+                            </select>
+                        </div>
+                        <div style="flex: 1; min-width: 200px;">
+                            <label>Período:</label>
+                            <select id="filterDate" class="form-control" onchange="filterRequests()">
+                                <option value="all">Todo o Período</option>
+                                <option value="today">Hoje</option>
+                                <option value="week">Esta Semana</option>
+                                <option value="month">Este Mês</option>
+                            </select>
+                        </div>
+                        <div style="flex: 2; min-width: 250px;">
+                            <label>Buscar:</label>
+                            <input type="text" id="filterSearch" class="form-control" placeholder="Nome, e-mail ou endereço..." oninput="filterRequests()">
+                        </div>
+                        <button class="btn btn-secondary" onclick="loadAllRequests()">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Requests Table -->
+                <div class="table-container">
+                    <div style="padding: 25px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0;">Solicitações de Serviço</h3>
+                        <span id="tableInfo">Mostrando 0 solicitações</span>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table id="requestsTable">
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Contato</th>
+                                    <th>Serviço</th>
+                                    <th>Data/Hora</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="requestsTableBody">
+                                <!-- Data will be loaded here -->
+                                <tr>
+                                    <td colspan="6" style="text-align: center; padding: 40px; color: var(--gray);">
+                                        <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 15px; display: block; color: #ddd;"></i>
+                                        Nenhuma solicitação encontrada.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Edit Request Modal (Hidden by default) -->
+                <div id="editModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center;">
+                    <div style="background: white; width: 90%; max-width: 700px; max-height: 90vh; overflow-y: auto; border-radius: 10px; padding: 30px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                            <h3 style="margin: 0;">Editar Solicitação</h3>
+                            <button onclick="closeModal()" style="background: none; border: none; font-size: 1.5rem; color: var(--gray); cursor: pointer;">&times;</button>
+                        </div>
+                        <form id="editRequestForm">
+                            <input type="hidden" id="editRequestId">
+                            <!-- Form fields similar to request form -->
+                            <div class="form-group">
+                                <label>Status *</label>
+                                <select id="editStatus" class="form-control" required>
+                                    <option value="pending">Pendente</option>
+                                    <option value="confirmed">Confirmado</option>
+                                    <option value="completed">Concluído</option>
+                                    <option value="cancelled">Cancelado</option>
+                                </select>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Rio Cleaning</h3>
+                    <p>Serviços de limpeza profissional com mais de 10 anos de experiência. Serviço de qualidade garantida.</p>
+                    <div style="display: flex; gap: 15px; margin-top: 20px;">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-google"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <a href="#" onclick="showHomePage(); return false;">Início</a>
+                    <a href="#services" onclick="scrollToSection('services'); return false;">Serviços</a>
+                    <a href="#why-us" onclick="scrollToSection('why-us'); return false;">Vantagens</a>
+                    <a href="#" onclick="showScheduleForm(); return false;">Orçamento Grátis</a>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Calgary, AB e Região</p>
+                    <p><i class="fas fa-phone"></i> (519) 280-6261</p>
+                    <p><i class="fas fa-envelope"></i> riocleanigvyc@gmail.com</p>
+                    <p><i class="fas fa-clock"></i> Seg-Sáb: 7:00 - 19:00</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYearFooter">2026</span> Rio Cleaning Services. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
 
-    <!-- JavaScript Libraries (MANTIDAS DO ORIGINAL) -->
+    <!-- JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- JavaScript Code - MANTIDO COMPLETO DO ORIGINAL COM ADAPTAÇÕES -->
+    <!-- Main JavaScript -->
     <script>
-        // ============================================
-        // CONFIGURAÇÕES DE SEGURANÇA (MANTIDO)
-        // ============================================
-        const ADMIN_CREDENTIALS = {
-            username: "admin_rio_cleaning",
-            password: "SecurePass2024!"
-        };
-
-        // ============================================
-        // SUPABASE CONFIGURATION (MANTIDO)
-        // ============================================
+        // ============================
+        // CONFIGURAÇÃO GLOBAL
+        // ============================
+        const ADMIN_USER = 'admin_rio_cleaning';
+        const ADMIN_PASS = 'SecurePass2024!';
         const SUPABASE_URL = 'https://nekbbkenxcukoortusge.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5la2Jia2VueGN1a29vcnR1c2dlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzOTU5MDIsImV4cCI6MjA3ODk3MTkwMn0.D72914Vyz1du1ZDKoNDdwT7YI-D8WPgZe38LbBV2bfc';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5la2Jia2VueGN1a29vcnR1c2dlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzOTU5MDIsImV4cCI6MjA3ODk3MTkwMn0.D72914Vyz1du1ZDKoNDdwT7YI-D8WPgZe38LbBV2bfc';
 
-        // ============================================
-        // VARIÁVEIS GLOBAIS (MANTIDO)
-        // ============================================
-        let supabaseClient = null;
-        let currentPage = 1;
-        let pageSize = 10;
-        let currentFilters = {
-            status: 'all',
-            date: 'all',
-            search: ''
-        };
+        let supabase = null;
+        let allRequests = []; // Armazenará todas as solicitações
+        let filteredRequests = [];
 
-        // ============================================
-        // INICIALIZAÇÃO COM ADAPTAÇÕES PARA DOBRAS
-        // ============================================
+        // ============================
+        // INICIALIZAÇÃO
+        // ============================
         document.addEventListener('DOMContentLoaded', function() {
-            // Set current year
-            document.getElementById('currentYear').textContent = new Date().getFullYear();
-            
-            // Inicializar Supabase
+            // Set year in footer
+            document.getElementById('currentYearFooter').textContent = new Date().getFullYear();
+
+            // Initialize Supabase
             initSupabase();
-            
-            // Inicializar sistema de dobras
-            initFolds();
-            
-            // Inicializar tabs de serviços
-            initServiceTabs();
-            
-            // Inicializar formulário (mantido do original)
-            initScheduleForm();
-            
-            // Inicializar painel admin (mantido do original)
-            initAdminPanel();
-            
-            // Inicializar observador de interseção para animações
-            initIntersectionObserver();
-            
-            // Inicializar date picker
-            initDatePicker();
+
+            // Initialize form submission
+            initRequestForm();
+
+            // Initialize date picker
+            if (flatpickr) {
+                flatpickr('.datepicker', {
+                    minDate: 'today',
+                    dateFormat: 'Y-m-d',
+                    locale: 'pt'
+                });
+            }
+
+            // Check if admin is already logged in
+            checkAdminSession();
         });
 
-        // ============================================
-        // SISTEMA DE DOBRAS
-        // ============================================
-        function initFolds() {
-            // Atualizar navegação de dobras ao scroll
-            window.addEventListener('scroll', updateFoldNavigation);
-            
-            // Inicializar navegação
-            updateFoldNavigation();
-        }
-
-        function scrollToFold(foldIndex) {
-            const folds = document.querySelectorAll('.fold');
-            if (foldIndex >= 0 && foldIndex < folds.length) {
-                const fold = folds[foldIndex];
-                const headerHeight = 0; // Não há header fixo
-                
-                window.scrollTo({
-                    top: fold.offsetTop - headerHeight,
-                    behavior: 'smooth'
-                });
-            }
-        }
-
-        function updateFoldNavigation() {
-            const folds = document.querySelectorAll('.fold');
-            const dots = document.querySelectorAll('.fold-dot');
-            const scrollPosition = window.scrollY + window.innerHeight / 3;
-            
-            let currentFoldIndex = 0;
-            let minDistance = Infinity;
-            
-            folds.forEach((fold, index) => {
-                const distance = Math.abs(fold.offsetTop - scrollPosition);
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    currentFoldIndex = index;
-                }
-            });
-            
-            dots.forEach((dot, index) => {
-                if (index === currentFoldIndex) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
-            });
-        }
-
-        // ============================================
-        // TABS DE SERVIÇOS
-        // ============================================
-        function initServiceTabs() {
-            const tabs = document.querySelectorAll('.tab');
-            const panes = document.querySelectorAll('.tab-pane');
-            
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const tabId = this.getAttribute('data-tab');
-                    
-                    // Remover classe active de todas as tabs e panes
-                    tabs.forEach(t => t.classList.remove('active'));
-                    panes.forEach(p => p.classList.remove('active'));
-                    
-                    // Adicionar classe active à tab clicada e ao pane correspondente
-                    this.classList.add('active');
-                    document.getElementById(tabId).classList.add('active');
-                });
-            });
-        }
-
-        // ============================================
-        // ANIMAÇÕES COM INTERSECTION OBSERVER
-        // ============================================
-        function initIntersectionObserver() {
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate-in');
-                    }
-                });
-            }, observerOptions);
-            
-            // Observar elementos para animação
-            document.querySelectorAll('.feature-box, .service-box, .contact-card').forEach(el => {
-                observer.observe(el);
-            });
-        }
-
-        // ============================================
-        // FUNÇÕES ORIGINAIS MANTIDAS (COM PEQUENAS ADAPTAÇÕES)
-        // ============================================
         function initSupabase() {
             if (window.supabase) {
-                supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                console.log('Supabase client initialized');
+                supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                console.log('Supabase inicializado.');
             } else {
-                console.error('Supabase library not loaded');
+                console.error('Biblioteca Supabase não carregada.');
             }
         }
 
-        function initDatePicker() {
-            const dateInput = document.getElementById('cleaningDate');
-            if (dateInput && !dateInput._flatpickr) {
-                flatpickr(dateInput, {
-                    minDate: "today",
-                    dateFormat: "Y-m-d",
-                    disable: [
-                        function(date) {
-                            return (date.getDay() === 0);
-                        }
-                    ],
-                    ariaDateFormat: "F j, Y"
-                });
-            }
+        // ============================
+        // NAVEGAÇÃO E LAYOUT
+        // ============================
+        function toggleMenu() {
+            document.getElementById('mainNav').classList.toggle('active');
         }
 
-        function showScheduleForm() {
-            scrollToFold(4); // Quinta dobra é o formulário
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                const headerOffset = 100;
+                const elementPosition = element.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+            }
         }
 
         function showHomePage() {
+            document.getElementById('mainContent').style.display = 'block';
+            document.getElementById('scheduleFormSection').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'none';
-            scrollToFold(0);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // Close mobile menu if open
+            document.getElementById('mainNav').classList.remove('active');
+        }
+
+        function showScheduleForm() {
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('scheduleFormSection').style.display = 'block';
+            document.getElementById('adminPanel').style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('mainNav').classList.remove('active');
         }
 
         function showAdminPanel() {
-            // Mostrar painel admin e esconder dobras
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('scheduleFormSection').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'block';
-            document.querySelectorAll('.fold, footer').forEach(el => {
-                el.style.display = 'none';
-            });
-            
-            // Inicializar dashboard se já estiver logado
-            if (checkAdminAuth()) {
-                showAdminDashboard();
-                loadDashboardData();
-            }
-            
+            document.getElementById('adminDashboardScreen').style.display = 'none';
+            document.getElementById('adminLoginScreen').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('mainNav').classList.remove('active');
         }
 
-        // ============================================
-        // RESTANTE DO CÓDIGO ORIGINAL MANTIDO
-        // ============================================
-        // Nota: Todas as funções originais como:
-        // initScheduleForm(), handleAdminLogin(), loadDashboardData(),
-        // addServiceRequest(), loadServiceRequests(), etc.
-        // são mantidas intactas abaixo deste ponto
-        
-        // Para manter a resposta dentro dos limites, não copiei todo o código JavaScript original aqui,
-        // mas ele deve ser inserido a partir deste ponto, mantendo todas as funcionalidades
-        
-        // [TODO: INSERIR AQUI TODO O CÓDIGO JAVASCRIPT ORIGINAL]
-        // Isso inclui todas as funções de formulário, admin, Supabase, etc.
-
-        // ============================================
-        // CÓDIGO DO FORMULÁRIO ORIGINAL
-        // ============================================
-        function initScheduleForm() {
-            const form = document.getElementById('cleaningServiceForm');
+        // ============================
+        // FORMULÁRIO DE SOLICITAÇÃO
+        // ============================
+        function initRequestForm() {
+            const form = document.getElementById('serviceRequestForm');
             if (!form) return;
-            
+
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
-                
                 const submitBtn = form.querySelector('button[type="submit"]');
                 const originalText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
                 submitBtn.disabled = true;
-                
-                const formData = {
-                    fullName: document.getElementById('fullName').value.trim(),
+
+                const requestData = {
+                    full_name: document.getElementById('fullName').value.trim(),
                     phone: document.getElementById('phone').value.trim(),
                     email: document.getElementById('email').value.trim(),
                     address: document.getElementById('address').value.trim(),
-                    serviceType: document.getElementById('serviceType').value,
-                    propertyType: document.getElementById('propertyType').value,
-                    cleaningDate: document.getElementById('cleaningDate').value,
-                    cleaningTime: document.getElementById('cleaningTime').value,
+                    service_type: document.getElementById('serviceType').value,
+                    property_type: document.getElementById('propertyType').value,
+                    cleaning_date: document.getElementById('cleaningDate').value,
+                    cleaning_time: document.getElementById('cleaningTime').value,
                     description: document.getElementById('description').value.trim(),
                     status: 'pending',
-                    createdAt: new Date().toISOString()
+                    created_at: new Date().toISOString()
                 };
-                
+
                 const messageEl = document.getElementById('formMessage');
-                
+
+                // Validation
+                const required = ['full_name', 'phone', 'email', 'address', 'service_type', 'cleaning_date', 'cleaning_time'];
+                for (const field of required) {
+                    if (!requestData[field]) {
+                        showFormMessage('Por favor, preencha todos os campos obrigatórios.', 'error', messageEl);
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                        return;
+                    }
+                }
+
+                // Email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(requestData.email)) {
+                    showFormMessage('Por favor, insira um endereço de e-mail válido.', 'error', messageEl);
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    return;
+                }
+
                 try {
-                    if (!formData.fullName || !formData.phone || !formData.email || !formData.address || 
-                        !formData.serviceType || !formData.cleaningDate || !formData.cleaningTime || 
-                        !formData.description) {
-                        throw new Error('Please fill all required fields');
-                    }
-                    
-                    if (!isValidEmail(formData.email)) {
-                        throw new Error('Please enter a valid email address');
-                    }
-                    
-                    if (!isValidPhone(formData.phone)) {
-                        throw new Error('Please enter a valid phone number (at least 10 digits)');
-                    }
-                    
-                    const result = await addServiceRequest(formData);
-                    
+                    const result = await addServiceRequest(requestData);
                     if (result.success) {
-                        showToast('Service request submitted successfully! We will contact you soon to confirm.', 'success');
+                        showFormMessage('Solicitação enviada com sucesso! Entraremos em contato em até 24 horas.', 'success', messageEl);
                         form.reset();
-                        
-                        messageEl.innerHTML = `
-                            <div style="padding: 15px; background: #d4edda; color: #155724; border-radius: var(--border-radius); border-left: 4px solid #28a745;">
-                                <i class="fas fa-check-circle"></i> Thank you! Your request has been submitted. We'll contact you within 24 hours.
-                            </div>
-                        `;
-                        
-                        messageEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        
                         setTimeout(() => {
-                            scrollToFold(0);
+                            showHomePage();
+                            // Show a toast notification
+                            showNotification('Solicitação enviada! Verificaremos e retornaremos em breve.', 'success');
                         }, 3000);
                     } else {
-                        throw new Error(result.error || 'Failed to submit service request');
+                        throw new Error(result.error || 'Erro ao enviar solicitação.');
                     }
                 } catch (error) {
-                    messageEl.innerHTML = `
-                        <div style="padding: 15px; background: #f8d7da; color: #721c24; border-radius: var(--border-radius); border-left: 4px solid #dc3545;">
-                            <i class="fas fa-exclamation-circle"></i> ${error.message}
-                        </div>
-                    `;
-                    messageEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    showFormMessage('Erro: ' + error.message, 'error', messageEl);
                 } finally {
                     submitBtn.innerHTML = originalText;
                     submitBtn.disabled = false;
@@ -1274,145 +1177,343 @@
             });
         }
 
-        function isValidEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        }
-
-        function isValidPhone(phone) {
-            const digits = phone.replace(/[^\d]/g, '');
-            return digits.length >= 10;
-        }
-
         async function addServiceRequest(data) {
-            if (!supabaseClient) {
-                return { success: false, error: 'Database connection not available' };
-            }
-            
+            if (!supabase) return { success: false, error: 'Conexão com banco de dados indisponível.' };
             try {
-                const supabaseData = {
-                    full_name: data.fullName,
-                    phone: data.phone,
-                    email: data.email,
-                    address: data.address,
-                    service_type: data.serviceType,
-                    property_type: data.propertyType,
-                    cleaning_date: data.cleaningDate,
-                    cleaning_time: data.cleaningTime,
-                    description: data.description,
-                    status: data.status,
-                    created_at: data.createdAt
-                };
-                
-                const { data: result, error } = await supabaseClient
+                const { data: result, error } = await supabase
                     .from('service_requests')
-                    .insert([supabaseData])
+                    .insert([data])
                     .select()
                     .single();
-                
                 if (error) throw error;
-                
                 return { success: true, data: result };
             } catch (error) {
-                console.error('Error adding service request:', error);
+                console.error('Erro ao adicionar solicitação:', error);
                 return { success: false, error: error.message };
             }
         }
 
-        // ============================================
-        // FUNÇÕES DO PAINEL ADMIN (SIMPLIFICADAS PARA EXEMPLO)
-        // ============================================
-        function initAdminPanel() {
-            // Login functionality
-            const loginBtn = document.getElementById('loginBtn');
-            if (loginBtn) {
-                loginBtn.addEventListener('click', handleAdminLogin);
+        function showFormMessage(text, type, element) {
+            element.textContent = text;
+            element.className = 'alert alert-' + (type === 'success' ? 'success' : 'error');
+            element.style.display = 'block';
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // ============================
+        // SISTEMA ADMINISTRATIVO
+        // ============================
+        function checkAdminSession() {
+            const token = localStorage.getItem('rioAdminToken');
+            const expiry = localStorage.getItem('rioAdminExpiry');
+            if (token && expiry && new Date().getTime() < parseInt(expiry)) {
+                // Session valid (8 hours)
+                showAdminDashboard();
+                loadDashboardData();
+                return true;
+            } else {
+                // Clear expired session
+                localStorage.removeItem('rioAdminToken');
+                localStorage.removeItem('rioAdminExpiry');
+                return false;
             }
         }
 
-        function handleAdminLogin() {
-            const username = document.getElementById('adminUsername')?.value || prompt('Username:');
-            const password = document.getElementById('adminPassword')?.value || prompt('Password:');
-            
-            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
-                showAdminDashboard();
-                showToast('Login successful!', 'success');
+        function attemptAdminLogin() {
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            const messageEl = document.getElementById('loginMessage');
+
+            if (username === ADMIN_USER && password === ADMIN_PASS) {
+                // Create session token (valid for 8 hours)
+                const token = btoa(Date.now() + '_' + Math.random().toString(36).substr(2, 9));
+                const expiry = new Date().getTime() + (8 * 60 * 60 * 1000);
+                localStorage.setItem('rioAdminToken', token);
+                localStorage.setItem('rioAdminExpiry', expiry.toString());
+
+                showFormMessage('Login bem-sucedido! Carregando painel...', 'success', messageEl);
+                setTimeout(() => {
+                    showAdminDashboard();
+                    loadDashboardData();
+                }, 1000);
             } else {
-                showToast('Invalid credentials', 'error');
+                showFormMessage('Nome de usuário ou senha incorretos.', 'error', messageEl);
+                document.getElementById('adminPassword').value = '';
+                document.getElementById('adminPassword').focus();
             }
         }
 
         function showAdminDashboard() {
-            // Carregar o dashboard admin completo do original
-            // Para simplificação, mostramos uma mensagem
-            const adminPanel = document.getElementById('adminPanel');
-            adminPanel.innerHTML = `
-                <div class="container" style="padding: 40px 20px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
-                        <h2><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h2>
-                        <button class="btn btn-danger" onclick="logoutAdmin()">
-                            <i class="fas fa-sign-out-alt"></i> Logout
-                        </button>
-                    </div>
-                    
-                    <div style="text-align: center; padding: 60px 20px; background: white; border-radius: var(--border-radius); box-shadow: var(--shadow-md);">
-                        <i class="fas fa-tachometer-alt" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 20px;"></i>
-                        <h3>Admin Dashboard Loaded</h3>
-                        <p>The complete admin dashboard with Supabase integration, statistics, and service request management is available in the original code.</p>
-                        <p style="margin-top: 20px;">
-                            <button class="btn btn-primary" onclick="showHomePage()">
-                                <i class="fas fa-home"></i> Return to Website
-                            </button>
-                        </p>
-                    </div>
-                </div>
-            `;
-        }
-
-        function checkAdminAuth() {
-            // Verificar autenticação local
-            return localStorage.getItem('adminLoggedIn') === 'true';
+            document.getElementById('adminLoginScreen').style.display = 'none';
+            document.getElementById('adminDashboardScreen').style.display = 'block';
         }
 
         function logoutAdmin() {
-            localStorage.removeItem('adminLoggedIn');
-            localStorage.removeItem('adminSessionToken');
-            showToast('Logged out successfully', 'info');
-            showHomePage();
+            localStorage.removeItem('rioAdminToken');
+            localStorage.removeItem('rioAdminExpiry');
+            showAdminPanel();
+            showNotification('Você saiu do painel administrativo.', 'info');
         }
 
-        // ============================================
-        // FUNÇÕES UTILITÁRIAS
-        // ============================================
-        function showToast(message, type = 'info') {
-            // Criar toast notification
-            const toast = document.createElement('div');
-            toast.style.cssText = `
+        async function loadDashboardData() {
+            if (!supabase) {
+                showNotification('Erro de conexão com o banco de dados.', 'error');
+                return;
+            }
+
+            try {
+                // Load statistics
+                const now = new Date();
+                const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+
+                const { data: monthlyData, error: monthlyError } = await supabase
+                    .from('service_requests')
+                    .select('*')
+                    .gte('created_at', startOfMonth);
+
+                if (monthlyError) throw monthlyError;
+
+                let pending = 0, confirmed = 0, completed = 0;
+                monthlyData?.forEach(req => {
+                    if (req.status === 'pending') pending++;
+                    else if (req.status === 'confirmed') confirmed++;
+                    else if (req.status === 'completed') completed++;
+                });
+
+                document.getElementById('statPending').textContent = pending;
+                document.getElementById('statConfirmed').textContent = confirmed;
+                document.getElementById('statCompleted').textContent = completed;
+                document.getElementById('statTotal').textContent = monthlyData?.length || 0;
+
+                // Load all requests for table
+                const { data: allData, error: allError } = await supabase
+                    .from('service_requests')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (allError) throw allError;
+
+                allRequests = allData || [];
+                filteredRequests = [...allRequests];
+                updateRequestsTable();
+
+            } catch (error) {
+                console.error('Erro ao carregar dados:', error);
+                showNotification('Erro ao carregar dados do painel.', 'error');
+            }
+        }
+
+        function filterRequests() {
+            const statusFilter = document.getElementById('filterStatus').value;
+            const dateFilter = document.getElementById('filterDate').value;
+            const searchFilter = document.getElementById('filterSearch').value.toLowerCase();
+
+            filteredRequests = allRequests.filter(request => {
+                // Filter by status
+                if (statusFilter !== 'all' && request.status !== statusFilter) return false;
+
+                // Filter by date
+                if (dateFilter !== 'all') {
+                    const requestDate = new Date(request.created_at);
+                    const today = new Date();
+                    let startDate;
+                    switch(dateFilter) {
+                        case 'today':
+                            startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                            break;
+                        case 'week':
+                            const dayOfWeek = today.getDay();
+                            const diff = today.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
+                            startDate = new Date(today.getFullYear(), today.getMonth(), diff);
+                            break;
+                        case 'month':
+                            startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+                            break;
+                    }
+                    if (startDate && requestDate < startDate) return false;
+                }
+
+                // Filter by search
+                if (searchFilter) {
+                    const searchIn = `${request.full_name} ${request.email} ${request.address}`.toLowerCase();
+                    if (!searchIn.includes(searchFilter)) return false;
+                }
+
+                return true;
+            });
+
+            updateRequestsTable();
+        }
+
+        function loadAllRequests() {
+            filterRequests();
+            showNotification('Lista atualizada.', 'info');
+        }
+
+        function updateRequestsTable() {
+            const tbody = document.getElementById('requestsTableBody');
+            const infoSpan = document.getElementById('tableInfo');
+
+            if (!filteredRequests.length) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: var(--gray);">
+                            <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 15px; display: block; color: #ddd;"></i>
+                            Nenhuma solicitação encontrada com os filtros atuais.
+                        </td>
+                    </tr>
+                `;
+                infoSpan.textContent = 'Mostrando 0 solicitações';
+                return;
+            }
+
+            let tableHTML = '';
+            filteredRequests.forEach(request => {
+                const statusText = {
+                    'pending': 'Pendente',
+                    'confirmed': 'Confirmado',
+                    'completed': 'Concluído',
+                    'cancelled': 'Cancelado'
+                }[request.status] || request.status;
+
+                const statusClass = {
+                    'pending': 'badge-pending',
+                    'confirmed': 'badge-confirmed',
+                    'completed': 'badge-completed',
+                    'cancelled': 'badge-cancelled'
+                }[request.status] || '';
+
+                const date = new Date(request.created_at).toLocaleDateString('pt-BR');
+                tableHTML += `
+                    <tr>
+                        <td>
+                            <strong>${request.full_name}</strong><br>
+                            <small style="color: var(--gray);">ID: ${request.id}</small>
+                        </td>
+                        <td>
+                            ${request.phone}<br>
+                            <small>${request.email}</small>
+                        </td>
+                        <td>${request.service_type}</td>
+                        <td>
+                            ${date}<br>
+                            <small>${request.cleaning_time}</small>
+                        </td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <button onclick="editRequest(${request.id})" style="background: var(--primary); color: white; border: none; padding: 8px 12px; border-radius: 4px; margin-right: 8px; cursor: pointer;">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteRequest(${request.id})" style="background: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = tableHTML;
+            infoSpan.textContent = `Mostrando ${filteredRequests.length} de ${allRequests.length} solicitações`;
+        }
+
+        function editRequest(id) {
+            const request = allRequests.find(r => r.id === id);
+            if (!request) return;
+
+            document.getElementById('editRequestId').value = id;
+            document.getElementById('editStatus').value = request.status;
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        async function saveEditedRequest() {
+            const id = document.getElementById('editRequestId').value;
+            const newStatus = document.getElementById('editStatus').value;
+
+            if (!supabase || !id) return;
+
+            try {
+                const { error } = await supabase
+                    .from('service_requests')
+                    .update({ status: newStatus, updated_at: new Date().toISOString() })
+                    .eq('id', id);
+
+                if (error) throw error;
+
+                showNotification('Solicitação atualizada com sucesso!', 'success');
+                closeModal();
+                loadDashboardData(); // Reload data to reflect changes
+            } catch (error) {
+                console.error('Erro ao atualizar:', error);
+                showNotification('Erro ao atualizar solicitação.', 'error');
+            }
+        }
+
+        async function deleteRequest(id) {
+            if (!confirm('Tem certeza que deseja excluir esta solicitação? Esta ação não pode ser desfeita.')) {
+                return;
+            }
+
+            if (!supabase) return;
+
+            try {
+                const { error } = await supabase
+                    .from('service_requests')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) throw error;
+
+                showNotification('Solicitação excluída com sucesso!', 'success');
+                loadDashboardData(); // Reload data
+            } catch (error) {
+                console.error('Erro ao excluir:', error);
+                showNotification('Erro ao excluir solicitação.', 'error');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        // Attach save function to edit form
+        document.addEventListener('DOMContentLoaded', function() {
+            const editForm = document.getElementById('editRequestForm');
+            if (editForm) {
+                editForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    saveEditedRequest();
+                });
+            }
+        });
+
+        // ============================
+        // NOTIFICAÇÕES
+        // ============================
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
                 position: fixed;
-                bottom: 20px;
+                top: 20px;
                 right: 20px;
                 padding: 15px 25px;
-                border-radius: var(--border-radius);
-                background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
+                border-radius: 5px;
                 color: white;
-                box-shadow: var(--shadow-lg);
-                z-index: 10000;
+                font-weight: 600;
+                z-index: 9999;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
                 animation: slideIn 0.3s ease;
+                background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
             `;
-            
-            toast.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
-                ${message}
-            `;
-            
-            document.body.appendChild(toast);
-            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
             setTimeout(() => {
-                toast.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
         }
 
-        // Adicionar estilos de animação para toast
+        // Add CSS for animations
         const style = document.createElement('style');
         style.textContent = `
             @keyframes slideIn {
@@ -1425,10 +1526,6 @@
             }
         `;
         document.head.appendChild(style);
-
-        // NOTA: Para funcionalidade completa, insira aqui todo o restante do código JavaScript original
-        // que inclui: loadDashboardData(), loadServiceRequests(), updateRequestsTable(),
-        // editServiceRequest(), deleteServiceRequest(), e todas as outras funções
     </script>
 </body>
 </html>
