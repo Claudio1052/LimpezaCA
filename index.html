@@ -185,7 +185,7 @@
         }
 
         /* =========================================== */
-        /* NAVIGATION - CORRIGIDO PARA MOBILE */
+        /* NAVIGATION */
         /* =========================================== */
         .navbar {
             background: white;
@@ -248,7 +248,7 @@
             color: var(--accent-color) !important;
         }
 
-        /* Menu Toggle - CORRIGIDO */
+        /* Menu Toggle */
         .menu-toggle {
             display: none;
             font-size: 1.5rem;
@@ -322,6 +322,218 @@
             justify-content: center;
             gap: 10px;
             flex-wrap: wrap;
+        }
+
+        /* =========================================== */
+        /* DIFERENT SECTION */
+        /* =========================================== */
+        .different-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f7ff 100%);
+        }
+
+        .different-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .different-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-200);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .different-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .different-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .different-card i {
+            font-size: 3rem;
+            margin-bottom: 25px;
+            color: var(--primary-color);
+            display: block;
+            height: 80px;
+            line-height: 80px;
+        }
+
+        .different-card h3 {
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+
+        .different-card p {
+            color: var(--gray-600);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* =========================================== */
+        /* MAIN SERVICES */
+        /* =========================================== */
+        .main-services {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .main-services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .main-service-card {
+            background: linear-gradient(135deg, rgba(42, 110, 255, 0.05), rgba(0, 168, 150, 0.05));
+            border-radius: var(--border-radius-lg);
+            padding: 40px 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-service-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .main-service-card i {
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            color: var(--primary-color);
+            display: block;
+            height: 60px;
+            line-height: 60px;
+        }
+
+        .main-service-card h3 {
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            font-size: 1.3rem;
+        }
+
+        .main-service-card p {
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* =========================================== */
+        /* SERVICES SECTION */
+        /* =========================================== */
+        .services {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f7ff 100%);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            padding: 40px 25px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-200);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
+        }
+
+        .service-card i {
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            color: var(--primary-color);
+            display: block;
+            height: 60px;
+            line-height: 60px;
+        }
+
+        .service-card h3 {
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            font-size: 1.25rem;
+        }
+
+        .service-card p {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* =========================================== */
+        /* ABOUT SECTION */
+        /* =========================================== */
+        .about {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            color: var(--gray-800);
+        }
+
+        .contact-info {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(42, 110, 255, 0.05), rgba(0, 168, 150, 0.05));
+            border-radius: var(--border-radius-lg);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: var(--dark-color);
+        }
+
+        .contact-info i {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            width: 24px;
         }
 
         /* =========================================== */
@@ -451,6 +663,27 @@
             resize: vertical;
         }
 
+        /* CORREÇÃO DO FLATPICKR - ESTILOS ESPECÍFICOS */
+        .flatpickr-input {
+            background-color: white !important;
+            cursor: pointer !important;
+        }
+
+        .flatpickr-calendar {
+            border-radius: var(--border-radius) !important;
+            box-shadow: var(--shadow-lg) !important;
+            border: 1px solid var(--gray-200) !important;
+        }
+
+        .flatpickr-day.selected {
+            background: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+        }
+
+        .flatpickr-day:hover {
+            background: var(--gray-100) !important;
+        }
+
         .required {
             color: var(--accent-color);
             margin-left: 4px;
@@ -515,7 +748,7 @@
         }
 
         /* =========================================== */
-        /* DASHBOARD ADMIN - CORRIGIDO */
+        /* DASHBOARD ADMIN */
         /* =========================================== */
         .admin-container {
             min-height: calc(100vh - 80px);
@@ -1050,7 +1283,7 @@
         }
 
         /* =========================================== */
-        /* MOBILE STYLES - CORREÇÃO DO MENU */
+        /* MOBILE STYLES */
         /* =========================================== */
         @media (max-width: 768px) {
             .navbar .container {
@@ -1058,14 +1291,12 @@
                 min-height: 70px;
             }
             
-            /* Menu Toggle visível */
             .menu-toggle {
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
             
-            /* Menu oculto por padrão */
             .nav-links {
                 position: fixed;
                 top: 70px;
@@ -1103,7 +1334,6 @@
                 border-bottom: none;
             }
             
-            /* Formulário mobile */
             .form-container {
                 margin: 0 10px;
             }
@@ -1128,7 +1358,6 @@
                 width: 100%;
             }
             
-            /* Dashboard mobile */
             .dashboard-header {
                 flex-direction: column;
                 align-items: flex-start;
@@ -1230,7 +1459,6 @@
                 font-size: 0.85rem;
             }
             
-            /* Modal mobile */
             .modal {
                 padding: 10px;
             }
@@ -1415,6 +1643,9 @@
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
     <!-- Navigation -->
@@ -1461,22 +1692,27 @@
         <!-- Why Different Section -->
         <section id="different" class="different-section">
             <div class="container">
-                <h2 class="section-title">Why Choose Rio Cleaning Services?</h2>
+                <h2 class="section-title">What Makes Rio Cleaning Different?</h2>
                 <div class="different-grid">
                     <div class="different-card">
+                        <i class="fas fa-star"></i>
+                        <h3>A REAL CLEANING</h3>
+                        <p>We don't believe that a quick wipe is enough. Our service goes beyond the surface and focuses on real, detailed deep cleaning. Our standards are above average, so you'll feel the difference of a truly clean space.</p>
+                    </div>
+                    <div class="different-card">
+                        <i class="fas fa-dollar-sign"></i>
+                        <h3>AFFORDABLE</h3>
+                        <p>Affordability means receiving high-quality service for a fair and honest price. We offer free quotes so you can clearly understand what you're getting and how it fits your needs.</p>
+                    </div>
+                    <div class="different-card">
+                        <i class="fas fa-handshake"></i>
+                        <h3>TRUSTWORTHY</h3>
+                        <p>Trust is at the heart of everything we do. We are a professional, reliable, and responsible company. Your home and belongings are treated with care and respect.</p>
+                    </div>
+                    <div class="different-card">
                         <i class="fas fa-shield-alt"></i>
-                        <h3>Consistent Quality</h3>
-                        <p>We clean thousands of homes every day, but when we're cleaning yours, it's the only one that matters.</p>
-                    </div>
-                    <div class="different-card">
-                        <i class="fas fa-check-circle"></i>
-                        <h3>Reliable Service</h3>
-                        <p>You can count on having a sparkling clean home. We provide our own transportation and equipment.</p>
-                    </div>
-                    <div class="different-card">
-                        <i class="fas fa-award"></i>
-                        <h3>Professional Team</h3>
-                        <p>Our professionally trained team is bonded and insured. We provide free, no-obligation estimates.</p>
+                        <h3>RELIABLE</h3>
+                        <p>You can count on having a sparkling clean home. We provide our own transportation, environmentally preferable products, and all cleaning equipment needed.</p>
                     </div>
                 </div>
             </div>
@@ -1485,27 +1721,27 @@
         <!-- Main Services Section -->
         <section class="main-services">
             <div class="container">
-                <h2 class="section-title">Our Cleaning Services</h2>
+                <h2 class="section-title">Our Core Cleaning Services</h2>
                 <div class="main-services-grid">
                     <div class="main-service-card">
-                        <i class="fas fa-home"></i>
+                        <i class="fas fa-calendar-week"></i>
                         <h3>Routine Cleaning</h3>
-                        <p>Exclusive for recurring clients who've completed a deep clean with us.</p>
+                        <p>Exclusive for recurring clients who've completed a deep clean with us. Keep your home consistently fresh at a discounted rate.</p>
                     </div>
                     <div class="main-service-card">
                         <i class="fas fa-broom"></i>
                         <h3>Deep Cleaning</h3>
-                        <p>A complete reset for your furnished home. Perfect for eliminating hidden dust and grime.</p>
+                        <p>A complete reset for your furnished home. Perfect for eliminating hidden dust, grime, and buildup. Ideal for new clients.</p>
                     </div>
                     <div class="main-service-card">
                         <i class="fas fa-truck-moving"></i>
-                        <h3>Move In/Out</h3>
-                        <p>Designed for unfinished spaces during transitions. We sanitize and deep-clean every inch.</p>
+                        <h3>Move In/Out Cleaning</h3>
+                        <p>Designed for unfinished spaces during transitions. We sanitize and deep-clean every inch, ensuring a spotless home.</p>
                     </div>
                     <div class="main-service-card">
-                        <i class="fas fa-bed"></i>
+                        <i class="fas fa-key"></i>
                         <h3>Airbnb Cleaning</h3>
-                        <p>Host like a pro with our guest-ready cleaning services for 5-star reviews.</p>
+                        <p>Host like a pro with our guest-ready cleaning services. We ensure impeccable cleanliness for 5-star reviews every stay.</p>
                     </div>
                 </div>
             </div>
@@ -1519,33 +1755,42 @@
                     <div class="service-card">
                         <i class="fas fa-hard-hat"></i>
                         <h3>Post-Construction & Renovation</h3>
-                        <p>Detailed cleaning after construction or renovation.</p>
+                        <p>Detailed cleaning after construction or renovation. Remove fine dust, residues, and construction leftovers.</p>
                     </div>
                     <div class="service-card">
                         <i class="fas fa-building"></i>
                         <h3>Commercial Cleaning</h3>
-                        <p>Tailored cleaning for offices, retail spaces, and business environments.</p>
+                        <p>Clean workplaces for better employee and client experience. Offices, retail spaces, and business environments.</p>
                     </div>
                     <div class="service-card">
                         <i class="fas fa-church"></i>
                         <h3>Worship Facility Cleaning</h3>
-                        <p>Professional cleaning for churches and places of worship.</p>
+                        <p>Professional cleaning for churches and places of worship. Sanctuaries, seating areas, classrooms, and restrooms.</p>
                     </div>
                     <div class="service-card">
                         <i class="fas fa-home"></i>
                         <h3>Residential Cleaning</h3>
-                        <p>High-quality cleaning services designed to keep your living space fresh.</p>
+                        <p>High-quality cleaning services that go beyond surface cleaning. Focus on details often overlooked.</p>
                     </div>
                     <div class="service-card">
                         <i class="fas fa-carpet"></i>
                         <h3>Professional Carpet Cleaning</h3>
-                        <p>Using professional-grade equipment including Ninja Steam Carpet Cleaner.</p>
+                        <p>Using Ninja Steam Carpet Cleaner with 500 PSI to remove embedded dirt and revitalize carpet fibers.</p>
                     </div>
                     <div class="service-card">
                         <i class="fas fa-caravan"></i>
                         <h3>RV Cleaning</h3>
-                        <p>Detailed RV interior cleaning focusing on all areas.</p>
+                        <p>Detailed RV interior cleaning focusing on living spaces, kitchens, bathrooms, and sleeping areas.</p>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Service Guarantee Section -->
+        <section class="guarantee-section">
+            <div class="container">
+                <div class="form-footer">
+                    <p><i class="fas fa-shield-alt"></i> <strong>Move In/Out Cleaning Guarantee:</strong> If your damage deposit is not returned due to cleaning-related reasons, we guarantee that the cleaning will meet move-out standards.</p>
                 </div>
             </div>
         </section>
@@ -1554,21 +1799,23 @@
         <section id="about" class="about">
             <div class="container">
                 <div class="about-content">
-                    <h2 class="section-title">About Rio Cleaning</h2>
-                    <p>At Rio Cleaning, we don't believe that a quick wipe is enough. Our service goes beyond the surface and focuses on real, detailed deep cleaning.</p>
-                    <p>Our cleaning standards are above average, so when you come home, you won't think it still looks dirty. You will feel the difference of a truly clean space.</p>
+                    <h2 class="section-title">About Rio Cleaning Services</h2>
+                    <p>At Rio Cleaning, we believe in providing more than just a surface clean. We're committed to delivering real, detailed deep cleaning that makes a noticeable difference in your space.</p>
+                    <p>Our team is professionally trained, bonded, and insured. We bring our own transportation and environmentally preferable cleaning products to every job.</p>
+                    <p>We serve Calgary, Chestermere, Airdrie, and Okotoks with reliable, high-quality cleaning services that you can trust.</p>
                     
                     <div class="contact-info">
                         <p><i class="fas fa-phone"></i> 519-280-6261</p>
                         <p><i class="fas fa-envelope"></i> riocleanigvyc@gmail.com</p>
                         <p><i class="fas fa-map-marker-alt"></i> Calgary, Chestermere, Airdrie, Okotoks</p>
+                        <p><i class="fas fa-clock"></i> Free, No-Obligation Estimates Available</p>
                     </div>
                 </div>
             </div>
         </section>
     </div>
 
-    <!-- Schedule Form (Initially Hidden) - CORRIGIDO -->
+    <!-- Schedule Form (Initially Hidden) -->
     <div id="scheduleFormContainer" class="schedule-form" style="display: none;">
         <div class="container">
             <div class="form-container">
@@ -1593,7 +1840,7 @@
                                     <label for="phone">
                                         <i class="fas fa-phone"></i> Phone Number <span class="required">*</span>
                                     </label>
-                                    <input type="tel" id="phone" name="phone" required placeholder="(123) 456-7890">
+                                    <input type="tel" id="phone" name="phone" required placeholder="(519) 280-6261">
                                 </div>
                                 
                                 <div class="form-group">
@@ -1607,7 +1854,7 @@
                                     <label for="address">
                                         <i class="fas fa-map-marker-alt"></i> Address <span class="required">*</span>
                                     </label>
-                                    <input type="text" id="address" name="address" required placeholder="Enter your full address">
+                                    <input type="text" id="address" name="address" required placeholder="Enter your full address in Calgary area">
                                 </div>
                             </div>
                         </div>
@@ -1625,12 +1872,12 @@
                                         <option value="deep">Deep Cleaning</option>
                                         <option value="move">Move In/Out Cleaning</option>
                                         <option value="airbnb">Airbnb Cleaning</option>
-                                        <option value="construction">Post-Construction</option>
+                                        <option value="construction">Post-Construction Cleaning</option>
                                         <option value="commercial">Commercial Cleaning</option>
-                                        <option value="church">Church Cleaning</option>
-                                        <option value="carpet">Carpet Cleaning</option>
+                                        <option value="church">Worship Facility Cleaning</option>
+                                        <option value="carpet">Professional Carpet Cleaning</option>
                                         <option value="rv">RV Cleaning</option>
-                                        <option value="other">Other</option>
+                                        <option value="other">Other Service</option>
                                     </select>
                                 </div>
                                 
@@ -1652,7 +1899,7 @@
                                     <label for="cleaningDate">
                                         <i class="fas fa-calendar"></i> Preferred Date <span class="required">*</span>
                                     </label>
-                                    <input type="text" id="cleaningDate" name="cleaningDate" class="datepicker" required placeholder="Select a date">
+                                    <input type="text" id="cleaningDate" name="cleaningDate" class="datepicker flatpickr-input" required placeholder="Select a date" readonly="readonly">
                                 </div>
                                 
                                 <div class="form-group">
@@ -1692,14 +1939,14 @@
                     </form>
                     
                     <div class="form-footer">
-                        <p><i class="fas fa-info-circle"></i> We'll contact you within 24 hours to confirm your appointment.</p>
+                        <p><i class="fas fa-info-circle"></i> We'll contact you within 24 hours to confirm your appointment and provide a free quote.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Admin Panel (Initially Hidden) - CORRIGIDO -->
+    <!-- Admin Panel (Initially Hidden) -->
     <div id="adminPanel" class="admin-container" style="display: none;">
         <!-- Admin Login -->
         <div id="adminLogin" class="admin-login">
@@ -1908,6 +2155,7 @@
             date: 'all',
             search: ''
         };
+        let flatpickrInstance = null;
 
         // ============================================
         // INICIALIZAÇÃO
@@ -1924,7 +2172,7 @@
         });
 
         // ============================================
-        // MENU MOBILE - CORRIGIDO
+        // MENU MOBILE
         // ============================================
         function initMobileMenu() {
             const menuToggle = document.getElementById('menuToggle');
@@ -1966,18 +2214,6 @@
             }
         }
 
-        function toggleMobileMenu() {
-            const menuToggle = document.getElementById('menuToggle');
-            const navLinks = document.getElementById('navLinks');
-            
-            if (menuToggle && navLinks) {
-                navLinks.classList.toggle('active');
-                menuToggle.innerHTML = navLinks.classList.contains('active') ? 
-                    '<i class="fas fa-times"></i>' : 
-                    '<i class="fas fa-bars"></i>';
-            }
-        }
-
         // ============================================
         // NAVEGAÇÃO
         // ============================================
@@ -2011,7 +2247,8 @@
             document.getElementById('adminPanel').style.display = 'none';
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
-            initDatePicker();
+            // Inicializar Flatpickr quando o formulário é mostrado
+            setTimeout(initDatePicker, 100);
             closeMobileMenu();
         }
 
@@ -2117,8 +2354,14 @@
 
         function initDatePicker() {
             const dateInput = document.getElementById('cleaningDate');
-            if (dateInput && !dateInput._flatpickr) {
-                flatpickr(dateInput, {
+            if (dateInput) {
+                // Destruir instância anterior se existir
+                if (flatpickrInstance) {
+                    flatpickrInstance.destroy();
+                }
+                
+                // Criar nova instância
+                flatpickrInstance = flatpickr(dateInput, {
                     minDate: "today",
                     dateFormat: "Y-m-d",
                     disable: [
@@ -2126,7 +2369,19 @@
                             return (date.getDay() === 0); // Desabilitar domingos
                         }
                     ],
-                    ariaDateFormat: "F j, Y"
+                    ariaDateFormat: "F j, Y",
+                    onChange: function(selectedDates, dateStr, instance) {
+                        if (dateStr) {
+                            dateInput.style.borderColor = '';
+                        }
+                    }
+                });
+                
+                // Forçar abertura ao clicar
+                dateInput.addEventListener('click', function() {
+                    if (flatpickrInstance) {
+                        flatpickrInstance.open();
+                    }
                 });
             }
         }
@@ -2211,7 +2466,7 @@
         }
 
         // ============================================
-        // DASHBOARD ADMIN - CORRIGIDO
+        // DASHBOARD ADMIN
         // ============================================
         function initAdminPanel() {
             // Login
@@ -2724,7 +2979,7 @@
                 'airbnb': 'Airbnb Cleaning',
                 'construction': 'Post-Construction Cleaning',
                 'commercial': 'Commercial Cleaning',
-                'church': 'Church Cleaning',
+                'church': 'Worship Facility Cleaning',
                 'carpet': 'Carpet Cleaning',
                 'rv': 'RV Cleaning',
                 'other': 'Other Service'
