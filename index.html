@@ -266,14 +266,36 @@
         /* HERO SECTION */
         /* =========================================== */
         .hero {
-            background: linear-gradient(rgba(42, 110, 255, 0.9), rgba(26, 86, 224, 0.9)), url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
-            background-size: cover;
-            background-position: center;
+            position: relative;
             color: white;
             padding: clamp(80px, 15vh, 120px) 0;
-            position: relative;
             overflow: hidden;
             text-align: center;
+        }
+
+        .hero-video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(42, 110, 255, 0.85), rgba(26, 86, 224, 0.85));
+            z-index: 2;
         }
 
         .hero-content {
@@ -281,7 +303,7 @@
             margin: 0 auto;
             text-align: center;
             position: relative;
-            z-index: 2;
+            z-index: 3;
         }
 
         .hero h1 {
@@ -305,13 +327,14 @@
         }
 
         .hero-contact {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             border-radius: var(--border-radius-lg);
             padding: 25px;
             margin-top: 40px;
             display: inline-block;
             text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .hero-contact p {
@@ -366,13 +389,24 @@
             box-shadow: var(--shadow-lg);
         }
 
-        .different-card i {
-            font-size: 3rem;
-            margin-bottom: 25px;
-            color: var(--primary-color);
-            display: block;
-            height: 80px;
-            line-height: 80px;
+        .different-card .card-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(42, 110, 255, 0.1), rgba(0, 168, 150, 0.1));
+            padding: 20px;
+        }
+
+        .different-card .card-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
         }
 
         .different-card h3 {
@@ -418,13 +452,25 @@
             box-shadow: var(--shadow-lg);
         }
 
-        .main-service-card i {
-            font-size: 2.5rem;
-            margin-bottom: 25px;
-            color: var(--primary-color);
-            display: block;
-            height: 60px;
-            line-height: 60px;
+        .main-service-card .service-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            padding: 15px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .main-service-card .service-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
         }
 
         .main-service-card h3 {
@@ -470,13 +516,25 @@
             border-color: var(--primary-color);
         }
 
-        .service-card i {
-            font-size: 2.5rem;
-            margin-bottom: 25px;
-            color: var(--primary-color);
-            display: block;
-            height: 60px;
-            line-height: 60px;
+        .service-card .special-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            padding: 15px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .service-card .special-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
         }
 
         .service-card h3 {
@@ -1373,6 +1431,10 @@
                 border-bottom: none;
             }
             
+            .hero-video {
+                height: 120%;
+            }
+            
             .form-container {
                 margin: 0 10px;
             }
@@ -1513,11 +1575,22 @@
             .modal-actions {
                 flex-direction: column;
             }
+            
+            .different-card .card-icon,
+            .main-service-card .service-icon,
+            .service-card .special-icon {
+                width: 80px;
+                height: 80px;
+            }
         }
 
         @media (max-width: 480px) {
             .hero {
                 padding: 50px 0;
+            }
+            
+            .hero-video {
+                height: 150%;
             }
             
             .hero-contact {
@@ -1540,6 +1613,13 @@
                 width: 60px;
                 height: 60px;
                 margin-right: 15px;
+            }
+            
+            .different-card .card-icon,
+            .main-service-card .service-icon,
+            .service-card .special-icon {
+                width: 70px;
+                height: 70px;
             }
         }
 
@@ -1709,8 +1789,15 @@
 
     <!-- Main Content Container -->
     <div id="mainContent">
-        <!-- Home Section -->
+        <!-- Home Section with Video -->
         <section id="home" class="hero">
+            <div class="hero-video-container">
+                <video autoplay muted loop playsinline class="hero-video">
+                    <source src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/limpezaVideo.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="hero-overlay"></div>
+            </div>
             <div class="container">
                 <div class="hero-content">
                     <h1>Professional Cleaning Services <span>in Calgary</span></h1>
@@ -1734,22 +1821,30 @@
                 <h2 class="section-title">What Makes Rio Cleaning Different?</h2>
                 <div class="different-grid">
                     <div class="different-card">
-                        <i class="fas fa-star"></i>
+                        <div class="card-icon">
+                            <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="Deep Cleaning">
+                        </div>
                         <h3>A REAL CLEANING</h3>
                         <p>We don't believe that a quick wipe is enough. Our service goes beyond the surface and focuses on real, detailed deep cleaning. Our standards are above average, so you'll feel the difference of a truly clean space.</p>
                     </div>
                     <div class="different-card">
-                        <i class="fas fa-dollar-sign"></i>
+                        <div class="card-icon">
+                            <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="Affordable Cleaning">
+                        </div>
                         <h3>AFFORDABLE</h3>
                         <p>Affordability means receiving high-quality service for a fair and honest price. We offer free quotes so you can clearly understand what you're getting and how it fits your needs.</p>
                     </div>
                     <div class="different-card">
-                        <i class="fas fa-handshake"></i>
+                        <div class="card-icon">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="Trustworthy Cleaning">
+                        </div>
                         <h3>TRUSTWORTHY</h3>
                         <p>Trust is at the heart of everything we do. We are a professional, reliable, and responsible company. Your home and belongings are treated with care and respect.</p>
                     </div>
                     <div class="different-card">
-                        <i class="fas fa-shield-alt"></i>
+                        <div class="card-icon">
+                            <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="Reliable Cleaning">
+                        </div>
                         <h3>RELIABLE</h3>
                         <p>You can count on having a sparkling clean home. We provide our own transportation, environmentally preferable products, and all cleaning equipment needed.</p>
                     </div>
@@ -1763,22 +1858,30 @@
                 <h2 class="section-title">Our Core Cleaning Services</h2>
                 <div class="main-services-grid">
                     <div class="main-service-card">
-                        <i class="fas fa-calendar-week"></i>
+                        <div class="service-icon">
+                            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="Routine Cleaning">
+                        </div>
                         <h3>Routine Cleaning</h3>
                         <p>Exclusive for recurring clients who've completed a deep clean with us. Keep your home consistently fresh at a discounted rate.</p>
                     </div>
                     <div class="main-service-card">
-                        <i class="fas fa-broom"></i>
+                        <div class="service-icon">
+                            <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="Deep Cleaning">
+                        </div>
                         <h3>Deep Cleaning</h3>
                         <p>A complete reset for your furnished home. Perfect for eliminating hidden dust, grime, and buildup. Ideal for new clients.</p>
                     </div>
                     <div class="main-service-card">
-                        <i class="fas fa-truck-moving"></i>
+                        <div class="service-icon">
+                            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="Move In/Out Cleaning">
+                        </div>
                         <h3>Move In/Out Cleaning</h3>
                         <p>Designed for unfinished spaces during transitions. We sanitize and deep-clean every inch, ensuring a spotless home.</p>
                     </div>
                     <div class="main-service-card">
-                        <i class="fas fa-key"></i>
+                        <div class="service-icon">
+                            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="Airbnb Cleaning">
+                        </div>
                         <h3>Airbnb Cleaning</h3>
                         <p>Host like a pro with our guest-ready cleaning services. We ensure impeccable cleanliness for 5-star reviews every stay.</p>
                     </div>
@@ -1792,32 +1895,44 @@
                 <h2 class="section-title">Specialized Cleaning Services</h2>
                 <div class="services-grid">
                     <div class="service-card">
-                        <i class="fas fa-hard-hat"></i>
+                        <div class="special-icon">
+                            <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="Post-Construction Cleaning">
+                        </div>
                         <h3>Post-Construction & Renovation</h3>
                         <p>Detailed cleaning after construction or renovation. Remove fine dust, residues, and construction leftovers.</p>
                     </div>
                     <div class="service-card">
-                        <i class="fas fa-building"></i>
+                        <div class="special-icon">
+                            <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="Commercial Cleaning">
+                        </div>
                         <h3>Commercial Cleaning</h3>
                         <p>Clean workplaces for better employee and client experience. Offices, retail spaces, and business environments.</p>
                     </div>
                     <div class="service-card">
-                        <i class="fas fa-church"></i>
+                        <div class="special-icon">
+                            <img src="https://images.unsplash.com/photo-1514825041516-0e9d4f46c7a7?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="Church Cleaning">
+                        </div>
                         <h3>Worship Facility Cleaning</h3>
                         <p>Professional cleaning for churches and places of worship. Sanctuaries, seating areas, classrooms, and restrooms.</p>
                     </div>
                     <div class="service-card">
-                        <i class="fas fa-home"></i>
+                        <div class="special-icon">
+                            <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="Residential Cleaning">
+                        </div>
                         <h3>Residential Cleaning</h3>
                         <p>High-quality cleaning services that go beyond surface cleaning. Focus on details often overlooked.</p>
                     </div>
                     <div class="service-card">
-                        <i class="fas fa-carpet"></i>
+                        <div class="special-icon">
+                            <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="Carpet Cleaning">
+                        </div>
                         <h3>Professional Carpet Cleaning</h3>
                         <p>Using Ninja Steam Carpet Cleaner with 500 PSI to remove embedded dirt and revitalize carpet fibers.</p>
                     </div>
                     <div class="service-card">
-                        <i class="fas fa-caravan"></i>
+                        <div class="special-icon">
+                            <img src="https://images.unsplash.com/photo-1602002418083-8b3bf3e5f037?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="RV Cleaning">
+                        </div>
                         <h3>RV Cleaning</h3>
                         <p>Detailed RV interior cleaning focusing on living spaces, kitchens, bathrooms, and sleeping areas.</p>
                     </div>
@@ -2310,6 +2425,7 @@
             initAdminPanel();
             initEditModal();
             initAnimations();
+            initVideoBackground();
             
             // Set current year in footer
             document.getElementById('currentYear').textContent = new Date().getFullYear();
@@ -2355,6 +2471,31 @@
                         menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
                     }
                 });
+            }
+        }
+
+        // ============================================
+        // VIDEO BACKGROUND
+        // ============================================
+        function initVideoBackground() {
+            const video = document.querySelector('.hero-video');
+            if (video) {
+                // Forçar o carregamento do vídeo
+                video.load();
+                
+                // Garantir que o vídeo inicie automaticamente
+                video.addEventListener('loadeddata', function() {
+                    this.play().catch(e => {
+                        console.log('Auto-play prevented, trying muted play');
+                        this.muted = true;
+                        this.play();
+                    });
+                });
+                
+                // Loop automático
+                video.loop = true;
+                video.muted = true;
+                video.playsInline = true;
             }
         }
 
