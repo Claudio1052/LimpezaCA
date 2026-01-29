@@ -137,37 +137,39 @@
         }
 
         /* =========================================== */
-        /* LOGO STYLING */
+        /* LOGO STYLING - AUMENTADA E EM DESTAQUE */
         /* =========================================== */
         .logo-img {
-            height: 40px;
+            height: 60px; /* AUMENTADO de 40px para 60px */
             width: auto;
             object-fit: contain;
             vertical-align: middle;
-            margin-right: 12px;
+            margin-right: 15px; /* Aumentado para mais espaço */
         }
 
         .logo h1 {
             margin: 0;
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 1.5rem;
+            gap: 15px;
+            font-size: 1.8rem; /* Aumentado de 1.5rem */
             color: var(--primary-color);
+            font-weight: 800; /* Mais negrito para destaque */
         }
 
         .footer-logo h3 {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
             color: white;
-            margin-bottom: 15px;
-            font-size: 1.5rem;
+            margin-bottom: 20px; /* Aumentado */
+            font-size: 1.8rem; /* Aumentado de 1.5rem */
+            font-weight: 700;
         }
 
         .footer-logo .logo-img {
-            height: 35px;
-            margin-right: 10px;
+            height: 50px; /* AUMENTADO de 35px para 50px */
+            margin-right: 12px;
         }
 
         /* =========================================== */
@@ -239,7 +241,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px 20px;
-            min-height: 80px;
+            min-height: 90px; /* Aumentado de 80px para acomodar logo maior */
         }
 
         /* Desktop Navigation */
@@ -1496,7 +1498,7 @@
         @media (max-width: 768px) {
             .navbar .container {
                 padding: 10px 15px;
-                min-height: 70px;
+                min-height: 80px; /* Ajustado para logo maior */
             }
             
             .menu-toggle {
@@ -1507,7 +1509,7 @@
             
             .nav-links {
                 position: fixed;
-                top: 70px;
+                top: 80px; /* Ajustado para logo maior */
                 left: 0;
                 width: 100%;
                 background: white;
@@ -1518,7 +1520,7 @@
                 transform: translateX(-100%);
                 transition: transform 0.3s ease;
                 z-index: 1000;
-                max-height: calc(100vh - 70px);
+                max-height: calc(100vh - 80px);
                 overflow-y: auto;
             }
             
@@ -1542,18 +1544,18 @@
                 border-bottom: none;
             }
             
-            /* Logo responsive */
+            /* Logo responsive - MANTENDO GRANDE NO MOBILE */
             .logo-img {
-                height: 35px;
+                height: 50px; /* Aumentado de 35px para 50px */
                 margin-right: 10px;
             }
             
             .logo h1 {
-                font-size: 1.3rem;
+                font-size: 1.5rem; /* Aumentado de 1.3rem */
             }
             
             .footer-logo .logo-img {
-                height: 30px;
+                height: 45px; /* Aumentado de 30px para 45px */
             }
             
             .hero-video {
@@ -1717,14 +1719,14 @@
         }
 
         @media (max-width: 480px) {
-            /* Logo responsive */
+            /* Logo responsive - MANTENDO GRANDE NO MOBILE PEQUENO */
             .logo-img {
-                height: 30px;
+                height: 45px; /* Aumentado de 30px para 45px */
                 margin-right: 8px;
             }
             
             .logo h1 {
-                font-size: 1.2rem;
+                font-size: 1.4rem; /* Aumentado de 1.2rem */
             }
             
             .hero {
