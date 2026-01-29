@@ -2,8 +2,8 @@
 const CONFIG = {
     // Credenciais de admin (não coloque no GitHub)
     ADMIN_CREDENTIALS: {
-        username: "admin_rio_cleaning", // Altere para seu usuário
-        password: "SecurePass2024!"     // Altere para sua senha
+        username: "admin", // Altere para seu usuário
+        password: "clea123"     // Altere para sua senha
     },
     
     // Configurações do Supabase (não coloque no GitHub)
