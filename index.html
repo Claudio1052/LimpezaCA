@@ -140,11 +140,11 @@
         /* LOGO STYLING - AUMENTADA E EM DESTAQUE */
         /* =========================================== */
         .logo-img {
-            height: 60px; /* AUMENTADO de 40px para 60px */
+            height: 60px;
             width: auto;
             object-fit: contain;
             vertical-align: middle;
-            margin-right: 15px; /* Aumentado para mais espaço */
+            margin-right: 15px;
         }
 
         .logo h1 {
@@ -152,9 +152,9 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            font-size: 1.8rem; /* Aumentado de 1.5rem */
+            font-size: 1.8rem;
             color: var(--primary-color);
-            font-weight: 800; /* Mais negrito para destaque */
+            font-weight: 800;
         }
 
         .footer-logo h3 {
@@ -162,13 +162,13 @@
             align-items: center;
             gap: 15px;
             color: white;
-            margin-bottom: 20px; /* Aumentado */
-            font-size: 1.8rem; /* Aumentado de 1.5rem */
+            margin-bottom: 20px;
+            font-size: 1.8rem;
             font-weight: 700;
         }
 
         .footer-logo .logo-img {
-            height: 50px; /* AUMENTADO de 35px para 50px */
+            height: 50px;
             margin-right: 12px;
         }
 
@@ -241,10 +241,9 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px 20px;
-            min-height: 90px; /* Aumentado de 80px para acomodar logo maior */
+            min-height: 90px;
         }
 
-        /* Desktop Navigation */
         .nav-links {
             display: flex;
             list-style: none;
@@ -270,7 +269,6 @@
             color: var(--accent-color) !important;
         }
 
-        /* Menu Toggle */
         .menu-toggle {
             display: none;
             font-size: 1.5rem;
@@ -285,7 +283,7 @@
         }
 
         /* =========================================== */
-        /* HERO SECTION - AJUSTADO */
+        /* HERO SECTION */
         /* =========================================== */
         .hero {
             position: relative;
@@ -348,7 +346,6 @@
             margin-right: auto;
         }
 
-        /* Botão de agendamento destacado */
         .hero-btn-container {
             margin: 2.5rem 0 3rem 0;
         }
@@ -390,7 +387,6 @@
             gap: 10px;
         }
 
-        /* Links interativos para telefone e email */
         .contact-link {
             color: white;
             text-decoration: none;
@@ -413,7 +409,7 @@
         }
 
         /* =========================================== */
-        /* DIFERENT SECTION - IMAGENS MAIORES */
+        /* DIFERENT SECTION */
         /* =========================================== */
         .different-section {
             padding: 80px 0;
@@ -454,18 +450,17 @@
             box-shadow: var(--shadow-lg);
         }
 
-        /* IMAGENS MAIORES E QUADRADAS */
         .different-card .card-icon {
-            width: 200px;  /* Aumentado de 140px */
-            height: 200px; /* Aumentado de 140px */
+            width: 200px;
+            height: 200px;
             margin: 0 auto 25px;
-            border-radius: 20px; /* Cantos levemente arredondados */
+            border-radius: 20px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             background: linear-gradient(135deg, rgba(42, 110, 255, 0.1), rgba(0, 168, 150, 0.1));
-            padding: 15px; /* Reduzido para dar mais espaço à imagem */
+            padding: 15px;
             border: 3px solid white;
             box-shadow: 0 8px 25px rgba(42, 110, 255, 0.15);
         }
@@ -474,7 +469,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 15px; /* Cantos levemente arredondados */
+            border-radius: 15px;
             transition: transform 0.3s ease;
         }
 
@@ -495,83 +490,11 @@
         }
 
         /* =========================================== */
-        /* MAIN SERVICES - IMAGENS MAIORES */
-        /* =========================================== */
-        .main-services {
-            padding: 80px 0;
-            background: white;
-        }
-
-        .main-services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .main-service-card {
-            background: linear-gradient(135deg, rgba(42, 110, 255, 0.05), rgba(0, 168, 150, 0.05));
-            border-radius: var(--border-radius-lg);
-            padding: 40px 25px;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .main-service-card:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        /* IMAGENS MAIORES E QUADRADAS */
-        .main-service-card .service-icon {
-            width: 180px;  /* Aumentado de 120px */
-            height: 180px; /* Aumentado de 120px */
-            margin: 0 auto 25px;
-            border-radius: 20px; /* Cantos levemente arredondados */
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: white;
-            padding: 15px; /* Reduzido para dar mais espaço à imagem */
-            border: 3px solid white;
-            box-shadow: 0 8px 20px rgba(42, 110, 255, 0.12);
-        }
-
-        .main-service-card .service-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 15px; /* Cantos levemente arredondados */
-            transition: transform 0.3s ease;
-        }
-
-        .main-service-card:hover .service-icon img {
-            transform: scale(1.05);
-        }
-
-        .main-service-card h3 {
-            margin-bottom: 15px;
-            color: var(--dark-color);
-            font-size: 1.3rem;
-        }
-
-        .main-service-card p {
-            color: var(--gray-600);
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        /* =========================================== */
-        /* SERVICES SECTION - IMAGENS MAIORES */
+        /* SERVICES SECTION - UNIFICADA */
         /* =========================================== */
         .services {
             padding: 80px 0;
-            background: linear-gradient(135deg, #f8fafc 0%, #f0f7ff 100%);
+            background: white;
         }
 
         .services-grid {
@@ -582,33 +505,33 @@
         }
 
         .service-card {
-            background: white;
+            background: linear-gradient(135deg, rgba(42, 110, 255, 0.05), rgba(0, 168, 150, 0.05));
             border-radius: var(--border-radius-lg);
             padding: 40px 25px;
             text-align: center;
-            box-shadow: var(--shadow-sm);
             transition: all 0.3s ease;
-            border: 1px solid var(--gray-200);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
         }
 
         .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
             border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
         }
 
-        /* IMAGENS MAIORES E QUADRADAS */
         .service-card .special-icon {
-            width: 180px;  /* Aumentado de 120px */
-            height: 180px; /* Aumentado de 120px */
+            width: 180px;
+            height: 180px;
             margin: 0 auto 25px;
-            border-radius: 20px; /* Cantos levemente arredondados */
+            border-radius: 20px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             background: white;
-            padding: 15px; /* Reduzido para dar mais espaço à imagem */
+            padding: 15px;
             border: 3px solid white;
             box-shadow: 0 8px 20px rgba(42, 110, 255, 0.12);
         }
@@ -617,7 +540,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 15px; /* Cantos levemente arredondados */
+            border-radius: 15px;
             transition: transform 0.3s ease;
         }
 
@@ -628,13 +551,29 @@
         .service-card h3 {
             margin-bottom: 15px;
             color: var(--dark-color);
-            font-size: 1.25rem;
+            font-size: 1.3rem;
         }
 
         .service-card p {
             color: var(--gray-600);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             line-height: 1.5;
+        }
+
+        /* Texto da garantia */
+        .guarantee-text {
+            background: linear-gradient(135deg, rgba(42, 110, 255, 0.05), rgba(0, 168, 150, 0.05));
+            padding: 10px;
+            border-radius: var(--border-radius);
+            border-left: 3px solid var(--primary-color);
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+        }
+
+        .guarantee-text i {
+            margin-right: 8px;
+            color: var(--primary-color);
         }
 
         /* =========================================== */
@@ -642,7 +581,7 @@
         /* =========================================== */
         .about {
             padding: 80px 0;
-            background: white;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f7ff 100%);
         }
 
         .about-content {
@@ -682,7 +621,6 @@
             width: 24px;
         }
 
-        /* Links interativos na seção about */
         .contact-info a {
             color: var(--primary-color);
             text-decoration: none;
@@ -700,7 +638,7 @@
         }
 
         /* =========================================== */
-        /* FORMULÁRIO DE AGENDAMENTO - CORRIGIDO */
+        /* FORMULÁRIO DE AGENDAMENTO */
         /* =========================================== */
         .schedule-form {
             padding: clamp(60px, 8vw, 100px) 0;
@@ -826,7 +764,6 @@
             resize: vertical;
         }
 
-        /* CORREÇÃO DO FLATPICKR - ESTILOS ESPECÍFICOS */
         .flatpickr-input {
             background-color: white !important;
             cursor: pointer !important;
@@ -973,7 +910,6 @@
             gap: 10px;
         }
 
-        /* Dashboard Stats */
         .dashboard-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
@@ -1051,7 +987,6 @@
             margin: 0;
         }
 
-        /* Filters */
         .filters {
             background: white;
             border-radius: var(--border-radius-lg);
@@ -1089,7 +1024,6 @@
             font-size: 0.95rem;
         }
 
-        /* Service Requests Table */
         .service-requests {
             background: white;
             border-radius: var(--border-radius-lg);
@@ -1162,7 +1096,6 @@
             vertical-align: middle;
         }
 
-        /* Status Badges */
         .status-badge {
             display: inline-flex;
             align-items: center;
@@ -1204,7 +1137,6 @@
             gap: 8px;
         }
 
-        /* Loading State */
         .loading-state {
             display: flex;
             justify-content: center;
@@ -1236,7 +1168,6 @@
             font-size: 1.1rem;
         }
 
-        /* Pagination */
         .table-footer {
             padding: 25px 30px;
             border-top: 1px solid var(--gray-200);
@@ -1283,7 +1214,6 @@
             transform: none !important;
         }
 
-        /* Modal - ESTILOS ADICIONADOS PARA EDIÇÃO */
         .modal {
             display: none;
             position: fixed;
@@ -1355,7 +1285,6 @@
             min-width: min(120px, 100%);
         }
 
-        /* Estilos para formulário de edição */
         .modal-form-group {
             margin-bottom: 20px;
         }
@@ -1394,7 +1323,6 @@
             resize: vertical;
         }
 
-        /* Mobile Table Cards */
         .mobile-table-view {
             display: none;
         }
@@ -1446,7 +1374,6 @@
             margin-top: 3px;
         }
 
-        /* Links interativos no footer */
         .footer-contact a {
             color: white;
             text-decoration: none;
@@ -1498,7 +1425,7 @@
         @media (max-width: 768px) {
             .navbar .container {
                 padding: 10px 15px;
-                min-height: 80px; /* Ajustado para logo maior */
+                min-height: 80px;
             }
             
             .menu-toggle {
@@ -1509,7 +1436,7 @@
             
             .nav-links {
                 position: fixed;
-                top: 80px; /* Ajustado para logo maior */
+                top: 80px;
                 left: 0;
                 width: 100%;
                 background: white;
@@ -1544,18 +1471,17 @@
                 border-bottom: none;
             }
             
-            /* Logo responsive - MANTENDO GRANDE NO MOBILE */
             .logo-img {
-                height: 50px; /* Aumentado de 35px para 50px */
+                height: 50px;
                 margin-right: 10px;
             }
             
             .logo h1 {
-                font-size: 1.5rem; /* Aumentado de 1.3rem */
+                font-size: 1.5rem;
             }
             
             .footer-logo .logo-img {
-                height: 45px; /* Aumentado de 30px para 45px */
+                height: 45px;
             }
             
             .hero-video {
@@ -1692,9 +1618,7 @@
                 font-size: 0.85rem;
             }
             
-            /* Ajustes para imagens maiores no mobile */
             .different-card .card-icon,
-            .main-service-card .service-icon,
             .service-card .special-icon {
                 width: 160px;
                 height: 160px;
@@ -1719,14 +1643,13 @@
         }
 
         @media (max-width: 480px) {
-            /* Logo responsive - MANTENDO GRANDE NO MOBILE PEQUENO */
             .logo-img {
-                height: 100px; /* Aumentado de 30px para 45px */
+                height: 100px;
                 margin-right: 8px;
             }
             
             .logo h1 {
-                font-size: 1.4rem; /* Aumentado de 1.2rem */
+                font-size: 1.4rem;
             }
             
             .hero {
@@ -1764,9 +1687,7 @@
                 margin-right: 15px;
             }
             
-            /* Ajustes para imagens maiores no mobile pequeno */
             .different-card .card-icon,
-            .main-service-card .service-icon,
             .service-card .special-icon {
                 width: 140px;
                 height: 140px;
@@ -1930,7 +1851,7 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home" onclick="scrollToSection('home')" class="active">Home</a></li>
                 <li><a href="#different" onclick="scrollToSection('different')">Why Choose Us</a></li>
-                <li><a href="#services" onclick="scrollToSection('services')">Services</a></li>
+                <li><a href="#services" onclick="scrollToSection('services')">Our Services</a></li>
                 <li><a href="#about" onclick="scrollToSection('about')">About</a></li>
                 <li><a href="#" onclick="showScheduleForm()">Schedule Service</a></li>
                 <li><a href="#" onclick="showAdminPanel()" class="admin-link"><i class="fas fa-lock"></i> Admin</a></li>
@@ -1943,7 +1864,7 @@
 
     <!-- Main Content Container -->
     <div id="mainContent">
-        <!-- Home Section with Video - LAYOUT AJUSTADO -->
+        <!-- Home Section with Video -->
         <section id="home" class="hero">
             <div class="hero-video-container">
                 <video autoplay muted loop playsinline class="hero-video">
@@ -2021,99 +1942,92 @@
             </div>
         </section>
 
-        <!-- Main Services Section -->
-        <section class="main-services">
+        <!-- OUR SERVICES Section - TODOS OS SERVIÇOS EM UMA ÚNICA SEÇÃO -->
+        <section id="services" class="services">
             <div class="container">
-                <h2 class="section-title">Our Core Cleaning Services</h2>
-                <div class="main-services-grid">
-                    <div class="main-service-card">
-                        <div class="service-icon">
+                <h2 class="section-title">Our Services</h2>
+                <div class="services-grid">
+                    <!-- Routine Cleaning -->
+                    <div class="service-card">
+                        <div class="special-icon">
                             <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80" alt="Routine Cleaning">
                         </div>
                         <h3>Routine Cleaning</h3>
                         <p>Exclusive for recurring clients who've completed a deep clean with us. Keep your home consistently fresh at a discounted rate.</p>
                     </div>
-                    <div class="main-service-card">
-                        <div class="service-icon">
+                    
+                    <!-- Deep Cleaning -->
+                    <div class="service-card">
+                        <div class="special-icon">
                             <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80" alt="Deep Cleaning">
                         </div>
                         <h3>Deep Cleaning</h3>
                         <p>A complete reset for your furnished home. Perfect for eliminating hidden dust, grime, and buildup. Ideal for new clients.</p>
                     </div>
-                    <div class="main-service-card">
-                        <div class="service-icon">
-                            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80" alt="Move In/Out Cleaning">
+                    
+                    <!-- Move In/Out Cleaning -->
+                    <div class="service-card">
+                        <div class="special-icon">
+                            <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Move%20in-%20move%20out.jpeg" alt="Move In/Out Cleaning">
                         </div>
                         <h3>Move In/Out Cleaning</h3>
-                        <p>Designed for unfinished spaces during transitions. We sanitize and deep-clean every inch, ensuring a spotless home.</p>
+                        <p>Moving can be stressful, but cleaning does not have to be. We offer professional move-in and move-out cleaning services.</p>
+                        <p class="guarantee-text"><i class="fas fa-shield-alt"></i> Damage deposit guarantee for cleaning-related issues</p>
                     </div>
-                    <div class="main-service-card">
-                        <div class="service-icon">
-                            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80" alt="Airbnb Cleaning">
-                        </div>
-                        <h3>Airbnb Cleaning</h3>
-                        <p>Host like a pro with our guest-ready cleaning services. We ensure impeccable cleanliness for 5-star reviews every stay.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Services Section -->
-        <section id="services" class="services">
-            <div class="container">
-                <h2 class="section-title">Specialized Cleaning Services</h2>
-                <div class="services-grid">
+                    
+                    <!-- Post-Construction & Renovation -->
                     <div class="service-card">
                         <div class="special-icon">
-                            <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80" alt="Post-Construction Cleaning">
+                            <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/post-construction.png" alt="Post-Construction Cleaning">
                         </div>
                         <h3>Post-Construction & Renovation</h3>
-                        <p>Detailed cleaning after construction or renovation. Remove fine dust, residues, and construction leftovers.</p>
+                        <p>After construction or renovation, dust and debris can settle everywhere. We provide detailed post-construction cleaning in Calgary, ensuring your space is safe, clean, and move-in ready.</p>
                     </div>
+                    
+                    <!-- Commercial Cleaning -->
                     <div class="service-card">
                         <div class="special-icon">
-                            <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80" alt="Commercial Cleaning">
+                            <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/limpeza1.jpg" alt="Commercial Cleaning">
                         </div>
                         <h3>Commercial Cleaning</h3>
-                        <p>Clean workplaces for better employee and client experience. Offices, retail spaces, and business environments.</p>
+                        <p>A clean workplace creates a better experience for employees and clients. We offer reliable commercial cleaning services tailored to offices, retail spaces, and business environments in Calgary.</p>
                     </div>
+                    
+                    <!-- Worship Facility Cleaning -->
                     <div class="service-card">
                         <div class="special-icon">
-                            <img src="https://images.unsplash.com/photo-1503386435953-66943ba30817?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80" alt="Worship Facility Cleaning">
+                            <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/limpeza2.jpg" alt="Worship Facility Cleaning">
                         </div>
-                        <h3>Worship Facility Cleaning</h3>
-                        <p>Professional cleaning for churches and places of worship. Sanctuaries, seating areas, classrooms, and restrooms.</p>
+                        <h3>Worship Facility Cleaning Services</h3>
+                        <p>We provide professional worship facility cleaning services in Calgary and surrounding areas. Our experience working in active worship environments allows us to deliver consistent, respectful, and high-quality cleaning.</p>
                     </div>
+                    
+                    <!-- Residential Cleaning -->
                     <div class="service-card">
                         <div class="special-icon">
-                            <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80" alt="Residential Cleaning">
+                            <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/limpeza5.jpg" alt="Residential Cleaning">
                         </div>
                         <h3>Residential Cleaning</h3>
-                        <p>High-quality cleaning services that go beyond surface cleaning. Focus on details often overlooked.</p>
+                        <p>Your home deserves more than a surface clean. We provide high-quality residential cleaning services in Calgary designed to keep your living space fresh, comfortable, and truly clean.</p>
                     </div>
+                    
+                    <!-- Professional Carpet Cleaning -->
                     <div class="service-card">
                         <div class="special-icon">
                             <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80" alt="Carpet Cleaning">
                         </div>
                         <h3>Professional Carpet Cleaning</h3>
-                        <p>Using Ninja Steam Carpet Cleaner with 500 PSI to remove embedded dirt and revitalize carpet fibers.</p>
+                        <p>We use professional-grade equipment, including the Ninja Steam Carpet Cleaner with 500 PSI, to deliver a deep and effective clean that removes embedded dirt and revitalizes carpet fibers.</p>
                     </div>
+                    
+                    <!-- RV Cleaning -->
                     <div class="service-card">
                         <div class="special-icon">
-                            <img src="https://images.unsplash.com/photo-1562183241-b937e95585b6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80" alt="RV Cleaning">
+                            <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/RV%20cleaning.jpg.jpeg" alt="RV Cleaning">
                         </div>
                         <h3>RV Cleaning</h3>
-                        <p>Detailed RV interior cleaning focusing on living spaces, kitchens, bathrooms, and sleeping areas.</p>
+                        <p>Travel with comfort and confidence. We offer detailed RV interior cleaning services in Calgary and nearby areas, focusing on living spaces, kitchens, bathrooms, and sleeping areas.</p>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Service Guarantee Section -->
-        <section class="guarantee-section">
-            <div class="container">
-                <div class="form-footer">
-                    <p><i class="fas fa-shield-alt"></i> <strong>Move In/Out Cleaning Guarantee:</strong> If your damage deposit is not returned due to cleaning-related reasons, we guarantee that the cleaning will meet move-out standards.</p>
                 </div>
             </div>
         </section>
@@ -2200,10 +2114,10 @@
                                         <option value="routine">Routine Cleaning</option>
                                         <option value="deep">Deep Cleaning</option>
                                         <option value="move">Move In/Out Cleaning</option>
-                                        <option value="airbnb">Airbnb Cleaning</option>
                                         <option value="construction">Post-Construction Cleaning</option>
                                         <option value="commercial">Commercial Cleaning</option>
                                         <option value="church">Worship Facility Cleaning</option>
+                                        <option value="residential">Residential Cleaning</option>
                                         <option value="carpet">Professional Carpet Cleaning</option>
                                         <option value="rv">RV Cleaning</option>
                                         <option value="other">Other Service</option>
@@ -2222,6 +2136,67 @@
                                         <option value="4">4</option>
                                         <option value="5">5+</option>
                                     </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="bathrooms">
+                                        <i class="fas fa-bath"></i> Number of Bathrooms
+                                    </label>
+                                    <select id="bathrooms" name="bathrooms">
+                                        <option value="0">None</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5+</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="showerBoxCount">
+                                        <i class="fas fa-shower"></i> Shower Box Count
+                                    </label>
+                                    <select id="showerBoxCount" name="showerBoxCount">
+                                        <option value="0">None</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4+</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="hasPets">
+                                        <i class="fas fa-paw"></i> Pets in the house?
+                                    </label>
+                                    <select id="hasPets" name="hasPets">
+                                        <option value="false">No pets</option>
+                                        <option value="true">Yes, has pets</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group" id="petCountGroup" style="display: none;">
+                                    <label for="petCount">
+                                        <i class="fas fa-dog"></i> How many pets?
+                                    </label>
+                                    <input type="number" id="petCount" name="petCount" min="0" max="10" value="0">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="hasChildren">
+                                        <i class="fas fa-child"></i> Children in the house?
+                                    </label>
+                                    <select id="hasChildren" name="hasChildren">
+                                        <option value="false">No children</option>
+                                        <option value="true">Yes, has children</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group" id="childrenCountGroup" style="display: none;">
+                                    <label for="childrenCount">
+                                        <i class="fas fa-baby"></i> How many children?
+                                    </label>
+                                    <input type="number" id="childrenCount" name="childrenCount" min="0" max="10" value="0">
                                 </div>
                                 
                                 <div class="form-group">
@@ -2465,10 +2440,10 @@
                             <option value="routine">Routine Cleaning</option>
                             <option value="deep">Deep Cleaning</option>
                             <option value="move">Move In/Out Cleaning</option>
-                            <option value="airbnb">Airbnb Cleaning</option>
                             <option value="construction">Post-Construction Cleaning</option>
                             <option value="commercial">Commercial Cleaning</option>
                             <option value="church">Worship Facility Cleaning</option>
+                            <option value="residential">Residential Cleaning</option>
                             <option value="carpet">Professional Carpet Cleaning</option>
                             <option value="rv">RV Cleaning</option>
                             <option value="other">Other Service</option>
@@ -2485,6 +2460,55 @@
                             <option value="4">4</option>
                             <option value="5">5+</option>
                         </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label for="editBathrooms">Number of Bathrooms</label>
+                        <select id="editBathrooms">
+                            <option value="0">None</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5+</option>
+                        </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label for="editShowerBoxCount">Shower Box Count</label>
+                        <select id="editShowerBoxCount">
+                            <option value="0">None</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4+</option>
+                        </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label for="editHasPets">Pets in the house?</label>
+                        <select id="editHasPets">
+                            <option value="false">No pets</option>
+                            <option value="true">Yes, has pets</option>
+                        </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label for="editPetCount">Number of Pets</label>
+                        <input type="number" id="editPetCount" min="0" max="10" value="0">
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label for="editHasChildren">Children in the house?</label>
+                        <select id="editHasChildren">
+                            <option value="false">No children</option>
+                            <option value="true">Yes, has children</option>
+                        </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label for="editChildrenCount">Number of Children</label>
+                        <input type="number" id="editChildrenCount" min="0" max="10" value="0">
                     </div>
                     
                     <div class="modal-form-group">
@@ -2559,7 +2583,7 @@
                     <ul>
                         <li><a href="#" onclick="showHomePage()">Home</a></li>
                         <li><a href="#different" onclick="scrollToSection('different')">Why Choose Us</a></li>
-                        <li><a href="#services" onclick="scrollToSection('services')">Services</a></li>
+                        <li><a href="#services" onclick="scrollToSection('services')">Our Services</a></li>
                         <li><a href="#about" onclick="scrollToSection('about')">About</a></li>
                         <li><a href="#" onclick="showScheduleForm()">Schedule Service</a></li>
                     </ul>
@@ -2610,10 +2634,55 @@
             initEditModal();
             initAnimations();
             initVideoBackground();
+            initConditionalFields();
             
             // Set current year in footer
             document.getElementById('currentYear').textContent = new Date().getFullYear();
         });
+
+        // ============================================
+        // INICIALIZAR CAMPOS CONDICIONAIS
+        // ============================================
+        function initConditionalFields() {
+            const hasPetsSelect = document.getElementById('hasPets');
+            const petCountGroup = document.getElementById('petCountGroup');
+            const hasChildrenSelect = document.getElementById('hasChildren');
+            const childrenCountGroup = document.getElementById('childrenCountGroup');
+            
+            if (hasPetsSelect) {
+                hasPetsSelect.addEventListener('change', function() {
+                    petCountGroup.style.display = this.value === 'true' ? 'block' : 'none';
+                });
+            }
+            
+            if (hasChildrenSelect) {
+                hasChildrenSelect.addEventListener('change', function() {
+                    childrenCountGroup.style.display = this.value === 'true' ? 'block' : 'none';
+                });
+            }
+            
+            // Também para o modal de edição
+            const editHasPets = document.getElementById('editHasPets');
+            const editHasChildren = document.getElementById('editHasChildren');
+            
+            if (editHasPets) {
+                editHasPets.addEventListener('change', function() {
+                    const petCountField = document.getElementById('editPetCount');
+                    if (petCountField) {
+                        petCountField.style.display = this.value === 'true' ? 'block' : 'none';
+                    }
+                });
+            }
+            
+            if (editHasChildren) {
+                editHasChildren.addEventListener('change', function() {
+                    const childrenCountField = document.getElementById('editChildrenCount');
+                    if (childrenCountField) {
+                        childrenCountField.style.display = this.value === 'true' ? 'block' : 'none';
+                    }
+                });
+            }
+        }
 
         // ============================================
         // MENU MOBILE
@@ -2623,7 +2692,6 @@
             const navLinks = document.getElementById('navLinks');
             
             if (menuToggle && navLinks) {
-                // Toggle menu
                 menuToggle.addEventListener('click', function(e) {
                     e.stopPropagation();
                     navLinks.classList.toggle('active');
@@ -2632,7 +2700,6 @@
                         '<i class="fas fa-bars"></i>';
                 });
                 
-                // Fechar menu ao clicar fora
                 document.addEventListener('click', function(event) {
                     if (!navLinks.contains(event.target) && !menuToggle.contains(event.target) && navLinks.classList.contains('active')) {
                         navLinks.classList.remove('active');
@@ -2640,7 +2707,6 @@
                     }
                 });
                 
-                // Fechar menu ao clicar em um link
                 navLinks.querySelectorAll('a').forEach(link => {
                     link.addEventListener('click', function() {
                         navLinks.classList.remove('active');
@@ -2648,7 +2714,6 @@
                     });
                 });
                 
-                // Fechar com ESC
                 document.addEventListener('keydown', function(event) {
                     if (event.key === 'Escape' && navLinks.classList.contains('active')) {
                         navLinks.classList.remove('active');
@@ -2664,10 +2729,8 @@
         function initVideoBackground() {
             const video = document.querySelector('.hero-video');
             if (video) {
-                // Forçar o carregamento do vídeo
                 video.load();
                 
-                // Garantir que o vídeo inicie automaticamente
                 video.addEventListener('loadeddata', function() {
                     this.play().catch(e => {
                         console.log('Auto-play prevented, trying muted play');
@@ -2676,7 +2739,6 @@
                     });
                 });
                 
-                // Loop automático
                 video.loop = true;
                 video.muted = true;
                 video.playsInline = true;
@@ -2697,7 +2759,6 @@
                     behavior: 'smooth'
                 });
                 
-                // Fechar menu mobile
                 closeMobileMenu();
             }
         }
@@ -2716,7 +2777,6 @@
             document.getElementById('adminPanel').style.display = 'none';
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
-            // Inicializar Flatpickr quando o formulário é mostrado
             setTimeout(initDatePicker, 100);
             closeMobileMenu();
         }
@@ -2740,7 +2800,7 @@
         }
 
         // ============================================
-        // FORMULÁRIO DE AGENDAMENTO - CORRIGIDO
+        // FORMULÁRIO DE AGENDAMENTO
         // ============================================
         function initScheduleForm() {
             const form = document.getElementById('cleaningServiceForm');
@@ -2761,6 +2821,14 @@
                     address: document.getElementById('address').value.trim(),
                     serviceType: document.getElementById('serviceType').value,
                     bedrooms: parseInt(document.getElementById('bedrooms').value) || 0,
+                    bathrooms: parseInt(document.getElementById('bathrooms').value) || 0,
+                    showerBoxCount: parseInt(document.getElementById('showerBoxCount').value) || 0,
+                    hasPets: document.getElementById('hasPets').value === 'true',
+                    petCount: document.getElementById('hasPets').value === 'true' ? 
+                               parseInt(document.getElementById('petCount').value) || 0 : 0,
+                    hasChildren: document.getElementById('hasChildren').value === 'true',
+                    childrenCount: document.getElementById('hasChildren').value === 'true' ? 
+                                  parseInt(document.getElementById('childrenCount').value) || 0 : 0,
                     cleaningDate: document.getElementById('cleaningDate').value,
                     cleaningTime: document.getElementById('cleaningTime').value,
                     description: document.getElementById('description').value.trim(),
@@ -2824,18 +2892,16 @@
         function initDatePicker() {
             const dateInput = document.getElementById('cleaningDate');
             if (dateInput) {
-                // Destruir instância anterior se existir
                 if (flatpickrInstance) {
                     flatpickrInstance.destroy();
                 }
                 
-                // Criar nova instância
                 flatpickrInstance = flatpickr(dateInput, {
                     minDate: "today",
                     dateFormat: "Y-m-d",
                     disable: [
                         function(date) {
-                            return (date.getDay() === 0); // Desabilitar domingos
+                            return (date.getDay() === 0);
                         }
                     ],
                     ariaDateFormat: "F j, Y",
@@ -2846,7 +2912,6 @@
                     }
                 });
                 
-                // Forçar abertura ao clicar
                 dateInput.addEventListener('click', function() {
                     if (flatpickrInstance) {
                         flatpickrInstance.open();
@@ -2912,6 +2977,12 @@
                     address: data.address,
                     service_type: data.serviceType,
                     bedrooms: data.bedrooms,
+                    bathrooms: data.bathrooms,
+                    shower_box_count: data.showerBoxCount,
+                    has_pets: data.hasPets,
+                    pet_count: data.petCount,
+                    has_children: data.hasChildren,
+                    children_count: data.childrenCount,
                     cleaning_date: data.cleaningDate,
                     cleaning_time: data.cleaningTime,
                     description: data.description,
@@ -3323,7 +3394,7 @@
         }
 
         // ============================================
-        // EDIÇÃO DE PEDIDOS - FUNCIONALIDADE ATIVADA
+        // EDIÇÃO DE PEDIDOS
         // ============================================
         function initEditModal() {
             const editForm = document.getElementById('editServiceForm');
@@ -3345,6 +3416,14 @@
                             address: document.getElementById('editAddress').value.trim(),
                             service_type: document.getElementById('editServiceType').value,
                             bedrooms: parseInt(document.getElementById('editBedrooms').value) || 0,
+                            bathrooms: parseInt(document.getElementById('editBathrooms').value) || 0,
+                            shower_box_count: parseInt(document.getElementById('editShowerBoxCount').value) || 0,
+                            has_pets: document.getElementById('editHasPets').value === 'true',
+                            pet_count: document.getElementById('editHasPets').value === 'true' ? 
+                                      parseInt(document.getElementById('editPetCount').value) || 0 : 0,
+                            has_children: document.getElementById('editHasChildren').value === 'true',
+                            children_count: document.getElementById('editHasChildren').value === 'true' ? 
+                                          parseInt(document.getElementById('editChildrenCount').value) || 0 : 0,
                             cleaning_date: document.getElementById('editCleaningDate').value,
                             cleaning_time: document.getElementById('editCleaningTime').value,
                             description: document.getElementById('editDescription').value.trim(),
@@ -3417,12 +3496,18 @@
                 if (request) {
                     // Preencher o formulário de edição
                     document.getElementById('editRequestId').value = request.id;
-                    document.getElementById('editFullName').value = request.full_name;
-                    document.getElementById('editPhone').value = request.phone;
-                    document.getElementById('editEmail').value = request.email;
-                    document.getElementById('editAddress').value = request.address;
-                    document.getElementById('editServiceType').value = request.service_type;
+                    document.getElementById('editFullName').value = request.full_name || '';
+                    document.getElementById('editPhone').value = request.phone || '';
+                    document.getElementById('editEmail').value = request.email || '';
+                    document.getElementById('editAddress').value = request.address || '';
+                    document.getElementById('editServiceType').value = request.service_type || '';
                     document.getElementById('editBedrooms').value = request.bedrooms || 0;
+                    document.getElementById('editBathrooms').value = request.bathrooms || 0;
+                    document.getElementById('editShowerBoxCount').value = request.shower_box_count || 0;
+                    document.getElementById('editHasPets').value = request.has_pets ? 'true' : 'false';
+                    document.getElementById('editPetCount').value = request.pet_count || 0;
+                    document.getElementById('editHasChildren').value = request.has_children ? 'true' : 'false';
+                    document.getElementById('editChildrenCount').value = request.children_count || 0;
                     
                     // Formatar data para o input type="date"
                     if (request.cleaning_date) {
@@ -3431,9 +3516,21 @@
                         document.getElementById('editCleaningDate').value = formattedDate;
                     }
                     
-                    document.getElementById('editCleaningTime').value = request.cleaning_time;
-                    document.getElementById('editStatus').value = request.status;
-                    document.getElementById('editDescription').value = request.description;
+                    document.getElementById('editCleaningTime').value = request.cleaning_time || '';
+                    document.getElementById('editStatus').value = request.status || 'pending';
+                    document.getElementById('editDescription').value = request.description || '';
+                    
+                    // Mostrar/ocultar campos condicionais
+                    const petCountField = document.getElementById('editPetCount').parentElement;
+                    const childrenCountField = document.getElementById('editChildrenCount').parentElement;
+                    
+                    if (petCountField) {
+                        petCountField.style.display = request.has_pets ? 'block' : 'none';
+                    }
+                    
+                    if (childrenCountField) {
+                        childrenCountField.style.display = request.has_children ? 'block' : 'none';
+                    }
                     
                     // Abrir modal
                     openEditModal();
@@ -3482,7 +3579,6 @@
                 modal.style.display = 'none';
                 document.body.style.overflow = 'auto';
                 
-                // Limpar formulário
                 document.getElementById('editServiceForm').reset();
             }
         }
@@ -3628,11 +3724,11 @@
                 'routine': 'Routine Cleaning',
                 'deep': 'Deep Cleaning',
                 'move': 'Move In/Out Cleaning',
-                'airbnb': 'Airbnb Cleaning',
                 'construction': 'Post-Construction Cleaning',
                 'commercial': 'Commercial Cleaning',
                 'church': 'Worship Facility Cleaning',
-                'carpet': 'Carpet Cleaning',
+                'residential': 'Residential Cleaning',
+                'carpet': 'Professional Carpet Cleaning',
                 'rv': 'RV Cleaning',
                 'other': 'Other Service'
             };
@@ -3712,7 +3808,7 @@
                 rootMargin: '0px 0px -50px 0px'
             });
             
-            document.querySelectorAll('.service-card, .different-card, .main-service-card, .stat-card').forEach(el => {
+            document.querySelectorAll('.service-card, .different-card, .stat-card').forEach(el => {
                 observer.observe(el);
             });
         }
