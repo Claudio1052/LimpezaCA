@@ -137,24 +137,26 @@
         }
 
         /* =========================================== */
-        /* LOGO STYLING - AUMENTADA E EM DESTAQUE */
+        /* LOGO STYLING - MAIOR E EM DESTAQUE */
         /* =========================================== */
         .logo-img {
-            height: 60px;
+            height: 80px;
             width: auto;
             object-fit: contain;
             vertical-align: middle;
-            margin-right: 15px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
         }
 
         .logo h1 {
             margin: 0;
+            font-size: 0;
+            color: transparent;
             display: flex;
             align-items: center;
-            gap: 15px;
-            font-size: 1.8rem;
-            color: var(--primary-color);
-            font-weight: 800;
         }
 
         .footer-logo h3 {
@@ -163,13 +165,12 @@
             gap: 15px;
             color: white;
             margin-bottom: 20px;
-            font-size: 1.8rem;
+            font-size: 0;
             font-weight: 700;
         }
 
         .footer-logo .logo-img {
-            height: 50px;
-            margin-right: 12px;
+            height: 70px;
         }
 
         /* =========================================== */
@@ -241,7 +242,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px 20px;
-            min-height: 90px;
+            min-height: 100px;
         }
 
         .nav-links {
@@ -1425,7 +1426,7 @@
         @media (max-width: 768px) {
             .navbar .container {
                 padding: 10px 15px;
-                min-height: 80px;
+                min-height: 90px;
             }
             
             .menu-toggle {
@@ -1436,7 +1437,7 @@
             
             .nav-links {
                 position: fixed;
-                top: 80px;
+                top: 90px;
                 left: 0;
                 width: 100%;
                 background: white;
@@ -1447,7 +1448,7 @@
                 transform: translateX(-100%);
                 transition: transform 0.3s ease;
                 z-index: 1000;
-                max-height: calc(100vh - 80px);
+                max-height: calc(100vh - 90px);
                 overflow-y: auto;
             }
             
@@ -1472,16 +1473,11 @@
             }
             
             .logo-img {
-                height: 50px;
-                margin-right: 10px;
-            }
-            
-            .logo h1 {
-                font-size: 1.5rem;
+                height: 70px;
             }
             
             .footer-logo .logo-img {
-                height: 45px;
+                height: 60px;
             }
             
             .hero-video {
@@ -1644,12 +1640,7 @@
 
         @media (max-width: 480px) {
             .logo-img {
-                height: 100px;
-                margin-right: 8px;
-            }
-            
-            .logo h1 {
-                font-size: 1.4rem;
+                height: 60px;
             }
             
             .hero {
@@ -1844,8 +1835,7 @@
         <div class="container">
             <div class="logo">
                 <h1>
-                    <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/logo_marca.png" alt="Rio Cleaning Logo" class="logo-img">
-                    Rio Cleaning
+                    <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/logo_marca2.png" alt="Rio Cleaning Logo" class="logo-img">
                 </h1>
             </div>
             <ul class="nav-links" id="navLinks">
@@ -1954,10 +1944,10 @@
                         <p>Exclusive for recurring clients who've completed a deep clean with us. Keep your home consistently fresh at a discounted rate.</p>
                     </div>
                     
-                    <!-- Deep Cleaning -->
+                    <!-- Deep Cleaning - ATUALIZADA COM NOVA IMAGEM -->
                     <div class="service-card">
                         <div class="special-icon">
-                            <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80" alt="Deep Cleaning">
+                            <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/deep%20cleaning.jpg.jpeg" alt="Deep Cleaning">
                         </div>
                         <h3>Deep Cleaning</h3>
                         <p>A complete reset for your furnished home. Perfect for eliminating hidden dust, grime, and buildup. Ideal for new clients.</p>
@@ -2559,8 +2549,7 @@
             <div class="footer-content">
                 <div class="footer-logo">
                     <h3>
-                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/logo_marca.png" alt="Rio Cleaning Logo" class="logo-img">
-                        Rio Cleaning
+                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/logo_marca2.png" alt="Rio Cleaning Logo" class="logo-img">
                     </h3>
                     <p>Professional cleaning services in Calgary and surrounding areas. Quality service guaranteed with bonded and insured teams.</p>
                 </div>
