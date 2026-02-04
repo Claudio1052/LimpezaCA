@@ -264,6 +264,17 @@
             min-height: 42px;
         }
 
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #218838);
+            color: white;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-success:hover, .btn-success:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
         /* =========================================== */
         /* NAVIGATION */
         /* =========================================== */
@@ -959,6 +970,12 @@
             gap: 10px;
         }
 
+        .dashboard-header .btn-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
         .dashboard-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
@@ -1580,6 +1597,11 @@
             .dashboard-header {
                 flex-direction: column;
                 align-items: flex-start;
+            }
+            
+            .dashboard-header .btn-container {
+                width: 100%;
+                justify-content: flex-start;
             }
             
             .dashboard-stats {
@@ -2353,9 +2375,14 @@
             <div class="container">
                 <div class="dashboard-header">
                     <h2><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h2>
-                    <button class="btn btn-danger" onclick="logoutAdmin()">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
+                    <div class="btn-container">
+                        <button id="exportExcelBtn" class="btn btn-success">
+                            <i class="fas fa-file-excel"></i> Exportar Excel
+                        </button>
+                        <button class="btn btn-danger" onclick="logoutAdmin()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Dashboard Stats -->
@@ -2366,7 +2393,7 @@
                         </div>
                         <div class="stat-info">
                             <h3 id="pendingCount">0</h3>
-                            <p>Pending</p>
+                            <p>Pendentes</p>
                         </div>
                     </div>
                     <div class="stat-card">
@@ -2375,7 +2402,7 @@
                         </div>
                         <div class="stat-info">
                             <h3 id="confirmedCount">0</h3>
-                            <p>Confirmed</p>
+                            <p>Confirmados</p>
                         </div>
                     </div>
                     <div class="stat-card">
@@ -2384,7 +2411,7 @@
                         </div>
                         <div class="stat-info">
                             <h3 id="completedCount">0</h3>
-                            <p>Completed</p>
+                            <p>Concluídos</p>
                         </div>
                     </div>
                     <div class="stat-card">
@@ -2393,7 +2420,7 @@
                         </div>
                         <div class="stat-info">
                             <h3 id="totalCount">0</h3>
-                            <p>Total This Month</p>
+                            <p>Total Este Mês</p>
                         </div>
                     </div>
                 </div>
@@ -3114,8 +3141,174 @@
                 refreshBtn.addEventListener('click', loadServiceRequests);
             }
             
+            // Exportar Excel
+            initExportExcel();
+            
             // Verificar se já está logado
             checkAdminAuth();
+        }
+
+        // ============================================
+        // EXPORTAÇÃO PARA EXCEL
+        // ============================================
+        function initExportExcel() {
+            const exportBtn = document.getElementById('exportExcelBtn');
+            if (exportBtn) {
+                exportBtn.addEventListener('click', exportToExcel);
+            }
+        }
+
+        async function exportToExcel() {
+            if (!supabaseClient) {
+                showToast('Conexão com banco de dados não disponível', 'error');
+                return;
+            }
+            
+            try {
+                showLoading(true);
+                showToast('Coletando dados para exportação...', 'info');
+                
+                // Buscar todos os dados
+                const { data: requests, error } = await supabaseClient
+                    .from('service_requests')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                if (!requests || requests.length === 0) {
+                    showToast('Nenhum dado encontrado para exportar', 'warning');
+                    return;
+                }
+                
+                // Criar cabeçalhos com acentos corretos
+                const headers = [
+                    'ID',
+                    'Nome Completo',
+                    'Telefone',
+                    'E-mail',
+                    'Endereço',
+                    'Tipo de Serviço',
+                    'Quartos',
+                    'Banheiros',
+                    'Box de Banheiro',
+                    'Tem Pets',
+                    'Quantidade de Pets',
+                    'Tem Crianças',
+                    'Quantidade de Crianças',
+                    'Data da Limpeza',
+                    'Horário',
+                    'Descrição',
+                    'Status',
+                    'Data de Criação'
+                ];
+                
+                // Formatar dados
+                const rows = requests.map(request => {
+                    // Formatar status em português
+                    let statusPt = '';
+                    switch(request.status) {
+                        case 'pending': statusPt = 'Pendente'; break;
+                        case 'confirmed': statusPt = 'Confirmado'; break;
+                        case 'completed': statusPt = 'Concluído'; break;
+                        case 'cancelled': statusPt = 'Cancelado'; break;
+                        default: statusPt = request.status;
+                    }
+                    
+                    // Formatar tipo de serviço em português
+                    let serviceTypePt = '';
+                    switch(request.service_type) {
+                        case 'routine': serviceTypePt = 'Limpeza Rotina'; break;
+                        case 'deep': serviceTypePt = 'Limpeza Profunda'; break;
+                        case 'move': serviceTypePt = 'Limpeza Mudança'; break;
+                        case 'construction': serviceTypePt = 'Pós-Construção'; break;
+                        case 'commercial': serviceTypePt = 'Comercial'; break;
+                        case 'church': serviceTypePt = 'Igreja/Templo'; break;
+                        case 'residential': serviceTypePt = 'Residencial'; break;
+                        case 'carpet': serviceTypePt = 'Limpeza de Carpete'; break;
+                        case 'rv': serviceTypePt = 'Limpeza de RV'; break;
+                        case 'other': serviceTypePt = 'Outro'; break;
+                        default: serviceTypePt = request.service_type;
+                    }
+                    
+                    return [
+                        request.id,
+                        request.full_name || '',
+                        request.phone || '',
+                        request.email || '',
+                        request.address || '',
+                        serviceTypePt,
+                        request.bedrooms || 0,
+                        request.bathrooms || 0,
+                        request.shower_box_count || 0,
+                        request.has_pets ? 'Sim' : 'Não',
+                        request.pet_count || 0,
+                        request.has_children ? 'Sim' : 'Não',
+                        request.children_count || 0,
+                        formatDateExcel(request.cleaning_date),
+                        formatTimeExcel(request.cleaning_time),
+                        request.description || '',
+                        statusPt,
+                        formatDateTimeExcel(request.created_at)
+                    ];
+                });
+                
+                // Criar conteúdo CSV
+                const csvContent = [
+                    headers.join(','),
+                    ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+                ].join('\n');
+                
+                // Criar blob e link de download
+                const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                const timestamp = new Date().toISOString().split('T')[0];
+                
+                link.href = url;
+                link.setAttribute('download', `rio_cleaning_clientes_${timestamp}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                
+                showToast(`Dados exportados com sucesso! ${requests.length} registros.`, 'success');
+                
+            } catch (error) {
+                console.error('Erro ao exportar para Excel:', error);
+                showToast('Erro ao exportar dados: ' + error.message, 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function formatDateExcel(dateString) {
+            if (!dateString) return '';
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('pt-BR');
+            } catch (e) {
+                return dateString;
+            }
+        }
+
+        function formatDateTimeExcel(dateTimeString) {
+            if (!dateTimeString) return '';
+            try {
+                const date = new Date(dateTimeString);
+                return date.toLocaleString('pt-BR');
+            } catch (e) {
+                return dateTimeString;
+            }
+        }
+
+        function formatTimeExcel(timeValue) {
+            const times = {
+                'morning': 'Manhã (8:00 - 12:00)',
+                'afternoon': 'Tarde (13:00 - 17:00)',
+                'evening': 'Noite (18:00 - 20:00)'
+            };
+            return times[timeValue] || timeValue;
         }
 
         async function loadDashboardData() {
