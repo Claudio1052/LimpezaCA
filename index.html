@@ -1867,10 +1867,8 @@
         <!-- Home Section with Video -->
         <section id="home" class="hero">
             <div class="hero-video-container">
-                <video autoplay muted loop playsinline class="hero-video">
-                    <source src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/limpezaVideo.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
+                <!-- Alteração: Imagem em vez de vídeo -->
+                <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/website%20rio%20cleaning.png" alt="Rio Cleaning Professional Services" class="hero-video">
                 <div class="hero-overlay"></div>
             </div>
             <div class="container">
@@ -2014,7 +2012,8 @@
                     <!-- Professional Carpet Cleaning -->
                     <div class="service-card">
                         <div class="special-icon">
-                            <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80" alt="Carpet Cleaning">
+                            <!-- Alteração: Nova imagem para carpet cleaning -->
+                            <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/carpet%20cleaning.png" alt="Carpet Cleaning">
                         </div>
                         <h3>Professional Carpet Cleaning</h3>
                         <p>We use professional-grade equipment, including the Ninja Steam Carpet Cleaner with 500 PSI, to deliver a deep and effective clean that removes embedded dirt and revitalizes carpet fibers.</p>
@@ -2729,19 +2728,8 @@
         function initVideoBackground() {
             const video = document.querySelector('.hero-video');
             if (video) {
-                video.load();
-                
-                video.addEventListener('loadeddata', function() {
-                    this.play().catch(e => {
-                        console.log('Auto-play prevented, trying muted play');
-                        this.muted = true;
-                        this.play();
-                    });
-                });
-                
-                video.loop = true;
-                video.muted = true;
-                video.playsInline = true;
+                // Como agora é uma imagem, não precisamos do código de vídeo
+                // Mantemos a função para compatibilidade
             }
         }
 
