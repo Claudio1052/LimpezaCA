@@ -2702,7 +2702,7 @@
 
     <!-- JavaScript Code -->
     <script>
-        // ============================================
+              // ============================================
         // CONFIGURAÇÕES
         // ============================================
         const ADMIN_CREDENTIALS = {
@@ -3096,7 +3096,7 @@
         }
 
         // ============================================
-        // DASHBOARD ADMIN
+        // DASHBOARD ADMIN - FUNÇÕES CORRIGIDAS
         // ============================================
         function initAdminPanel() {
             // Login
@@ -3332,18 +3332,32 @@
                 const now = new Date();
                 const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
                 const startOfMonthStr = startOfMonth.toISOString();
-                const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-                const endOfMonthStr = endOfMonth.toISOString();
                 
+                // Obter estatísticas do mês atual
+                const { data: monthlyData, error: monthlyError } = await supabaseClient
+                    .from('service_requests')
+                    .select('status')
+                    .gte('created_at', startOfMonthStr);
+                
+                if (monthlyError) throw monthlyError;
+                
+                // Obter todas as estatísticas para o dashboard
                 const { data: allData, error: allError } = await supabaseClient
                     .from('service_requests')
-                    .select('*')
-                    .gte('created_at', startOfMonthStr)
-                    .lte('created_at', endOfMonthStr);
+                    .select('status');
                 
                 if (allError) throw allError;
                 
-                const stats = {
+                // Inicializar contadores
+                const monthlyStats = {
+                    pending: 0,
+                    confirmed: 0,
+                    completed: 0,
+                    cancelled: 0,
+                    total: monthlyData ? monthlyData.length : 0
+                };
+                
+                const overallStats = {
                     pending: 0,
                     confirmed: 0,
                     completed: 0,
@@ -3351,22 +3365,41 @@
                     total: allData ? allData.length : 0
                 };
                 
-                if (allData) {
-                    allData.forEach(item => {
-                        if (item.status === 'pending') stats.pending++;
-                        else if (item.status === 'confirmed') stats.confirmed++;
-                        else if (item.status === 'completed') stats.completed++;
-                        else if (item.status === 'cancelled') stats.cancelled++;
+                // Contar status do mês atual
+                if (monthlyData) {
+                    monthlyData.forEach(item => {
+                        if (item.status === 'pending') monthlyStats.pending++;
+                        else if (item.status === 'confirmed') monthlyStats.confirmed++;
+                        else if (item.status === 'completed') monthlyStats.completed++;
+                        else if (item.status === 'cancelled') monthlyStats.cancelled++;
                     });
                 }
                 
-                document.getElementById('pendingCount').textContent = stats.pending;
-                document.getElementById('confirmedCount').textContent = stats.confirmed;
-                document.getElementById('completedCount').textContent = stats.completed;
-                document.getElementById('totalCount').textContent = stats.total;
+                // Contar status totais
+                if (allData) {
+                    allData.forEach(item => {
+                        if (item.status === 'pending') overallStats.pending++;
+                        else if (item.status === 'confirmed') overallStats.confirmed++;
+                        else if (item.status === 'completed') overallStats.completed++;
+                        else if (item.status === 'cancelled') overallStats.cancelled++;
+                    });
+                }
+                
+                // Atualizar a interface - usar monthlyStats para "Total Este Mês" e overallStats para os outros
+                document.getElementById('pendingCount').textContent = overallStats.pending;
+                document.getElementById('confirmedCount').textContent = overallStats.confirmed;
+                document.getElementById('completedCount').textContent = overallStats.completed;
+                document.getElementById('totalCount').textContent = monthlyStats.total; // Total do mês atual
+                
+                // Log de depuração
+                console.log('Monthly data count:', monthlyData ? monthlyData.length : 0);
+                console.log('All data count:', allData ? allData.length : 0);
+                console.log('Monthly stats:', monthlyStats);
+                console.log('Overall stats:', overallStats);
                 
             } catch (error) {
                 console.error('Error loading stats:', error);
+                showToast('Error loading statistics: ' + error.message, 'error');
                 document.getElementById('pendingCount').textContent = '0';
                 document.getElementById('confirmedCount').textContent = '0';
                 document.getElementById('completedCount').textContent = '0';
@@ -3390,20 +3423,24 @@
                     query = query.eq('status', currentFilters.status);
                 }
                 
-                if (currentFilters.date) {
+                if (currentFilters.date && currentFilters.date !== 'all') {
                     const now = new Date();
-                    let startDate;
+                    let startDate = new Date();
                     
                     switch(currentFilters.date) {
                         case 'today':
-                            startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                            // Começo do dia de hoje
+                            startDate.setHours(0, 0, 0, 0);
                             break;
                         case 'week':
-                            const dayOfWeek = now.getDay();
-                            const diff = now.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
-                            startDate = new Date(now.getFullYear(), now.getMonth(), diff);
+                            // Começo da semana (domingo)
+                            const day = now.getDay();
+                            const diff = now.getDate() - day;
+                            startDate = new Date(now.setDate(diff));
+                            startDate.setHours(0, 0, 0, 0);
                             break;
                         case 'month':
+                            // Primeiro dia do mês
                             startDate = new Date(now.getFullYear(), now.getMonth(), 1);
                             break;
                     }
@@ -3434,7 +3471,7 @@
                 
             } catch (error) {
                 console.error('Error loading service requests:', error);
-                showToast('Error loading service requests.', 'error');
+                showToast('Error loading service requests: ' + error.message, 'error');
             } finally {
                 showLoading(false);
             }
