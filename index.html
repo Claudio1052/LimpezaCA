@@ -1002,6 +1002,11 @@
             color: white;
         }
 
+        .btn-warning {
+            background: #ff9800;
+            color: white;
+        }
+
         /* =========================================== */
         /* FORM STYLES */
         /* =========================================== */
@@ -1439,7 +1444,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 900px;
+            min-width: 1000px;
         }
 
         thead {
@@ -1512,6 +1517,7 @@
             gap: 8px;
             justify-content: center;
             padding: 20px;
+            flex-wrap: wrap;
         }
 
         .pagination button {
@@ -1520,12 +1526,48 @@
             background: white;
             border-radius: var(--border-radius);
             cursor: pointer;
+            min-width: 40px;
+        }
+
+        .pagination button:hover {
+            background: var(--gray-100);
         }
 
         .pagination button.active {
             background: var(--primary-color);
             color: white;
             border-color: var(--primary-color);
+        }
+
+        /* Debug Panel */
+        .debug-panel {
+            background: #1a1a2e;
+            color: #fff;
+            padding: 20px;
+            border-radius: var(--border-radius-lg);
+            margin-bottom: 30px;
+            font-family: monospace;
+        }
+
+        .debug-panel h4 {
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .debug-info {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .debug-success {
+            color: #00c853;
+        }
+
+        .debug-error {
+            color: #ff6b6b;
         }
 
         /* =========================================== */
@@ -2341,9 +2383,19 @@
                 <div class="dashboard-header">
                     <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
                     <div>
+                        <button id="testConnectionBtn" class="btn btn-warning"><i class="fas fa-vial"></i> Test Connection</button>
                         <button id="exportExcelBtn" class="btn btn-success"><i class="fas fa-file-excel"></i> Export</button>
                         <button class="btn btn-danger" onclick="logoutAdmin()"><i class="fas fa-sign-out-alt"></i> Logout</button>
                     </div>
+                </div>
+                
+                <!-- Debug Panel -->
+                <div id="debugPanel" class="debug-panel" style="display: none;">
+                    <h4><i class="fas fa-bug"></i> Debug Information</h4>
+                    <div id="debugInfo" class="debug-info">
+                        Loading debug information...
+                    </div>
+                    <button class="btn btn-secondary btn-small" onclick="hideDebugPanel()">Hide Debug</button>
                 </div>
                 
                 <!-- Tabs -->
@@ -2408,11 +2460,17 @@
                                         <th>Service</th>
                                         <th>Date/Time</th>
                                         <th>Status</th>
-                                        <th>Agreed $</th>
+                                        <th>Value</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="requestsTableBody"></tbody>
+                                <tbody id="requestsTableBody">
+                                    <tr>
+                                        <td colspan="7" style="text-align:center; padding: 40px;">
+                                            <i class="fas fa-spinner fa-spin"></i> Loading requests...
+                                        </td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
                         <div class="pagination" id="pagination"></div>
@@ -3119,7 +3177,122 @@
         function initSupabase() {
             if (window.supabase) {
                 supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log('Supabase initialized');
+            } else {
+                console.error('Supabase library not loaded');
             }
+        }
+
+        // Test Supabase Connection
+        async function testSupabaseConnection() {
+            showDebugPanel();
+            const debugInfo = document.getElementById('debugInfo');
+            
+            if (!supabaseClient) {
+                debugInfo.innerHTML = '<span class="debug-error">❌ Supabase not initialized</span>';
+                return;
+            }
+            
+            let html = '<strong>Testing Supabase Connection...</strong><br><br>';
+            
+            try {
+                // Test 1: Basic connection
+                html += '🔍 Test 1: Basic connection... ';
+                const { data: testData, error: testError } = await supabaseClient.from('service_requests').select('count', { count: 'exact', head: true });
+                
+                if (testError) {
+                    html += `<span class="debug-error">❌ Failed - ${testError.message}</span><br>`;
+                } else {
+                    html += '<span class="debug-success">✅ Success</span><br>';
+                }
+                
+                // Test 2: Fetch all requests
+                html += '🔍 Test 2: Fetching all requests... ';
+                const { data: allData, error: allError } = await supabaseClient
+                    .from('service_requests')
+                    .select('*')
+                    .limit(5);
+                
+                if (allError) {
+                    html += `<span class="debug-error">❌ Failed - ${allError.message}</span><br>`;
+                } else {
+                    html += `<span class="debug-success">✅ Success - Found ${allData.length} requests</span><br>`;
+                    if (allData.length > 0) {
+                        html += '<br><strong>Sample data:</strong><br>';
+                        allData.forEach((item, index) => {
+                            html += `${index + 1}. ${item.full_name} - ${item.service_type} - ${item.status}<br>`;
+                        });
+                    }
+                }
+                
+                // Test 3: Check table structure
+                html += '🔍 Test 3: Checking table structure... ';
+                if (allData && allData.length > 0) {
+                    const columns = Object.keys(allData[0]);
+                    html += `<span class="debug-success">✅ Success - Columns: ${columns.join(', ')}</span><br>`;
+                } else {
+                    html += '<span class="debug-warning">⚠️ No data to analyze structure</span><br>';
+                }
+                
+                // Test 4: Insert test record (optional)
+                html += '<br><strong>To insert a test record, click the button below:</strong><br>';
+                html += '<button class="btn btn-primary btn-small mt-10" onclick="insertTestRecord()">Insert Test Record</button>';
+                
+            } catch (error) {
+                html += `<span class="debug-error">❌ Unexpected error: ${error.message}</span>`;
+            }
+            
+            debugInfo.innerHTML = html;
+        }
+
+        async function insertTestRecord() {
+            if (!supabaseClient) {
+                alert('Supabase not initialized');
+                return;
+            }
+            
+            const testData = {
+                full_name: 'Test User',
+                phone: '123-456-7890',
+                email: 'test@example.com',
+                address: '123 Test Street',
+                service_type: 'test',
+                bedrooms: 2,
+                bathrooms: 1,
+                shower_box_count: 1,
+                has_pets: false,
+                pet_count: 0,
+                has_children: false,
+                children_count: 0,
+                cleaning_date: new Date().toISOString().split('T')[0],
+                cleaning_time: 'morning',
+                description: 'This is a test record',
+                status: 'pending',
+                created_at: new Date().toISOString()
+            };
+            
+            const { data, error } = await supabaseClient
+                .from('service_requests')
+                .insert([testData])
+                .select();
+            
+            if (error) {
+                alert('Error inserting test record: ' + error.message);
+                console.error('Insert error:', error);
+            } else {
+                alert('Test record inserted successfully!');
+                console.log('Inserted:', data);
+                testSupabaseConnection(); // Refresh debug info
+                loadServiceRequests(); // Reload requests table
+            }
+        }
+
+        function showDebugPanel() {
+            document.getElementById('debugPanel').style.display = 'block';
+        }
+
+        function hideDebugPanel() {
+            document.getElementById('debugPanel').style.display = 'none';
         }
 
         // Form submission
@@ -3133,8 +3306,8 @@
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
                 btn.disabled = true;
                 
-                // Calculate estimated price to include in submission
-                const estimatedPrice = document.getElementById('estimatedPriceValue').textContent.replace('$', '');
+                // Calcular preço estimado
+                const estimatedPrice = parseFloat(document.getElementById('estimatedPriceValue').textContent.replace('$', '')) || 0;
                 
                 const formData = {
                     full_name: document.getElementById('fullName').value,
@@ -3153,7 +3326,7 @@
                     cleaning_time: document.getElementById('cleaningTime').value,
                     description: document.getElementById('description').value,
                     status: 'pending',
-                    estimated_value: parseFloat(estimatedPrice) || null,
+                    estimated_value: estimatedPrice, // Salvar o valor estimado
                     agreed_value: null,
                     created_at: new Date().toISOString()
                 };
@@ -3180,6 +3353,10 @@
                     msg.className = 'form-message success';
                     msg.innerHTML = '<i class="fas fa-check-circle"></i> Submitted successfully!';
                     form.reset();
+                    
+                    // Esconder a caixa de preço após submit
+                    document.getElementById('estimatedPriceBox').style.display = 'none';
+                    
                     setTimeout(() => showHomePage(), 2000);
                 } else {
                     showError(result.error || 'Submission failed', msg, btn);
@@ -3210,18 +3387,22 @@
         function initAdminPanel() {
             document.getElementById('loginBtn')?.addEventListener('click', handleAdminLogin);
             document.getElementById('exportExcelBtn')?.addEventListener('click', exportToExcel);
-            document.getElementById('refreshBtn')?.addEventListener('click', loadServiceRequests);
+            document.getElementById('refreshBtn')?.addEventListener('click', () => loadServiceRequests(1));
+            document.getElementById('testConnectionBtn')?.addEventListener('click', testSupabaseConnection);
+            
             document.getElementById('statusFilter')?.addEventListener('change', function() {
                 currentFilters.status = this.value;
-                loadServiceRequests();
+                loadServiceRequests(1);
             });
+            
             document.getElementById('dateFilter')?.addEventListener('change', function() {
                 currentFilters.date = this.value;
-                loadServiceRequests();
+                loadServiceRequests(1);
             });
+            
             document.getElementById('searchFilter')?.addEventListener('input', debounce(function() {
                 currentFilters.search = this.value;
-                loadServiceRequests();
+                loadServiceRequests(1);
             }, 500));
         }
 
@@ -3235,6 +3416,7 @@
             if (tab === 'requests') {
                 tabs[0].classList.add('active');
                 document.getElementById('requestsTab').classList.add('active');
+                loadServiceRequests(1); // Refresh requests when switching to tab
             } else {
                 tabs[1].classList.add('active');
                 document.getElementById('pricesTab').classList.add('active');
@@ -3264,112 +3446,214 @@
 
         async function loadDashboardData() {
             await loadStats();
-            await loadServiceRequests();
+            await loadServiceRequests(1);
         }
 
         async function loadStats() {
             if (!supabaseClient) return;
             
-            const { data: all } = await supabaseClient.from('service_requests').select('status, agreed_value');
-            
-            let pending = 0, confirmed = 0, completed = 0, totalValue = 0;
-            
-            all?.forEach(r => {
-                if (r.status === 'pending') pending++;
-                else if (r.status === 'confirmed') {
-                    confirmed++;
-                    totalValue += r.agreed_value || 0;
+            try {
+                const { data: all, error } = await supabaseClient.from('service_requests').select('status, agreed_value');
+                
+                if (error) {
+                    console.error('Error loading stats:', error);
+                    return;
                 }
-                else if (r.status === 'completed') {
-                    completed++;
-                    totalValue += r.agreed_value || 0;
-                }
-            });
-            
-            document.getElementById('pendingCount').textContent = pending;
-            document.getElementById('confirmedCount').textContent = confirmed;
-            document.getElementById('completedCount').textContent = completed;
-            
-            document.getElementById('totalValueConfirmed').textContent = '$' + totalValue.toFixed(2);
+                
+                let pending = 0, confirmed = 0, completed = 0, totalValue = 0;
+                
+                all?.forEach(r => {
+                    if (r.status === 'pending') pending++;
+                    else if (r.status === 'confirmed') {
+                        confirmed++;
+                        totalValue += r.agreed_value || 0;
+                    }
+                    else if (r.status === 'completed') {
+                        completed++;
+                        totalValue += r.agreed_value || 0;
+                    }
+                });
+                
+                document.getElementById('pendingCount').textContent = pending;
+                document.getElementById('confirmedCount').textContent = confirmed;
+                document.getElementById('completedCount').textContent = completed;
+                document.getElementById('totalValueConfirmed').textContent = '$' + totalValue.toFixed(2);
+                
+            } catch (error) {
+                console.error('Error in loadStats:', error);
+            }
         }
 
         async function loadServiceRequests(page = 1) {
-            if (!supabaseClient) return;
-            currentPage = page;
-            let query = supabaseClient.from('service_requests').select('*', { count: 'exact' });
-            
-            if (currentFilters.status !== 'all') query = query.eq('status', currentFilters.status);
-            if (currentFilters.search) {
-                const term = `%${currentFilters.search}%`;
-                query = query.or(`full_name.ilike.${term},email.ilike.${term}`);
+            if (!supabaseClient) {
+                console.error('Supabase not initialized');
+                document.getElementById('requestsTableBody').innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 40px; color: #ff6b6b;">❌ Supabase not initialized</td></tr>';
+                return;
             }
             
-            // Date filtering
-            if (currentFilters.date !== 'all') {
-                const today = new Date();
-                let startDate = new Date();
+            currentPage = page;
+            
+            try {
+                // Show loading state
+                document.getElementById('requestsTableBody').innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 40px;"><i class="fas fa-spinner fa-spin"></i> Loading requests...</td></tr>';
                 
-                if (currentFilters.date === 'today') {
-                    startDate = today;
-                } else if (currentFilters.date === 'week') {
-                    startDate.setDate(today.getDate() - 7);
-                } else if (currentFilters.date === 'month') {
-                    startDate.setMonth(today.getMonth() - 1);
+                // Build query
+                let query = supabaseClient
+                    .from('service_requests')
+                    .select('*', { count: 'exact' });
+                
+                // Apply status filter
+                if (currentFilters.status && currentFilters.status !== 'all') {
+                    query = query.eq('status', currentFilters.status);
                 }
                 
-                query = query.gte('created_at', startDate.toISOString());
-            }
-            
-            const from = (page - 1) * pageSize;
-            const { data, count, error } = await query.order('created_at', { ascending: false }).range(from, from + pageSize - 1);
-            
-            if (error) {
-                console.error('Error loading requests:', error);
-                return;
-            }
-            
-            const tbody = document.getElementById('requestsTableBody');
-            if (!data || data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">No requests found</td></tr>';
-                document.getElementById('tableInfo').textContent = 'Showing 0 requests';
-                document.getElementById('pagination').innerHTML = '';
-                return;
-            }
-            
-            let html = '';
-            data.forEach(r => {
-                let statusClass = 'status-' + r.status;
-                let statusIcon = r.status === 'pending' ? '<i class="fas fa-clock"></i>' : 
-                                r.status === 'confirmed' ? '<i class="fas fa-check-circle"></i>' :
-                                r.status === 'completed' ? '<i class="fas fa-flag-checkered"></i>' : '<i class="fas fa-times-circle"></i>';
+                // Apply search filter
+                if (currentFilters.search && currentFilters.search.trim() !== '') {
+                    const searchTerm = `%${currentFilters.search.trim()}%`;
+                    query = query.or(`full_name.ilike.${searchTerm},email.ilike.${searchTerm}`);
+                }
                 
-                html += `<tr>
-                    <td><strong>${r.full_name}</strong><br><small>ID: ${r.id?.substring(0, 8)}</small></td>
-                    <td>${r.phone}<br>${r.email}</td>
-                    <td>${r.service_type}</td>
-                    <td>${new Date(r.cleaning_date).toLocaleDateString()}<br>${r.cleaning_time}</td>
-                    <td><span class="status-badge ${statusClass}">${statusIcon} ${r.status}</span></td>
-                    <td>${r.agreed_value ? '$' + r.agreed_value : (r.estimated_value ? 'Est: $' + r.estimated_value : '-')}</td>
-                    <td>
-                        <button class="btn btn-primary btn-small" onclick="editServiceRequest('${r.id}')"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-danger btn-small" onclick="deleteServiceRequest('${r.id}')"><i class="fas fa-trash"></i></button>
-                    </td>
-                </tr>`;
-            });
-            tbody.innerHTML = html;
-            document.getElementById('tableInfo').textContent = `Showing ${data.length} of ${count} requests`;
-            
-            let pages = '';
-            for (let i = 1; i <= Math.ceil(count / pageSize); i++) {
-                pages += `<button class="${i === page ? 'active' : ''}" onclick="loadServiceRequests(${i})">${i}</button>`;
+                // Apply date filter
+                if (currentFilters.date && currentFilters.date !== 'all') {
+                    const today = new Date();
+                    let startDate = new Date();
+                    
+                    if (currentFilters.date === 'today') {
+                        startDate.setHours(0, 0, 0, 0);
+                    } else if (currentFilters.date === 'week') {
+                        startDate.setDate(today.getDate() - 7);
+                    } else if (currentFilters.date === 'month') {
+                        startDate.setMonth(today.getMonth() - 1);
+                    }
+                    
+                    query = query.gte('created_at', startDate.toISOString());
+                }
+                
+                // Get total count first
+                const { count, error: countError } = await query;
+                
+                if (countError) {
+                    throw countError;
+                }
+                
+                // Apply pagination
+                const from = (page - 1) * pageSize;
+                const to = from + pageSize - 1;
+                
+                const { data, error } = await query
+                    .order('created_at', { ascending: false })
+                    .range(from, to);
+                
+                if (error) {
+                    throw error;
+                }
+                
+                console.log(`Loaded ${data?.length || 0} requests (total: ${count})`);
+                
+                const tbody = document.getElementById('requestsTableBody');
+                
+                if (!data || data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 40px;">📭 No requests found</td></tr>';
+                    document.getElementById('tableInfo').textContent = 'Showing 0 requests';
+                    document.getElementById('pagination').innerHTML = '';
+                    return;
+                }
+                
+                let html = '';
+                data.forEach(r => {
+                    // Determine status class and icon
+                    let statusClass = '';
+                    let statusIcon = '';
+                    
+                    switch(r.status) {
+                        case 'pending':
+                            statusClass = 'status-pending';
+                            statusIcon = '<i class="fas fa-clock"></i>';
+                            break;
+                        case 'confirmed':
+                            statusClass = 'status-confirmed';
+                            statusIcon = '<i class="fas fa-check-circle"></i>';
+                            break;
+                        case 'completed':
+                            statusClass = 'status-completed';
+                            statusIcon = '<i class="fas fa-flag-checkered"></i>';
+                            break;
+                        case 'cancelled':
+                            statusClass = 'status-cancelled';
+                            statusIcon = '<i class="fas fa-times-circle"></i>';
+                            break;
+                        default:
+                            statusClass = 'status-pending';
+                            statusIcon = '<i class="fas fa-clock"></i>';
+                    }
+                    
+                    // Format date
+                    const cleaningDate = r.cleaning_date ? new Date(r.cleaning_date).toLocaleDateString('en-US') : 'N/A';
+                    
+                    // Format value
+                    let valueDisplay = '-';
+                    if (r.agreed_value) {
+                        valueDisplay = '$' + parseFloat(r.agreed_value).toFixed(2);
+                    } else if (r.estimated_value) {
+                        valueDisplay = 'Est: $' + parseFloat(r.estimated_value).toFixed(2);
+                    }
+                    
+                    html += `<tr>
+                        <td>
+                            <strong>${r.full_name || 'N/A'}</strong><br>
+                            <small style="color: #718096;">ID: ${r.id ? r.id.substring(0, 8) + '...' : 'N/A'}</small>
+                        </td>
+                        <td>
+                            ${r.phone || 'N/A'}<br>
+                            <small style="color: #718096;">${r.email || 'N/A'}</small>
+                        </td>
+                        <td>${r.service_type || 'N/A'}</td>
+                        <td>
+                            ${cleaningDate}<br>
+                            <small style="color: #718096;">${r.cleaning_time || 'N/A'}</small>
+                        </td>
+                        <td>
+                            <span class="status-badge ${statusClass}">
+                                ${statusIcon} ${r.status || 'pending'}
+                            </span>
+                        </td>
+                        <td>${valueDisplay}</td>
+                        <td>
+                            <div style="display: flex; gap: 5px;">
+                                <button class="btn btn-primary btn-small" onclick="editServiceRequest('${r.id}')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-danger btn-small" onclick="deleteServiceRequest('${r.id}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>`;
+                });
+                
+                tbody.innerHTML = html;
+                document.getElementById('tableInfo').textContent = `Showing ${data.length} of ${count} requests`;
+                
+                // Generate pagination
+                const totalPages = Math.ceil(count / pageSize);
+                let paginationHtml = '';
+                
+                for (let i = 1; i <= totalPages; i++) {
+                    paginationHtml += `<button class="${i === page ? 'active' : ''}" onclick="loadServiceRequests(${i})">${i}</button>`;
+                }
+                
+                document.getElementById('pagination').innerHTML = paginationHtml;
+                
+            } catch (error) {
+                console.error('Error loading requests:', error);
+                document.getElementById('requestsTableBody').innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 40px; color: #ff6b6b;">❌ Error: ${error.message}</td></tr>`;
+                showToast('Error loading requests: ' + error.message, 'error');
             }
-            document.getElementById('pagination').innerHTML = pages;
         }
 
-        // Export to Excel
+        // Export to Excel (placeholder)
         function exportToExcel() {
-            alert('Export to Excel functionality will be implemented here');
-            // In a real implementation, you would generate a CSV or use a library like SheetJS
+            showToast('Export functionality coming soon!', 'info');
         }
 
         // Edit modal
@@ -3421,23 +3705,23 @@
             
             if (data) {
                 document.getElementById('editRequestId').value = data.id;
-                document.getElementById('editFullName').value = data.full_name;
-                document.getElementById('editPhone').value = data.phone;
-                document.getElementById('editEmail').value = data.email;
-                document.getElementById('editAddress').value = data.address;
-                document.getElementById('editServiceType').value = data.service_type;
-                document.getElementById('editBedrooms').value = data.bedrooms;
-                document.getElementById('editBathrooms').value = data.bathrooms;
-                document.getElementById('editShowerBoxCount').value = data.shower_box_count;
+                document.getElementById('editFullName').value = data.full_name || '';
+                document.getElementById('editPhone').value = data.phone || '';
+                document.getElementById('editEmail').value = data.email || '';
+                document.getElementById('editAddress').value = data.address || '';
+                document.getElementById('editServiceType').value = data.service_type || '';
+                document.getElementById('editBedrooms').value = data.bedrooms || 0;
+                document.getElementById('editBathrooms').value = data.bathrooms || 0;
+                document.getElementById('editShowerBoxCount').value = data.shower_box_count || 0;
                 document.getElementById('editHasPets').value = data.has_pets ? 'true' : 'false';
-                document.getElementById('editPetCount').value = data.pet_count;
+                document.getElementById('editPetCount').value = data.pet_count || 0;
                 document.getElementById('editHasChildren').value = data.has_children ? 'true' : 'false';
-                document.getElementById('editChildrenCount').value = data.children_count;
+                document.getElementById('editChildrenCount').value = data.children_count || 0;
                 document.getElementById('editCleaningDate').value = data.cleaning_date?.split('T')[0] || data.cleaning_date;
-                document.getElementById('editCleaningTime').value = data.cleaning_time;
-                document.getElementById('editStatus').value = data.status;
+                document.getElementById('editCleaningTime').value = data.cleaning_time || '';
+                document.getElementById('editStatus').value = data.status || 'pending';
                 document.getElementById('editAgreedValue').value = data.agreed_value || 0;
-                document.getElementById('editDescription').value = data.description;
+                document.getElementById('editDescription').value = data.description || '';
                 openEditModal();
             }
         }
@@ -3467,8 +3751,13 @@
         function showToast(msg, type) {
             const toast = document.createElement('div');
             toast.className = `toast toast-${type}`;
-            toast.style.borderLeftColor = type === 'success' ? '#00c853' : '#ff6b6b';
-            toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}" style="color: ${type === 'success' ? '#00c853' : '#ff6b6b'};"></i> ${msg}`;
+            toast.style.borderLeftColor = type === 'success' ? '#00c853' : (type === 'error' ? '#ff6b6b' : '#ff9800');
+            
+            let icon = 'fa-info-circle';
+            if (type === 'success') icon = 'fa-check-circle';
+            if (type === 'error') icon = 'fa-exclamation-circle';
+            
+            toast.innerHTML = `<i class="fas ${icon}" style="color: ${type === 'success' ? '#00c853' : (type === 'error' ? '#ff6b6b' : '#ff9800')};"></i> ${msg}`;
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), 3000);
         }
