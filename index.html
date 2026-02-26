@@ -1560,6 +1560,8 @@
             border-radius: var(--border-radius);
             margin-bottom: 15px;
             font-size: 0.9rem;
+            white-space: pre-wrap;
+            word-break: break-word;
         }
 
         .debug-success {
@@ -1568,6 +1570,10 @@
 
         .debug-error {
             color: #ff6b6b;
+        }
+
+        .debug-warning {
+            color: #ff9800;
         }
 
         /* =========================================== */
@@ -3220,7 +3226,9 @@
                     if (allData.length > 0) {
                         html += '<br><strong>Sample data:</strong><br>';
                         allData.forEach((item, index) => {
-                            html += `${index + 1}. ${item.full_name} - ${item.service_type} - ${item.status}<br>`;
+                            // Converter ID para string para exibição
+                            const idStr = item.id ? String(item.id) : 'N/A';
+                            html += `${index + 1}. ${item.full_name} - ${item.service_type} - ${item.status} (ID: ${idStr.substring(0, 8)}...)<br>`;
                         });
                     }
                 }
@@ -3268,6 +3276,7 @@
                 cleaning_time: 'morning',
                 description: 'This is a test record',
                 status: 'pending',
+                estimated_value: 100,
                 created_at: new Date().toISOString()
             };
             
@@ -3326,7 +3335,7 @@
                     cleaning_time: document.getElementById('cleaningTime').value,
                     description: document.getElementById('description').value,
                     status: 'pending',
-                    estimated_value: estimatedPrice, // Salvar o valor estimado
+                    estimated_value: estimatedPrice,
                     agreed_value: null,
                     created_at: new Date().toISOString()
                 };
@@ -3416,11 +3425,11 @@
             if (tab === 'requests') {
                 tabs[0].classList.add('active');
                 document.getElementById('requestsTab').classList.add('active');
-                loadServiceRequests(1); // Refresh requests when switching to tab
+                loadServiceRequests(1);
             } else {
                 tabs[1].classList.add('active');
                 document.getElementById('pricesTab').classList.add('active');
-                loadPriceSettings(); // Refresh price settings when switching to tab
+                loadPriceSettings();
             }
         }
 
@@ -3561,7 +3570,7 @@
                 
                 let html = '';
                 data.forEach(r => {
-                    // Determine status class and icon
+                    // Determinar classe e ícone do status
                     let statusClass = '';
                     let statusIcon = '';
                     
@@ -3587,10 +3596,17 @@
                             statusIcon = '<i class="fas fa-clock"></i>';
                     }
                     
-                    // Format date
+                    // Formatar ID (converter para string)
+                    let displayId = 'N/A';
+                    if (r.id) {
+                        const idStr = String(r.id);
+                        displayId = idStr.substring(0, 8) + '...';
+                    }
+                    
+                    // Formatar data
                     const cleaningDate = r.cleaning_date ? new Date(r.cleaning_date).toLocaleDateString('en-US') : 'N/A';
                     
-                    // Format value
+                    // Formatar valor
                     let valueDisplay = '-';
                     if (r.agreed_value) {
                         valueDisplay = '$' + parseFloat(r.agreed_value).toFixed(2);
@@ -3601,7 +3617,7 @@
                     html += `<tr>
                         <td>
                             <strong>${r.full_name || 'N/A'}</strong><br>
-                            <small style="color: #718096;">ID: ${r.id ? r.id.substring(0, 8) + '...' : 'N/A'}</small>
+                            <small style="color: #718096;">ID: ${displayId}</small>
                         </td>
                         <td>
                             ${r.phone || 'N/A'}<br>
@@ -3620,10 +3636,10 @@
                         <td>${valueDisplay}</td>
                         <td>
                             <div style="display: flex; gap: 5px;">
-                                <button class="btn btn-primary btn-small" onclick="editServiceRequest('${r.id}')">
+                                <button class="btn btn-primary btn-small" onclick="editServiceRequest('${String(r.id)}')">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="btn btn-danger btn-small" onclick="deleteServiceRequest('${r.id}')">
+                                <button class="btn btn-danger btn-small" onclick="deleteServiceRequest('${String(r.id)}')">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
@@ -3634,7 +3650,7 @@
                 tbody.innerHTML = html;
                 document.getElementById('tableInfo').textContent = `Showing ${data.length} of ${count} requests`;
                 
-                // Generate pagination
+                // Gerar paginação
                 const totalPages = Math.ceil(count / pageSize);
                 let paginationHtml = '';
                 
@@ -3697,7 +3713,16 @@
 
         async function editServiceRequest(id) {
             if (!supabaseClient) return;
-            const { data, error } = await supabaseClient.from('service_requests').select().eq('id', id).single();
+            
+            // Converter id para string
+            const idStr = String(id);
+            
+            const { data, error } = await supabaseClient
+                .from('service_requests')
+                .select()
+                .eq('id', idStr)
+                .single();
+                
             if (error) {
                 showToast('Error loading request: ' + error.message, 'error');
                 return;
@@ -3728,7 +3753,14 @@
 
         async function deleteServiceRequest(id) {
             if (confirm('Are you sure you want to delete this request? This action cannot be undone.')) {
-                const { error } = await supabaseClient.from('service_requests').delete().eq('id', id);
+                // Converter id para string
+                const idStr = String(id);
+                
+                const { error } = await supabaseClient
+                    .from('service_requests')
+                    .delete()
+                    .eq('id', idStr);
+                    
                 if (!error) {
                     loadServiceRequests(currentPage);
                     loadStats();
