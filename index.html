@@ -223,6 +223,7 @@
             padding: 8px 12px;
             border-radius: var(--border-radius);
             white-space: nowrap;
+            cursor: pointer;
         }
 
         .nav-links a:hover, .nav-links a.active {
@@ -1406,7 +1407,6 @@
                 <li><a href="#testimonials" onclick="scrollToSection('testimonials')">Reviews</a></li>
                 <li><a href="#about" onclick="scrollToSection('about')">About</a></li>
                 <li><a href="#" onclick="showScheduleForm()">Schedule</a></li>
-                <!-- Admin link removido daqui -->
             </ul>
         </div>
     </nav>
@@ -2134,12 +2134,18 @@
             }
         }
 
-        // Navigation
+        // Navigation - MELHORADO: agora funciona de qualquer lugar
         function scrollToSection(id) {
             const section = document.getElementById(id);
             if (section) {
-                const offset = document.querySelector('.navbar').offsetHeight;
-                window.scrollTo({ top: section.offsetTop - offset, behavior: 'smooth' });
+                // Primeiro mostrar a home page se estiver no schedule
+                showHomePage();
+                
+                // Pequeno delay para garantir que a página carregou
+                setTimeout(() => {
+                    const offset = document.querySelector('.navbar').offsetHeight;
+                    window.scrollTo({ top: section.offsetTop - offset, behavior: 'smooth' });
+                }, 100);
             }
             closeMobileMenu();
         }
@@ -2355,6 +2361,7 @@
             await loadServiceRequests();
         }
 
+        // ========== KPI ATUALIZADO: mantém valor quando muda para completed ==========
         async function loadStats() {
             if (!supabaseClient) return;
             
@@ -2368,12 +2375,17 @@
                     confirmed++;
                     totalValue += r.agreed_value || 0;
                 }
-                else if (r.status === 'completed') completed++;
+                else if (r.status === 'completed') {
+                    completed++;
+                    totalValue += r.agreed_value || 0; // MANTÉM O MESMO VALOR AO COMPLETAR
+                }
             });
             
             document.getElementById('pendingCount').textContent = pending;
             document.getElementById('confirmedCount').textContent = confirmed;
             document.getElementById('completedCount').textContent = completed;
+            
+            // KPI soma confirmados + completados (valor se mantém)
             document.getElementById('totalValueConfirmed').textContent = '$' + totalValue.toFixed(2);
         }
 
@@ -2448,7 +2460,7 @@
                     cleaning_date: document.getElementById('editCleaningDate').value,
                     cleaning_time: document.getElementById('editCleaningTime').value,
                     status: document.getElementById('editStatus').value,
-                    agreed_value: parseFloat(document.getElementById('editAgreedValue').value) || 0,
+                    agreed_value: parseFloat(document.getElementById('editAgreedValue').value) || 0, // VALOR PRESERVADO
                     description: document.getElementById('editDescription').value
                 };
                 
@@ -2482,7 +2494,7 @@
                 document.getElementById('editCleaningDate').value = data.cleaning_date?.split('T')[0] || data.cleaning_date;
                 document.getElementById('editCleaningTime').value = data.cleaning_time;
                 document.getElementById('editStatus').value = data.status;
-                document.getElementById('editAgreedValue').value = data.agreed_value || 0;
+                document.getElementById('editAgreedValue').value = data.agreed_value || 0; // Garantir que o agreed_value seja carregado corretamente
                 document.getElementById('editDescription').value = data.description;
                 openEditModal();
             }
