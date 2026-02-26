@@ -2487,7 +2487,7 @@
                 <div id="pricesTab" class="dashboard-tab-content">
                     <div class="price-settings">
                         <h3><i class="fas fa-tags"></i> Price Settings</h3>
-                        <p class="text-center mb-20">Configure the base prices for each service. These values will be used to calculate the estimated price in the schedule form.</p>
+                        <p class="text-center mb-20">Configure the base prices for each service. These values will be saved directly to the database and used to calculate the estimated price in the schedule form.</p>
                         
                         <div class="price-grid">
                             <!-- Residential Cleaning -->
@@ -2615,10 +2615,13 @@
                             </div>
                         </div>
                         
-                        <div class="form-actions mt-20">
-                            <button class="btn btn-primary" onclick="savePriceSettings()"><i class="fas fa-save"></i> Save All Prices</button>
+                        <div class="form-actions mt-20" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button class="btn btn-primary" onclick="savePriceSettings()"><i class="fas fa-save"></i> Save All Prices to Database</button>
                             <button class="btn btn-secondary" onclick="resetPriceSettings()"><i class="fas fa-undo"></i> Reset to Default</button>
+                            <button class="btn btn-warning" onclick="testPriceSettingsTable()"><i class="fas fa-vial"></i> Test Connection</button>
                         </div>
+                        
+                        <div class="form-message" id="priceSettingsMessage" style="margin-top: 20px; display: none;"></div>
                     </div>
                 </div>
             </div>
@@ -2814,30 +2817,8 @@
         let currentFilters = { status: 'all', date: 'all', search: '' };
         let flatpickrInstance = null;
 
-        // Price settings (default values)
-        let priceSettings = {
-            bedroom: 35,
-            bathroom: 40,
-            shower: 25,
-            base: 50,
-            carpetSqFt: 0.35,
-            carpetMin: 50,
-            moveBase: 120,
-            moveBedroom: 35,
-            moveBathroom: 40,
-            constructionBase: 150,
-            constructionSqFt: 0.50,
-            commercialBase: 100,
-            commercialSqFt: 0.30,
-            churchBase: 120,
-            churchSqFt: 0.40,
-            rvSmall: 150,
-            rvMedium: 200,
-            rvLarge: 300,
-            petFee: 10,
-            childFee: 0,
-            urgentFee: 25
-        };
+        // Price settings (loaded from database)
+        let priceSettings = {};
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
@@ -2847,7 +2828,12 @@
             initAdminPanel();
             initEditModal();
             initConditionalFields();
-            loadPriceSettings();
+            // Carregar preços do banco de dados
+            loadPriceSettings().catch(error => {
+                console.error('Error loading price settings:', error);
+                priceSettings = getDefaultPriceSettings();
+                updatePriceInputFields();
+            });
             document.getElementById('currentYear').textContent = new Date().getFullYear();
             
             // Inicializar campos condicionais
@@ -2985,20 +2971,20 @@
                     const bathrooms = parseInt(document.getElementById('bathrooms').value) || 0;
                     const showers = parseInt(document.getElementById('showerBoxCount').value) || 0;
                     
-                    total = priceSettings.base;
-                    details.push(`Base: $${priceSettings.base}`);
+                    total = priceSettings.base || 50;
+                    details.push(`Base: $${priceSettings.base || 50}`);
                     
                     if (bedrooms > 0) {
-                        total += bedrooms * priceSettings.bedroom;
-                        details.push(`${bedrooms} bedroom(s): $${bedrooms * priceSettings.bedroom}`);
+                        total += bedrooms * (priceSettings.bedroom || 35);
+                        details.push(`${bedrooms} bedroom(s): $${bedrooms * (priceSettings.bedroom || 35)}`);
                     }
                     if (bathrooms > 0) {
-                        total += bathrooms * priceSettings.bathroom;
-                        details.push(`${bathrooms} bathroom(s): $${bathrooms * priceSettings.bathroom}`);
+                        total += bathrooms * (priceSettings.bathroom || 40);
+                        details.push(`${bathrooms} bathroom(s): $${bathrooms * (priceSettings.bathroom || 40)}`);
                     }
                     if (showers > 0) {
-                        total += showers * priceSettings.shower;
-                        details.push(`${showers} shower box(es): $${showers * priceSettings.shower}`);
+                        total += showers * (priceSettings.shower || 25);
+                        details.push(`${showers} shower box(es): $${showers * (priceSettings.shower || 25)}`);
                     }
                     break;
                     
@@ -3008,16 +2994,16 @@
                     const sqFt = length * width;
                     
                     if (sqFt > 0) {
-                        total = sqFt * priceSettings.carpetSqFt;
-                        details.push(`${sqFt} sq ft: $${(sqFt * priceSettings.carpetSqFt).toFixed(2)}`);
+                        total = sqFt * (priceSettings.carpetSqFt || 0.35);
+                        details.push(`${sqFt} sq ft: $${(sqFt * (priceSettings.carpetSqFt || 0.35)).toFixed(2)}`);
                         
-                        if (total < priceSettings.carpetMin) {
-                            total = priceSettings.carpetMin;
-                            details.push(`Minimum charge: $${priceSettings.carpetMin}`);
+                        if (total < (priceSettings.carpetMin || 50)) {
+                            total = priceSettings.carpetMin || 50;
+                            details.push(`Minimum charge: $${priceSettings.carpetMin || 50}`);
                         }
                     } else {
-                        total = priceSettings.carpetMin;
-                        details.push(`Base rate: $${priceSettings.carpetMin}`);
+                        total = priceSettings.carpetMin || 50;
+                        details.push(`Base rate: $${priceSettings.carpetMin || 50}`);
                     }
                     break;
                     
@@ -3025,37 +3011,37 @@
                     const moveBedrooms = parseInt(document.getElementById('bedrooms').value) || 0;
                     const moveBathrooms = parseInt(document.getElementById('bathrooms').value) || 0;
                     
-                    total = priceSettings.moveBase;
-                    details.push(`Base: $${priceSettings.moveBase}`);
+                    total = priceSettings.moveBase || 120;
+                    details.push(`Base: $${priceSettings.moveBase || 120}`);
                     
                     if (moveBedrooms > 0) {
-                        total += moveBedrooms * priceSettings.moveBedroom;
-                        details.push(`${moveBedrooms} bedroom(s): $${moveBedrooms * priceSettings.moveBedroom}`);
+                        total += moveBedrooms * (priceSettings.moveBedroom || 35);
+                        details.push(`${moveBedrooms} bedroom(s): $${moveBedrooms * (priceSettings.moveBedroom || 35)}`);
                     }
                     if (moveBathrooms > 0) {
-                        total += moveBathrooms * priceSettings.moveBathroom;
-                        details.push(`${moveBathrooms} bathroom(s): $${moveBathrooms * priceSettings.moveBathroom}`);
+                        total += moveBathrooms * (priceSettings.moveBathroom || 40);
+                        details.push(`${moveBathrooms} bathroom(s): $${moveBathrooms * (priceSettings.moveBathroom || 40)}`);
                     }
                     break;
                     
                 case 'construction':
-                    total = priceSettings.constructionBase;
-                    details.push(`Base rate: $${priceSettings.constructionBase}`);
+                    total = priceSettings.constructionBase || 150;
+                    details.push(`Base rate: $${priceSettings.constructionBase || 150}`);
                     break;
                     
                 case 'commercial':
-                    total = priceSettings.commercialBase;
-                    details.push(`Base rate: $${priceSettings.commercialBase}`);
+                    total = priceSettings.commercialBase || 100;
+                    details.push(`Base rate: $${priceSettings.commercialBase || 100}`);
                     break;
                     
                 case 'church':
-                    total = priceSettings.churchBase;
-                    details.push(`Base rate: $${priceSettings.churchBase}`);
+                    total = priceSettings.churchBase || 120;
+                    details.push(`Base rate: $${priceSettings.churchBase || 120}`);
                     break;
                     
                 case 'rv':
-                    total = priceSettings.rvMedium; // Default to medium
-                    details.push(`RV cleaning: $${priceSettings.rvMedium}`);
+                    total = priceSettings.rvMedium || 200; // Default to medium
+                    details.push(`RV cleaning: $${priceSettings.rvMedium || 200}`);
                     break;
                     
                 default:
@@ -3066,8 +3052,8 @@
             // Add pet fee
             const hasPets = document.getElementById('hasPets').value === 'true';
             const petCount = parseInt(document.getElementById('petCount').value) || 0;
-            if (hasPets && petCount > 0 && priceSettings.petFee > 0) {
-                const petFee = petCount * priceSettings.petFee;
+            if (hasPets && petCount > 0 && (priceSettings.petFee || 0) > 0) {
+                const petFee = petCount * (priceSettings.petFee || 10);
                 total += petFee;
                 details.push(`Pets (${petCount}): $${petFee}`);
             }
@@ -3075,8 +3061,8 @@
             // Add child fee
             const hasChildren = document.getElementById('hasChildren').value === 'true';
             const childCount = parseInt(document.getElementById('childrenCount').value) || 0;
-            if (hasChildren && childCount > 0 && priceSettings.childFee > 0) {
-                const childFee = childCount * priceSettings.childFee;
+            if (hasChildren && childCount > 0 && (priceSettings.childFee || 0) > 0) {
+                const childFee = childCount * (priceSettings.childFee || 0);
                 total += childFee;
                 details.push(`Children (${childCount}): $${childFee}`);
             }
@@ -3087,81 +3073,316 @@
             priceBox.style.display = 'block';
         }
 
-        // Price settings functions
-        function loadPriceSettings() {
-            // Load from localStorage if available
-            const saved = localStorage.getItem('priceSettings');
-            if (saved) {
-                try {
-                    priceSettings = JSON.parse(saved);
-                } catch (e) {
-                    console.error('Error loading price settings', e);
-                }
+        // ============== PRICE SETTINGS FUNCTIONS (DATABASE) ==============
+
+        // Carregar preços do Supabase
+        async function loadPriceSettings() {
+            if (!supabaseClient) {
+                console.error('Supabase not initialized');
+                return;
             }
             
-            // Update input fields
-            document.getElementById('priceBedroom').value = priceSettings.bedroom;
-            document.getElementById('priceBathroom').value = priceSettings.bathroom;
-            document.getElementById('priceShower').value = priceSettings.shower;
-            document.getElementById('priceBase').value = priceSettings.base;
-            document.getElementById('priceCarpetSqFt').value = priceSettings.carpetSqFt;
-            document.getElementById('priceCarpetMin').value = priceSettings.carpetMin;
-            document.getElementById('priceMoveBase').value = priceSettings.moveBase;
-            document.getElementById('priceMoveBedroom').value = priceSettings.moveBedroom;
-            document.getElementById('priceMoveBathroom').value = priceSettings.moveBathroom;
-            document.getElementById('priceConstructionBase').value = priceSettings.constructionBase;
-            document.getElementById('priceConstructionSqFt').value = priceSettings.constructionSqFt;
-            document.getElementById('priceCommercialBase').value = priceSettings.commercialBase;
-            document.getElementById('priceCommercialSqFt').value = priceSettings.commercialSqFt;
-            document.getElementById('priceChurchBase').value = priceSettings.churchBase;
-            document.getElementById('priceChurchSqFt').value = priceSettings.churchSqFt;
-            document.getElementById('priceRvSmall').value = priceSettings.rvSmall;
-            document.getElementById('priceRvMedium').value = priceSettings.rvMedium;
-            document.getElementById('priceRvLarge').value = priceSettings.rvLarge;
-            document.getElementById('pricePetFee').value = priceSettings.petFee;
-            document.getElementById('priceChildFee').value = priceSettings.childFee;
-            document.getElementById('priceUrgentFee').value = priceSettings.urgentFee;
+            try {
+                const { data, error } = await supabaseClient
+                    .from('price_settings')
+                    .select('*')
+                    .limit(1)
+                    .single();
+                
+                if (error) {
+                    console.error('Error loading price settings:', error);
+                    // Fallback para valores padrão se não conseguir carregar
+                    priceSettings = getDefaultPriceSettings();
+                } else if (data) {
+                    // Mapear os nomes das colunas do banco para os nomes usados no código
+                    priceSettings = {
+                        bedroom: data.bedroom || 35,
+                        bathroom: data.bathroom || 40,
+                        shower: data.shower || 25,
+                        base: data.base || 50,
+                        carpetSqFt: data.carpet_sq_ft || 0.35,
+                        carpetMin: data.carpet_min || 50,
+                        moveBase: data.move_base || 120,
+                        moveBedroom: data.move_bedroom || 35,
+                        moveBathroom: data.move_bathroom || 40,
+                        constructionBase: data.construction_base || 150,
+                        constructionSqFt: data.construction_sq_ft || 0.50,
+                        commercialBase: data.commercial_base || 100,
+                        commercialSqFt: data.commercial_sq_ft || 0.30,
+                        churchBase: data.church_base || 120,
+                        churchSqFt: data.church_sq_ft || 0.40,
+                        rvSmall: data.rv_small || 150,
+                        rvMedium: data.rv_medium || 200,
+                        rvLarge: data.rv_large || 300,
+                        petFee: data.pet_fee || 10,
+                        childFee: data.child_fee || 0,
+                        urgentFee: data.urgent_fee || 25
+                    };
+                }
+                
+                // Atualizar os campos do formulário
+                updatePriceInputFields();
+                
+            } catch (error) {
+                console.error('Error in loadPriceSettings:', error);
+                priceSettings = getDefaultPriceSettings();
+                updatePriceInputFields();
+            }
         }
 
-        function savePriceSettings() {
-            priceSettings = {
+        // Valores padrão caso não consiga carregar do banco
+        function getDefaultPriceSettings() {
+            return {
+                bedroom: 35,
+                bathroom: 40,
+                shower: 25,
+                base: 50,
+                carpetSqFt: 0.35,
+                carpetMin: 50,
+                moveBase: 120,
+                moveBedroom: 35,
+                moveBathroom: 40,
+                constructionBase: 150,
+                constructionSqFt: 0.50,
+                commercialBase: 100,
+                commercialSqFt: 0.30,
+                churchBase: 120,
+                churchSqFt: 0.40,
+                rvSmall: 150,
+                rvMedium: 200,
+                rvLarge: 300,
+                petFee: 10,
+                childFee: 0,
+                urgentFee: 25
+            };
+        }
+
+        // Atualizar campos de input com os valores carregados
+        function updatePriceInputFields() {
+            const fields = [
+                'priceBedroom', 'priceBathroom', 'priceShower', 'priceBase',
+                'priceCarpetSqFt', 'priceCarpetMin', 'priceMoveBase', 'priceMoveBedroom',
+                'priceMoveBathroom', 'priceConstructionBase', 'priceConstructionSqFt',
+                'priceCommercialBase', 'priceCommercialSqFt', 'priceChurchBase', 'priceChurchSqFt',
+                'priceRvSmall', 'priceRvMedium', 'priceRvLarge', 'pricePetFee',
+                'priceChildFee', 'priceUrgentFee'
+            ];
+            
+            fields.forEach(fieldId => {
+                const element = document.getElementById(fieldId);
+                if (element) {
+                    const priceKey = fieldId.replace('price', '')
+                        .replace('Bedroom', 'bedroom')
+                        .replace('Bathroom', 'bathroom')
+                        .replace('Shower', 'shower')
+                        .replace('Base', 'base')
+                        .replace('CarpetSqFt', 'carpetSqFt')
+                        .replace('CarpetMin', 'carpetMin')
+                        .replace('MoveBase', 'moveBase')
+                        .replace('MoveBedroom', 'moveBedroom')
+                        .replace('MoveBathroom', 'moveBathroom')
+                        .replace('ConstructionBase', 'constructionBase')
+                        .replace('ConstructionSqFt', 'constructionSqFt')
+                        .replace('CommercialBase', 'commercialBase')
+                        .replace('CommercialSqFt', 'commercialSqFt')
+                        .replace('ChurchBase', 'churchBase')
+                        .replace('ChurchSqFt', 'churchSqFt')
+                        .replace('RvSmall', 'rvSmall')
+                        .replace('RvMedium', 'rvMedium')
+                        .replace('RvLarge', 'rvLarge')
+                        .replace('PetFee', 'petFee')
+                        .replace('ChildFee', 'childFee')
+                        .replace('UrgentFee', 'urgentFee');
+                    
+                    element.value = priceSettings[priceKey] || 0;
+                }
+            });
+        }
+
+        // Salvar preços no Supabase
+        async function savePriceSettings() {
+            if (!supabaseClient) {
+                showToast('Supabase not initialized', 'error');
+                return;
+            }
+            
+            // Coletar valores dos inputs
+            const newSettings = {
                 bedroom: parseFloat(document.getElementById('priceBedroom').value) || 35,
                 bathroom: parseFloat(document.getElementById('priceBathroom').value) || 40,
                 shower: parseFloat(document.getElementById('priceShower').value) || 25,
                 base: parseFloat(document.getElementById('priceBase').value) || 50,
-                carpetSqFt: parseFloat(document.getElementById('priceCarpetSqFt').value) || 0.35,
-                carpetMin: parseFloat(document.getElementById('priceCarpetMin').value) || 50,
-                moveBase: parseFloat(document.getElementById('priceMoveBase').value) || 120,
-                moveBedroom: parseFloat(document.getElementById('priceMoveBedroom').value) || 35,
-                moveBathroom: parseFloat(document.getElementById('priceMoveBathroom').value) || 40,
-                constructionBase: parseFloat(document.getElementById('priceConstructionBase').value) || 150,
-                constructionSqFt: parseFloat(document.getElementById('priceConstructionSqFt').value) || 0.50,
-                commercialBase: parseFloat(document.getElementById('priceCommercialBase').value) || 100,
-                commercialSqFt: parseFloat(document.getElementById('priceCommercialSqFt').value) || 0.30,
-                churchBase: parseFloat(document.getElementById('priceChurchBase').value) || 120,
-                churchSqFt: parseFloat(document.getElementById('priceChurchSqFt').value) || 0.40,
-                rvSmall: parseFloat(document.getElementById('priceRvSmall').value) || 150,
-                rvMedium: parseFloat(document.getElementById('priceRvMedium').value) || 200,
-                rvLarge: parseFloat(document.getElementById('priceRvLarge').value) || 300,
-                petFee: parseFloat(document.getElementById('pricePetFee').value) || 10,
-                childFee: parseFloat(document.getElementById('priceChildFee').value) || 0,
-                urgentFee: parseFloat(document.getElementById('priceUrgentFee').value) || 25
+                carpet_sq_ft: parseFloat(document.getElementById('priceCarpetSqFt').value) || 0.35,
+                carpet_min: parseFloat(document.getElementById('priceCarpetMin').value) || 50,
+                move_base: parseFloat(document.getElementById('priceMoveBase').value) || 120,
+                move_bedroom: parseFloat(document.getElementById('priceMoveBedroom').value) || 35,
+                move_bathroom: parseFloat(document.getElementById('priceMoveBathroom').value) || 40,
+                construction_base: parseFloat(document.getElementById('priceConstructionBase').value) || 150,
+                construction_sq_ft: parseFloat(document.getElementById('priceConstructionSqFt').value) || 0.50,
+                commercial_base: parseFloat(document.getElementById('priceCommercialBase').value) || 100,
+                commercial_sq_ft: parseFloat(document.getElementById('priceCommercialSqFt').value) || 0.30,
+                church_base: parseFloat(document.getElementById('priceChurchBase').value) || 120,
+                church_sq_ft: parseFloat(document.getElementById('priceChurchSqFt').value) || 0.40,
+                rv_small: parseFloat(document.getElementById('priceRvSmall').value) || 150,
+                rv_medium: parseFloat(document.getElementById('priceRvMedium').value) || 200,
+                rv_large: parseFloat(document.getElementById('priceRvLarge').value) || 300,
+                pet_fee: parseFloat(document.getElementById('pricePetFee').value) || 10,
+                child_fee: parseFloat(document.getElementById('priceChildFee').value) || 0,
+                urgent_fee: parseFloat(document.getElementById('priceUrgentFee').value) || 25
             };
             
-            localStorage.setItem('priceSettings', JSON.stringify(priceSettings));
-            showToast('Price settings saved successfully!', 'success');
-            
-            // Recalculate if on schedule form
-            if (document.getElementById('scheduleFormContainer').style.display === 'block') {
-                calculateEstimatedPrice();
+            try {
+                // Verificar se já existe um registro
+                const { data: existingData, error: checkError } = await supabaseClient
+                    .from('price_settings')
+                    .select('id')
+                    .limit(1);
+                
+                if (checkError) throw checkError;
+                
+                let result;
+                if (existingData && existingData.length > 0) {
+                    // Atualizar registro existente
+                    result = await supabaseClient
+                        .from('price_settings')
+                        .update(newSettings)
+                        .eq('id', existingData[0].id);
+                } else {
+                    // Inserir novo registro
+                    result = await supabaseClient
+                        .from('price_settings')
+                        .insert([newSettings]);
+                }
+                
+                if (result.error) throw result.error;
+                
+                // Atualizar a variável local
+                priceSettings = {
+                    bedroom: newSettings.bedroom,
+                    bathroom: newSettings.bathroom,
+                    shower: newSettings.shower,
+                    base: newSettings.base,
+                    carpetSqFt: newSettings.carpet_sq_ft,
+                    carpetMin: newSettings.carpet_min,
+                    moveBase: newSettings.move_base,
+                    moveBedroom: newSettings.move_bedroom,
+                    moveBathroom: newSettings.move_bathroom,
+                    constructionBase: newSettings.construction_base,
+                    constructionSqFt: newSettings.construction_sq_ft,
+                    commercialBase: newSettings.commercial_base,
+                    commercialSqFt: newSettings.commercial_sq_ft,
+                    churchBase: newSettings.church_base,
+                    churchSqFt: newSettings.church_sq_ft,
+                    rvSmall: newSettings.rv_small,
+                    rvMedium: newSettings.rv_medium,
+                    rvLarge: newSettings.rv_large,
+                    petFee: newSettings.pet_fee,
+                    childFee: newSettings.child_fee,
+                    urgentFee: newSettings.urgent_fee
+                };
+                
+                showToast('Price settings saved successfully to database!', 'success');
+                
+                // Recalculate if on schedule form
+                if (document.getElementById('scheduleFormContainer').style.display === 'block') {
+                    calculateEstimatedPrice();
+                }
+                
+            } catch (error) {
+                console.error('Error saving price settings:', error);
+                showToast('Error saving price settings: ' + error.message, 'error');
             }
         }
 
-        function resetPriceSettings() {
+        // Resetar para valores padrão
+        async function resetPriceSettings() {
             if (confirm('Reset all price settings to default values?')) {
-                localStorage.removeItem('priceSettings');
-                loadPriceSettings();
-                showToast('Price settings reset to default', 'success');
+                const defaultSettings = getDefaultPriceSettings();
+                
+                // Converter para formato do banco
+                const dbSettings = {
+                    bedroom: defaultSettings.bedroom,
+                    bathroom: defaultSettings.bathroom,
+                    shower: defaultSettings.shower,
+                    base: defaultSettings.base,
+                    carpet_sq_ft: defaultSettings.carpetSqFt,
+                    carpet_min: defaultSettings.carpetMin,
+                    move_base: defaultSettings.moveBase,
+                    move_bedroom: defaultSettings.moveBedroom,
+                    move_bathroom: defaultSettings.moveBathroom,
+                    construction_base: defaultSettings.constructionBase,
+                    construction_sq_ft: defaultSettings.constructionSqFt,
+                    commercial_base: defaultSettings.commercialBase,
+                    commercial_sq_ft: defaultSettings.commercialSqFt,
+                    church_base: defaultSettings.churchBase,
+                    church_sq_ft: defaultSettings.churchSqFt,
+                    rv_small: defaultSettings.rvSmall,
+                    rv_medium: defaultSettings.rvMedium,
+                    rv_large: defaultSettings.rvLarge,
+                    pet_fee: defaultSettings.petFee,
+                    child_fee: defaultSettings.childFee,
+                    urgent_fee: defaultSettings.urgentFee
+                };
+                
+                try {
+                    // Verificar se já existe um registro
+                    const { data: existingData, error: checkError } = await supabaseClient
+                        .from('price_settings')
+                        .select('id')
+                        .limit(1);
+                    
+                    if (checkError) throw checkError;
+                    
+                    if (existingData && existingData.length > 0) {
+                        // Atualizar registro existente
+                        await supabaseClient
+                            .from('price_settings')
+                            .update(dbSettings)
+                            .eq('id', existingData[0].id);
+                    } else {
+                        // Inserir novo registro
+                        await supabaseClient
+                            .from('price_settings')
+                            .insert([dbSettings]);
+                    }
+                    
+                    // Recarregar os preços
+                    await loadPriceSettings();
+                    showToast('Price settings reset to default', 'success');
+                    
+                } catch (error) {
+                    console.error('Error resetting price settings:', error);
+                    showToast('Error resetting price settings: ' + error.message, 'error');
+                }
+            }
+        }
+
+        // Testar conexão com a tabela de preços
+        async function testPriceSettingsTable() {
+            if (!supabaseClient) {
+                showToast('Supabase not initialized', 'error');
+                return;
+            }
+            
+            try {
+                const { data, error } = await supabaseClient
+                    .from('price_settings')
+                    .select('*');
+                
+                if (error) {
+                    showToast('Error: ' + error.message, 'error');
+                    console.error('Error testing price settings:', error);
+                } else {
+                    showToast(`Success! Found ${data.length} price setting record(s)`, 'success');
+                    console.log('Price settings data:', data);
+                    
+                    // Mostrar detalhes no console
+                    if (data.length > 0) {
+                        console.log('Current settings:', data[0]);
+                    }
+                }
+            } catch (error) {
+                showToast('Error: ' + error.message, 'error');
             }
         }
 
@@ -3242,9 +3463,26 @@
                     html += '<span class="debug-warning">⚠️ No data to analyze structure</span><br>';
                 }
                 
-                // Test 4: Insert test record (optional)
-                html += '<br><strong>To insert a test record, click the button below:</strong><br>';
-                html += '<button class="btn btn-primary btn-small mt-10" onclick="insertTestRecord()">Insert Test Record</button>';
+                // Test 4: Test price settings table
+                html += '🔍 Test 4: Testing price settings table... ';
+                const { data: priceData, error: priceError } = await supabaseClient
+                    .from('price_settings')
+                    .select('*')
+                    .limit(1);
+                
+                if (priceError) {
+                    html += `<span class="debug-error">❌ Failed - ${priceError.message}</span><br>`;
+                } else {
+                    html += `<span class="debug-success">✅ Success - Found ${priceData.length} price record(s)</span><br>`;
+                    if (priceData.length > 0) {
+                        html += '<br><strong>Price settings:</strong><br>';
+                        Object.entries(priceData[0]).forEach(([key, value]) => {
+                            if (key !== 'id' && key !== 'created_at' && key !== 'updated_at') {
+                                html += `- ${key}: $${value}<br>`;
+                            }
+                        });
+                    }
+                }
                 
             } catch (error) {
                 html += `<span class="debug-error">❌ Unexpected error: ${error.message}</span>`;
