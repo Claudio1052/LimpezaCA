@@ -231,8 +231,6 @@
             background-color: var(--gray-100);
         }
 
-        /* Admin link removido do menu - agora está no rodapé */
-
         .menu-toggle {
             display: none;
             font-size: 1.5rem;
@@ -352,6 +350,215 @@
         }
 
         /* =========================================== */
+        /* CARPET GALLERY SECTION - NOVA ABA PROFISSIONAL */
+        /* =========================================== */
+        .carpet-gallery-section {
+            padding: 60px 0;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f7ff 100%);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .gallery-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-200);
+            position: relative;
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px rgba(42,110,255,0.15);
+        }
+
+        .gallery-card.featured {
+            grid-column: span 3;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        }
+
+        .gallery-card.featured .gallery-image {
+            height: 100%;
+            min-height: 350px;
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .gallery-card:hover .gallery-image {
+            transform: scale(1.05);
+        }
+
+        .gallery-content {
+            padding: 25px;
+        }
+
+        .gallery-card.featured .gallery-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(42,110,255,0.03), rgba(0,168,150,0.03));
+        }
+
+        .gallery-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .gallery-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+
+        .gallery-content p {
+            color: var(--gray-600);
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .gallery-stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            color: var(--gray-800);
+        }
+
+        .stat-item i {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .before-after-label {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+            backdrop-filter: blur(5px);
+        }
+
+        .before-after-label i {
+            margin-right: 5px;
+            color: #ffd700;
+        }
+
+        /* Testimonials dentro da aba Carpet */
+        .carpet-testimonials {
+            margin-top: 60px;
+            padding: 40px;
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gray-200);
+        }
+
+        .carpet-testimonials h3 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2rem;
+            color: var(--dark-color);
+        }
+
+        .testimonials-carpet-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .testimonial-carpet-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f7ff 100%);
+            border-radius: var(--border-radius-lg);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .testimonial-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid white;
+            box-shadow: var(--shadow-md);
+            flex-shrink: 0;
+        }
+
+        .testimonial-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .testimonial-carpet-content {
+            flex: 1;
+        }
+
+        .testimonial-carpet-content p {
+            font-style: italic;
+            margin-bottom: 10px;
+            color: var(--gray-800);
+        }
+
+        .testimonial-carpet-author {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .testimonial-carpet-date {
+            font-size: 0.85rem;
+            color: var(--gray-600);
+        }
+
+        .carpet-cta {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .carpet-cta .btn {
+            padding: 16px 50px;
+            font-size: 1.2rem;
+        }
+
+        /* =========================================== */
         /* WHY DIFFERENT SECTION */
         /* =========================================== */
         .different-section {
@@ -423,7 +630,7 @@
         }
 
         /* =========================================== */
-        /* TESTIMONIALS SECTION - EXATAMENTE COMO SOLICITADO */
+        /* TESTIMONIALS SECTION */
         /* =========================================== */
         .testimonials-section {
             padding: 60px 0;
@@ -642,7 +849,7 @@
         }
 
         /* =========================================== */
-        /* FOOTER - COM ADMIN DISCRETO */
+        /* FOOTER */
         /* =========================================== */
         footer {
             background: var(--dark-color);
@@ -791,7 +998,7 @@
         }
 
         /* =========================================== */
-        /* FORM STYLES - COM CAMPOS CONDICIONAIS */
+        /* FORM STYLES */
         /* =========================================== */
         .schedule-form {
             padding: 40px 0;
@@ -1292,12 +1499,30 @@
             .dashboard-stats {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .gallery-card.featured {
+                grid-column: span 2;
+                grid-template-columns: 1fr;
+            }
+            
+            .testimonials-carpet-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 768px) {
             .different-grid,
-            .testimonials-grid {
+            .testimonials-grid,
+            .gallery-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .gallery-card.featured {
+                grid-column: span 1;
             }
             
             .form-grid {
@@ -1314,6 +1539,11 @@
             
             .carousel-item {
                 flex: 0 0 240px;
+            }
+            
+            .testimonial-carpet-card {
+                flex-direction: column;
+                text-align: center;
             }
         }
 
@@ -1404,6 +1634,7 @@
                 <li><a href="#home" onclick="scrollToSection('home')">Home</a></li>
                 <li><a href="#different" onclick="scrollToSection('different')">Why Choose Us</a></li>
                 <li><a href="#services-carousel" onclick="scrollToSection('services-carousel')">Services</a></li>
+                <li><a href="#carpet-gallery" onclick="scrollToSection('carpet-gallery')">Carpet</a></li>
                 <li><a href="#testimonials" onclick="scrollToSection('testimonials')">Reviews</a></li>
                 <li><a href="#about" onclick="scrollToSection('about')">About</a></li>
                 <li><a href="#" onclick="showScheduleForm()">Schedule</a></li>
@@ -1472,7 +1703,112 @@
             </div>
         </section>
 
-        <!-- Testimonials Section - EXATAMENTE COMO FORNECIDO -->
+        <!-- NEW CARPET GALLERY SECTION - PROFESSIONAL TAB -->
+        <section id="carpet-gallery" class="carpet-gallery-section">
+            <div class="container">
+                <h2 class="section-title">Carpet & Upholstery Cleaning</h2>
+                <p class="text-center" style="max-width: 700px; margin: 0 auto 40px;">See the dramatic difference our professional cleaning makes. Before and after results that speak for themselves.</p>
+                
+                <div class="gallery-grid">
+                    <!-- Featured Card: Ramon's Testimonial with Photo -->
+                    <div class="gallery-card featured">
+                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Ramon_foto.png" alt="Ramon - Satisfied Client" class="gallery-image">
+                        <div class="gallery-content">
+                            <span class="gallery-badge"><i class="fas fa-star"></i> Client Spotlight</span>
+                            <h3>Ramon's Experience</h3>
+                            <p>"I was amazed by the results! My carpets look brand new. The team was professional, on time, and paid attention to every detail. Highly recommend Rio Cleaning for anyone looking for quality carpet care."</p>
+                            <div class="gallery-stats">
+                                <div class="stat-item"><i class="fas fa-calendar-check"></i> 5+ years client</div>
+                                <div class="stat-item"><i class="fas fa-thumbs-up"></i> 100% satisfied</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Before/After: Carpet -->
+                    <div class="gallery-card">
+                        <div class="before-after-label"><i class="fas fa-images"></i> Before & After</div>
+                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Capet_antes_depois.png" alt="Carpet Before and After" class="gallery-image">
+                        <div class="gallery-content">
+                            <h3>Residential Carpet</h3>
+                            <p>Deep cleaning removed years of embedded dirt and stains, restoring the carpet's original color and texture.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Before/After: Office Carpet -->
+                    <div class="gallery-card">
+                        <div class="before-after-label"><i class="fas fa-images"></i> Before & After</div>
+                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Carpet_escritorio_antes_depois.png" alt="Office Carpet Before and After" class="gallery-image">
+                        <div class="gallery-content">
+                            <h3>Commercial Office</h3>
+                            <p>High-traffic office carpet revitalized, creating a fresh and professional environment for employees and clients.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Before/After: Upholstery -->
+                    <div class="gallery-card">
+                        <div class="before-after-label"><i class="fas fa-images"></i> Before & After</div>
+                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Estofado_antes_depois.png" alt="Upholstery Before and After" class="gallery-image">
+                        <div class="gallery-content">
+                            <h3>Upholstery Cleaning</h3>
+                            <p>Furniture deep cleaning that removes allergens, stains, and odors, extending the life of your pieces.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Ramon's Photo with Result -->
+                    <div class="gallery-card">
+                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Ramon.png" alt="Ramon's Clean Carpet" class="gallery-image">
+                        <div class="gallery-content">
+                            <h3>Spotless Results</h3>
+                            <p>Ramon's carpet after professional treatment - stain-free, fresh, and deeply cleaned.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Final Result -->
+                    <div class="gallery-card">
+                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Resultado.png" alt="Final Cleaning Result" class="gallery-image">
+                        <div class="gallery-content">
+                            <h3>Impeccable Finish</h3>
+                            <p>The final result speaks for itself. Our process ensures every fiber is thoroughly cleaned and sanitized.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonials específicos para Carpete -->
+                <div class="carpet-testimonials">
+                    <h3><i class="fas fa-quote-right"></i> What Clients Say About Our Carpet Cleaning</h3>
+                    <div class="testimonials-carpet-grid">
+                        <div class="testimonial-carpet-card">
+                            <div class="testimonial-avatar">
+                                <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Ramon_foto.png" alt="Ramon">
+                            </div>
+                            <div class="testimonial-carpet-content">
+                                <p>"Incredible work! The Rio Cleaning team is extremely diligent, friendly and attentive to details. They did a fantastic job cleaning our carpet; when we got home everything smelled wonderful."</p>
+                                <div class="testimonial-carpet-author">- Arthur de Oliveira Bandeira</div>
+                                <div class="testimonial-carpet-date">4 days ago</div>
+                            </div>
+                        </div>
+                        <div class="testimonial-carpet-card">
+                            <div class="testimonial-avatar">
+                                <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Ramon_foto.png" alt="Client">
+                            </div>
+                            <div class="testimonial-carpet-content">
+                                <p>"Exceptional cleaning services! Total peace of mind during my recent move. They did a thorough deep cleaning of bathrooms and kitchen: that means cleaning literally every nook and cranny."</p>
+                                <div class="testimonial-carpet-author">- Rodrigo Dal Ben</div>
+                                <div class="testimonial-carpet-date">3 days ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="carpet-cta">
+                    <button class="btn btn-primary" onclick="showScheduleForm()">
+                        <i class="fas fa-calendar-check"></i> Schedule Your Carpet Cleaning
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
         <section id="testimonials" class="testimonials-section">
             <div class="container">
                 <h2 class="section-title">What Our Clients Say</h2>
@@ -2068,6 +2404,7 @@
                         <li><a href="#" onclick="showHomePage()">Home</a></li>
                         <li><a href="#different" onclick="scrollToSection('different')">Why Choose Us</a></li>
                         <li><a href="#services-carousel" onclick="scrollToSection('services-carousel')">Services</a></li>
+                        <li><a href="#carpet-gallery" onclick="scrollToSection('carpet-gallery')">Carpet</a></li>
                         <li><a href="#testimonials" onclick="scrollToSection('testimonials')">Reviews</a></li>
                         <li><a href="#" onclick="showScheduleForm()">Schedule</a></li>
                     </ul>
@@ -2134,14 +2471,11 @@
             }
         }
 
-        // Navigation - MELHORADO: agora funciona de qualquer lugar
+        // Navigation
         function scrollToSection(id) {
             const section = document.getElementById(id);
             if (section) {
-                // Primeiro mostrar a home page se estiver no schedule
                 showHomePage();
-                
-                // Pequeno delay para garantir que a página carregou
                 setTimeout(() => {
                     const offset = document.querySelector('.navbar').offsetHeight;
                     window.scrollTo({ top: section.offsetTop - offset, behavior: 'smooth' });
@@ -2187,7 +2521,6 @@
             const residentialFields = document.querySelectorAll('.residential-fields');
             const carpetField = document.querySelector('.carpet-field');
             
-            // Tipos que devem mostrar campos residenciais
             const residentialTypes = ['move', 'construction', 'commercial', 'church', 'residential'];
             
             if (residentialTypes.includes(serviceType)) {
@@ -2214,7 +2547,6 @@
         }
 
         function initConditionalFields() {
-            // Inicializar listeners
             document.getElementById('hasPets').addEventListener('change', togglePetCount);
             document.getElementById('hasChildren').addEventListener('change', toggleChildrenCount);
             document.getElementById('serviceType').addEventListener('change', updateConditionalFields);
@@ -2246,7 +2578,6 @@
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
                 btn.disabled = true;
                 
-                // Coletar dados básicos
                 const formData = {
                     full_name: document.getElementById('fullName').value,
                     phone: document.getElementById('phone').value,
@@ -2268,7 +2599,6 @@
                     created_at: new Date().toISOString()
                 };
                 
-                // Adicionar dimensões do carpete se aplicável
                 if (formData.service_type === 'carpet') {
                     formData.carpet_length = parseFloat(document.getElementById('carpetLength')?.value) || 0;
                     formData.carpet_width = parseFloat(document.getElementById('carpetWidth')?.value) || 0;
@@ -2361,7 +2691,6 @@
             await loadServiceRequests();
         }
 
-        // ========== KPI ATUALIZADO: mantém valor quando muda para completed ==========
         async function loadStats() {
             if (!supabaseClient) return;
             
@@ -2377,7 +2706,7 @@
                 }
                 else if (r.status === 'completed') {
                     completed++;
-                    totalValue += r.agreed_value || 0; // MANTÉM O MESMO VALOR AO COMPLETAR
+                    totalValue += r.agreed_value || 0;
                 }
             });
             
@@ -2385,7 +2714,6 @@
             document.getElementById('confirmedCount').textContent = confirmed;
             document.getElementById('completedCount').textContent = completed;
             
-            // KPI soma confirmados + completados (valor se mantém)
             document.getElementById('totalValueConfirmed').textContent = '$' + totalValue.toFixed(2);
         }
 
@@ -2460,7 +2788,7 @@
                     cleaning_date: document.getElementById('editCleaningDate').value,
                     cleaning_time: document.getElementById('editCleaningTime').value,
                     status: document.getElementById('editStatus').value,
-                    agreed_value: parseFloat(document.getElementById('editAgreedValue').value) || 0, // VALOR PRESERVADO
+                    agreed_value: parseFloat(document.getElementById('editAgreedValue').value) || 0,
                     description: document.getElementById('editDescription').value
                 };
                 
@@ -2494,7 +2822,7 @@
                 document.getElementById('editCleaningDate').value = data.cleaning_date?.split('T')[0] || data.cleaning_date;
                 document.getElementById('editCleaningTime').value = data.cleaning_time;
                 document.getElementById('editStatus').value = data.status;
-                document.getElementById('editAgreedValue').value = data.agreed_value || 0; // Garantir que o agreed_value seja carregado corretamente
+                document.getElementById('editAgreedValue').value = data.agreed_value || 0;
                 document.getElementById('editDescription').value = data.description;
                 openEditModal();
             }
