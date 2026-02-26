@@ -997,6 +997,11 @@
             color: white;
         }
 
+        .btn-success {
+            background: #00a896;
+            color: white;
+        }
+
         /* =========================================== */
         /* FORM STYLES */
         /* =========================================== */
@@ -1154,6 +1159,59 @@
             width: 50%;
         }
 
+        /* Estimated Price Box */
+        .estimated-price-box {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 20px;
+            border-radius: var(--border-radius-lg);
+            margin-bottom: 25px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .estimated-price-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .estimated-price-box h4 {
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .estimated-price-box .price-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1;
+            margin: 10px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .estimated-price-box .price-detail {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
         /* =========================================== */
         /* ADMIN STYLES */
         /* =========================================== */
@@ -1191,6 +1249,40 @@
             margin-bottom: 30px;
             flex-wrap: wrap;
             gap: 20px;
+        }
+
+        .dashboard-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--gray-200);
+            padding-bottom: 10px;
+        }
+
+        .dashboard-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            font-weight: 600;
+            color: var(--gray-600);
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-tab:hover {
+            color: var(--primary-color);
+        }
+
+        .dashboard-tab.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .dashboard-tab-content {
+            display: none;
+        }
+
+        .dashboard-tab-content.active {
+            display: block;
         }
 
         .dashboard-stats {
@@ -1261,6 +1353,68 @@
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-top: 20px;
+        }
+
+        /* Price Settings Table */
+        .price-settings {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .price-settings h3 {
+            margin-bottom: 30px;
+            color: var(--primary-color);
+        }
+
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .price-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f7ff 100%);
+            border-radius: var(--border-radius-lg);
+            padding: 25px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .price-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .price-card h4 i {
+            font-size: 1.3rem;
+        }
+
+        .price-item {
+            margin-bottom: 15px;
+        }
+
+        .price-item label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .price-item input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .price-item input:focus {
+            border-color: var(--primary-color);
+            outline: none;
         }
 
         .service-requests {
@@ -1496,7 +1650,8 @@
             
             .different-grid,
             .testimonials-grid,
-            .dashboard-stats {
+            .dashboard-stats,
+            .price-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
             
@@ -1517,7 +1672,8 @@
         @media (max-width: 768px) {
             .different-grid,
             .testimonials-grid,
-            .gallery-grid {
+            .gallery-grid,
+            .price-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -2008,6 +2164,13 @@
                     <p>Fill out the form and we'll contact you to confirm.</p>
                 </div>
                 <div class="form-content">
+                    <!-- Estimated Price Box -->
+                    <div class="estimated-price-box" id="estimatedPriceBox" style="display: none;">
+                        <h4><i class="fas fa-calculator"></i> Estimated Price</h4>
+                        <div class="price-value" id="estimatedPriceValue">$0.00</div>
+                        <div class="price-detail" id="estimatedPriceDetail">Based on current rates</div>
+                    </div>
+                    
                     <form id="cleaningServiceForm">
                         <div class="form-section">
                             <h3><i class="fas fa-user"></i> Personal Information</h3>
@@ -2036,7 +2199,7 @@
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label><i class="fas fa-tasks"></i> Service Type <span class="required">*</span></label>
-                                    <select id="serviceType" required onchange="updateConditionalFields()">
+                                    <select id="serviceType" required onchange="updateConditionalFields(); calculateEstimatedPrice();">
                                         <option value="">Select</option>
                                         <option value="move">Move In/Out Cleaning</option>
                                         <option value="construction">Post-Construction</option>
@@ -2052,7 +2215,7 @@
                                 <!-- Campos para serviços residenciais (quartos, banheiros, shower) -->
                                 <div class="form-group conditional-field residential-fields" style="display:none">
                                     <label><i class="fas fa-bed"></i> Bedrooms</label>
-                                    <select id="bedrooms">
+                                    <select id="bedrooms" onchange="calculateEstimatedPrice()">
                                         <option value="0">None</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -2063,7 +2226,7 @@
                                 </div>
                                 <div class="form-group conditional-field residential-fields" style="display:none">
                                     <label><i class="fas fa-bath"></i> Bathrooms</label>
-                                    <select id="bathrooms">
+                                    <select id="bathrooms" onchange="calculateEstimatedPrice()">
                                         <option value="0">None</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -2074,7 +2237,7 @@
                                 </div>
                                 <div class="form-group conditional-field residential-fields" style="display:none">
                                     <label><i class="fas fa-shower"></i> Shower Box</label>
-                                    <select id="showerBoxCount">
+                                    <select id="showerBoxCount" onchange="calculateEstimatedPrice()">
                                         <option value="0">None</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -2087,35 +2250,35 @@
                                 <div class="form-group conditional-field carpet-field" style="display:none; grid-column: span 2;">
                                     <label><i class="fas fa-ruler"></i> Carpet Dimensions (sq ft)</label>
                                     <div class="dimension-group">
-                                        <input type="number" id="carpetLength" placeholder="Length (ft)" min="0" step="0.1">
-                                        <input type="number" id="carpetWidth" placeholder="Width (ft)" min="0" step="0.1">
+                                        <input type="number" id="carpetLength" placeholder="Length (ft)" min="0" step="0.1" onchange="calculateEstimatedPrice()">
+                                        <input type="number" id="carpetWidth" placeholder="Width (ft)" min="0" step="0.1" onchange="calculateEstimatedPrice()">
                                     </div>
                                 </div>
                                 
                                 <!-- Pets: apenas SIM/NÃO -->
                                 <div class="form-group">
                                     <label><i class="fas fa-paw"></i> Pets?</label>
-                                    <select id="hasPets" onchange="togglePetCount()">
+                                    <select id="hasPets" onchange="togglePetCount(); calculateEstimatedPrice();">
                                         <option value="false">Não</option>
                                         <option value="true">Sim</option>
                                     </select>
                                 </div>
                                 <div class="form-group" id="petCountGroup" style="display:none">
                                     <label><i class="fas fa-dog"></i> How many?</label>
-                                    <input type="number" id="petCount" min="0" value="0">
+                                    <input type="number" id="petCount" min="0" value="0" onchange="calculateEstimatedPrice()">
                                 </div>
                                 
                                 <!-- Children: apenas SIM/NÃO -->
                                 <div class="form-group">
                                     <label><i class="fas fa-child"></i> Children?</label>
-                                    <select id="hasChildren" onchange="toggleChildrenCount()">
+                                    <select id="hasChildren" onchange="toggleChildrenCount(); calculateEstimatedPrice();">
                                         <option value="false">Não</option>
                                         <option value="true">Sim</option>
                                     </select>
                                 </div>
                                 <div class="form-group" id="childrenCountGroup" style="display:none">
                                     <label><i class="fas fa-baby"></i> How many?</label>
-                                    <input type="number" id="childrenCount" min="0" value="0">
+                                    <input type="number" id="childrenCount" min="0" value="0" onchange="calculateEstimatedPrice()">
                                 </div>
                                 
                                 <div class="form-group">
@@ -2183,68 +2346,216 @@
                     </div>
                 </div>
                 
-                <div class="dashboard-stats">
-                    <div class="stat-card">
-                        <div class="stat-icon pending"><i class="fas fa-clock"></i></div>
-                        <div class="stat-info"><h3 id="pendingCount">0</h3><p>Pending</p></div>
+                <!-- Tabs -->
+                <div class="dashboard-tabs">
+                    <div class="dashboard-tab active" onclick="switchAdminTab('requests')">Service Requests</div>
+                    <div class="dashboard-tab" onclick="switchAdminTab('prices')">Price Settings</div>
+                </div>
+                
+                <!-- Service Requests Tab -->
+                <div id="requestsTab" class="dashboard-tab-content active">
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon pending"><i class="fas fa-clock"></i></div>
+                            <div class="stat-info"><h3 id="pendingCount">0</h3><p>Pending</p></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon confirmed"><i class="fas fa-check-circle"></i></div>
+                            <div class="stat-info"><h3 id="confirmedCount">0</h3><p>Confirmed</p></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon completed"><i class="fas fa-flag-checkered"></i></div>
+                            <div class="stat-info"><h3 id="completedCount">0</h3><p>Completed</p></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon total"><i class="fas fa-dollar-sign"></i></div>
+                            <div class="stat-info"><h3 id="totalValueConfirmed">$0</h3><p>Confirmed Value</p></div>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon confirmed"><i class="fas fa-check-circle"></i></div>
-                        <div class="stat-info"><h3 id="confirmedCount">0</h3><p>Confirmed</p></div>
+                    
+                    <div class="filters">
+                        <h3>Service Requests</h3>
+                        <div class="filter-controls">
+                            <select id="statusFilter">
+                                <option value="all">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="confirmed">Confirmed</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                            <select id="dateFilter">
+                                <option value="all">All Dates</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                            </select>
+                            <input type="text" id="searchFilter" placeholder="Search...">
+                            <button id="refreshBtn" class="btn btn-secondary"><i class="fas fa-sync-alt"></i> Refresh</button>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon completed"><i class="fas fa-flag-checkered"></i></div>
-                        <div class="stat-info"><h3 id="completedCount">0</h3><p>Completed</p></div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon total"><i class="fas fa-dollar-sign"></i></div>
-                        <div class="stat-info"><h3 id="totalValueConfirmed">$0</h3><p>Confirmed Value</p></div>
+                    
+                    <div class="service-requests">
+                        <div class="table-header">
+                            <h4>Requests</h4>
+                            <span id="tableInfo">Showing 0 requests</span>
+                        </div>
+                        <div class="table-container">
+                            <table id="requestsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Contact</th>
+                                        <th>Service</th>
+                                        <th>Date/Time</th>
+                                        <th>Status</th>
+                                        <th>Agreed $</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="requestsTableBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="pagination" id="pagination"></div>
                     </div>
                 </div>
                 
-                <div class="filters">
-                    <h3>Service Requests</h3>
-                    <div class="filter-controls">
-                        <select id="statusFilter">
-                            <option value="all">All Status</option>
-                            <option value="pending">Pending</option>
-                            <option value="confirmed">Confirmed</option>
-                            <option value="completed">Completed</option>
-                            <option value="cancelled">Cancelled</option>
-                        </select>
-                        <select id="dateFilter">
-                            <option value="all">All Dates</option>
-                            <option value="today">Today</option>
-                            <option value="week">This Week</option>
-                            <option value="month">This Month</option>
-                        </select>
-                        <input type="text" id="searchFilter" placeholder="Search...">
-                        <button id="refreshBtn" class="btn btn-secondary"><i class="fas fa-sync-alt"></i> Refresh</button>
+                <!-- Price Settings Tab -->
+                <div id="pricesTab" class="dashboard-tab-content">
+                    <div class="price-settings">
+                        <h3><i class="fas fa-tags"></i> Price Settings</h3>
+                        <p class="text-center mb-20">Configure the base prices for each service. These values will be used to calculate the estimated price in the schedule form.</p>
+                        
+                        <div class="price-grid">
+                            <!-- Residential Cleaning -->
+                            <div class="price-card">
+                                <h4><i class="fas fa-home"></i> Residential Cleaning</h4>
+                                <div class="price-item">
+                                    <label>Per Bedroom ($)</label>
+                                    <input type="number" id="priceBedroom" class="price-input" value="35" min="0" step="5">
+                                </div>
+                                <div class="price-item">
+                                    <label>Per Bathroom ($)</label>
+                                    <input type="number" id="priceBathroom" class="price-input" value="40" min="0" step="5">
+                                </div>
+                                <div class="price-item">
+                                    <label>Per Shower Box ($)</label>
+                                    <input type="number" id="priceShower" class="price-input" value="25" min="0" step="5">
+                                </div>
+                                <div class="price-item">
+                                    <label>Base Rate ($)</label>
+                                    <input type="number" id="priceBase" class="price-input" value="50" min="0" step="10">
+                                </div>
+                            </div>
+                            
+                            <!-- Carpet Cleaning -->
+                            <div class="price-card">
+                                <h4><i class="fas fa-carpet"></i> Carpet Cleaning</h4>
+                                <div class="price-item">
+                                    <label>Per Square Foot ($/sq ft)</label>
+                                    <input type="number" id="priceCarpetSqFt" class="price-input" value="0.35" min="0" step="0.05">
+                                </div>
+                                <div class="price-item">
+                                    <label>Minimum Charge ($)</label>
+                                    <input type="number" id="priceCarpetMin" class="price-input" value="50" min="0" step="10">
+                                </div>
+                            </div>
+                            
+                            <!-- Move In/Out -->
+                            <div class="price-card">
+                                <h4><i class="fas fa-truck-moving"></i> Move In/Out</h4>
+                                <div class="price-item">
+                                    <label>Base Rate ($)</label>
+                                    <input type="number" id="priceMoveBase" class="price-input" value="120" min="0" step="10">
+                                </div>
+                                <div class="price-item">
+                                    <label>Per Bedroom ($)</label>
+                                    <input type="number" id="priceMoveBedroom" class="price-input" value="35" min="0" step="5">
+                                </div>
+                                <div class="price-item">
+                                    <label>Per Bathroom ($)</label>
+                                    <input type="number" id="priceMoveBathroom" class="price-input" value="40" min="0" step="5">
+                                </div>
+                            </div>
+                            
+                            <!-- Post-Construction -->
+                            <div class="price-card">
+                                <h4><i class="fas fa-hard-hat"></i> Post-Construction</h4>
+                                <div class="price-item">
+                                    <label>Base Rate ($)</label>
+                                    <input type="number" id="priceConstructionBase" class="price-input" value="150" min="0" step="10">
+                                </div>
+                                <div class="price-item">
+                                    <label>Per 100 sq ft ($)</label>
+                                    <input type="number" id="priceConstructionSqFt" class="price-input" value="0.50" min="0" step="0.10">
+                                </div>
+                            </div>
+                            
+                            <!-- Commercial -->
+                            <div class="price-card">
+                                <h4><i class="fas fa-building"></i> Commercial</h4>
+                                <div class="price-item">
+                                    <label>Base Rate ($)</label>
+                                    <input type="number" id="priceCommercialBase" class="price-input" value="100" min="0" step="10">
+                                </div>
+                                <div class="price-item">
+                                    <label>Per 100 sq ft ($)</label>
+                                    <input type="number" id="priceCommercialSqFt" class="price-input" value="0.30" min="0" step="0.05">
+                                </div>
+                            </div>
+                            
+                            <!-- Church/Worship -->
+                            <div class="price-card">
+                                <h4><i class="fas fa-church"></i> Worship Facility</h4>
+                                <div class="price-item">
+                                    <label>Base Rate ($)</label>
+                                    <input type="number" id="priceChurchBase" class="price-input" value="120" min="0" step="10">
+                                </div>
+                                <div class="price-item">
+                                    <label>Per 100 sq ft ($)</label>
+                                    <input type="number" id="priceChurchSqFt" class="price-input" value="0.40" min="0" step="0.05">
+                                </div>
+                            </div>
+                            
+                            <!-- RV Cleaning -->
+                            <div class="price-card">
+                                <h4><i class="fas fa-campground"></i> RV Cleaning</h4>
+                                <div class="price-item">
+                                    <label>Small RV ($)</label>
+                                    <input type="number" id="priceRvSmall" class="price-input" value="150" min="0" step="10">
+                                </div>
+                                <div class="price-item">
+                                    <label>Medium RV ($)</label>
+                                    <input type="number" id="priceRvMedium" class="price-input" value="200" min="0" step="10">
+                                </div>
+                                <div class="price-item">
+                                    <label>Large RV ($)</label>
+                                    <input type="number" id="priceRvLarge" class="price-input" value="300" min="0" step="10">
+                                </div>
+                            </div>
+                            
+                            <!-- Additional Fees -->
+                            <div class="price-card">
+                                <h4><i class="fas fa-plus-circle"></i> Additional Fees</h4>
+                                <div class="price-item">
+                                    <label>Per Pet ($)</label>
+                                    <input type="number" id="pricePetFee" class="price-input" value="10" min="0" step="5">
+                                </div>
+                                <div class="price-item">
+                                    <label>Per Child ($)</label>
+                                    <input type="number" id="priceChildFee" class="price-input" value="0" min="0" step="5">
+                                </div>
+                                <div class="price-item">
+                                    <label>Urgent/Same Day ($)</label>
+                                    <input type="number" id="priceUrgentFee" class="price-input" value="25" min="0" step="5">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions mt-20">
+                            <button class="btn btn-primary" onclick="savePriceSettings()"><i class="fas fa-save"></i> Save All Prices</button>
+                            <button class="btn btn-secondary" onclick="resetPriceSettings()"><i class="fas fa-undo"></i> Reset to Default</button>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="service-requests">
-                    <div class="table-header">
-                        <h4>Requests</h4>
-                        <span id="tableInfo">Showing 0 requests</span>
-                    </div>
-                    <div class="table-container">
-                        <table id="requestsTable">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Contact</th>
-                                    <th>Service</th>
-                                    <th>Date/Time</th>
-                                    <th>Status</th>
-                                    <th>Agreed $</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="requestsTableBody"></tbody>
-                        </table>
-                    </div>
-                    <div class="pagination" id="pagination"></div>
                 </div>
             </div>
         </div>
@@ -2439,6 +2750,31 @@
         let currentFilters = { status: 'all', date: 'all', search: '' };
         let flatpickrInstance = null;
 
+        // Price settings (default values)
+        let priceSettings = {
+            bedroom: 35,
+            bathroom: 40,
+            shower: 25,
+            base: 50,
+            carpetSqFt: 0.35,
+            carpetMin: 50,
+            moveBase: 120,
+            moveBedroom: 35,
+            moveBathroom: 40,
+            constructionBase: 150,
+            constructionSqFt: 0.50,
+            commercialBase: 100,
+            commercialSqFt: 0.30,
+            churchBase: 120,
+            churchSqFt: 0.40,
+            rvSmall: 150,
+            rvMedium: 200,
+            rvLarge: 300,
+            petFee: 10,
+            childFee: 0,
+            urgentFee: 25
+        };
+
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             initSupabase();
@@ -2447,6 +2783,7 @@
             initAdminPanel();
             initEditModal();
             initConditionalFields();
+            loadPriceSettings();
             document.getElementById('currentYear').textContent = new Date().getFullYear();
             
             // Inicializar campos condicionais
@@ -2503,6 +2840,17 @@
             document.getElementById('mainContent').style.display = 'none';
             document.getElementById('scheduleFormContainer').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'block';
+            
+            // Check if already logged in
+            if (localStorage.getItem('adminLoggedIn') === 'true') {
+                document.getElementById('adminLogin').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                loadDashboardData();
+            } else {
+                document.getElementById('adminLogin').style.display = 'flex';
+                document.getElementById('adminDashboard').style.display = 'none';
+            }
+            
             closeMobileMenu();
         }
 
@@ -2552,11 +2900,218 @@
             document.getElementById('serviceType').addEventListener('change', updateConditionalFields);
         }
 
+        // Price calculation
+        function calculateEstimatedPrice() {
+            const serviceType = document.getElementById('serviceType').value;
+            const priceBox = document.getElementById('estimatedPriceBox');
+            const priceValue = document.getElementById('estimatedPriceValue');
+            const priceDetail = document.getElementById('estimatedPriceDetail');
+            
+            if (!serviceType) {
+                priceBox.style.display = 'none';
+                return;
+            }
+            
+            let total = 0;
+            let details = [];
+            
+            switch(serviceType) {
+                case 'residential':
+                    const bedrooms = parseInt(document.getElementById('bedrooms').value) || 0;
+                    const bathrooms = parseInt(document.getElementById('bathrooms').value) || 0;
+                    const showers = parseInt(document.getElementById('showerBoxCount').value) || 0;
+                    
+                    total = priceSettings.base;
+                    details.push(`Base: $${priceSettings.base}`);
+                    
+                    if (bedrooms > 0) {
+                        total += bedrooms * priceSettings.bedroom;
+                        details.push(`${bedrooms} bedroom(s): $${bedrooms * priceSettings.bedroom}`);
+                    }
+                    if (bathrooms > 0) {
+                        total += bathrooms * priceSettings.bathroom;
+                        details.push(`${bathrooms} bathroom(s): $${bathrooms * priceSettings.bathroom}`);
+                    }
+                    if (showers > 0) {
+                        total += showers * priceSettings.shower;
+                        details.push(`${showers} shower box(es): $${showers * priceSettings.shower}`);
+                    }
+                    break;
+                    
+                case 'carpet':
+                    const length = parseFloat(document.getElementById('carpetLength').value) || 0;
+                    const width = parseFloat(document.getElementById('carpetWidth').value) || 0;
+                    const sqFt = length * width;
+                    
+                    if (sqFt > 0) {
+                        total = sqFt * priceSettings.carpetSqFt;
+                        details.push(`${sqFt} sq ft: $${(sqFt * priceSettings.carpetSqFt).toFixed(2)}`);
+                        
+                        if (total < priceSettings.carpetMin) {
+                            total = priceSettings.carpetMin;
+                            details.push(`Minimum charge: $${priceSettings.carpetMin}`);
+                        }
+                    } else {
+                        total = priceSettings.carpetMin;
+                        details.push(`Base rate: $${priceSettings.carpetMin}`);
+                    }
+                    break;
+                    
+                case 'move':
+                    const moveBedrooms = parseInt(document.getElementById('bedrooms').value) || 0;
+                    const moveBathrooms = parseInt(document.getElementById('bathrooms').value) || 0;
+                    
+                    total = priceSettings.moveBase;
+                    details.push(`Base: $${priceSettings.moveBase}`);
+                    
+                    if (moveBedrooms > 0) {
+                        total += moveBedrooms * priceSettings.moveBedroom;
+                        details.push(`${moveBedrooms} bedroom(s): $${moveBedrooms * priceSettings.moveBedroom}`);
+                    }
+                    if (moveBathrooms > 0) {
+                        total += moveBathrooms * priceSettings.moveBathroom;
+                        details.push(`${moveBathrooms} bathroom(s): $${moveBathrooms * priceSettings.moveBathroom}`);
+                    }
+                    break;
+                    
+                case 'construction':
+                    total = priceSettings.constructionBase;
+                    details.push(`Base rate: $${priceSettings.constructionBase}`);
+                    break;
+                    
+                case 'commercial':
+                    total = priceSettings.commercialBase;
+                    details.push(`Base rate: $${priceSettings.commercialBase}`);
+                    break;
+                    
+                case 'church':
+                    total = priceSettings.churchBase;
+                    details.push(`Base rate: $${priceSettings.churchBase}`);
+                    break;
+                    
+                case 'rv':
+                    total = priceSettings.rvMedium; // Default to medium
+                    details.push(`RV cleaning: $${priceSettings.rvMedium}`);
+                    break;
+                    
+                default:
+                    total = 100; // Default for other services
+                    details.push(`Base rate: $100`);
+            }
+            
+            // Add pet fee
+            const hasPets = document.getElementById('hasPets').value === 'true';
+            const petCount = parseInt(document.getElementById('petCount').value) || 0;
+            if (hasPets && petCount > 0 && priceSettings.petFee > 0) {
+                const petFee = petCount * priceSettings.petFee;
+                total += petFee;
+                details.push(`Pets (${petCount}): $${petFee}`);
+            }
+            
+            // Add child fee
+            const hasChildren = document.getElementById('hasChildren').value === 'true';
+            const childCount = parseInt(document.getElementById('childrenCount').value) || 0;
+            if (hasChildren && childCount > 0 && priceSettings.childFee > 0) {
+                const childFee = childCount * priceSettings.childFee;
+                total += childFee;
+                details.push(`Children (${childCount}): $${childFee}`);
+            }
+            
+            // Show the price
+            priceValue.textContent = `$${total.toFixed(2)}`;
+            priceDetail.textContent = details.join(' • ');
+            priceBox.style.display = 'block';
+        }
+
+        // Price settings functions
+        function loadPriceSettings() {
+            // Load from localStorage if available
+            const saved = localStorage.getItem('priceSettings');
+            if (saved) {
+                try {
+                    priceSettings = JSON.parse(saved);
+                } catch (e) {
+                    console.error('Error loading price settings', e);
+                }
+            }
+            
+            // Update input fields
+            document.getElementById('priceBedroom').value = priceSettings.bedroom;
+            document.getElementById('priceBathroom').value = priceSettings.bathroom;
+            document.getElementById('priceShower').value = priceSettings.shower;
+            document.getElementById('priceBase').value = priceSettings.base;
+            document.getElementById('priceCarpetSqFt').value = priceSettings.carpetSqFt;
+            document.getElementById('priceCarpetMin').value = priceSettings.carpetMin;
+            document.getElementById('priceMoveBase').value = priceSettings.moveBase;
+            document.getElementById('priceMoveBedroom').value = priceSettings.moveBedroom;
+            document.getElementById('priceMoveBathroom').value = priceSettings.moveBathroom;
+            document.getElementById('priceConstructionBase').value = priceSettings.constructionBase;
+            document.getElementById('priceConstructionSqFt').value = priceSettings.constructionSqFt;
+            document.getElementById('priceCommercialBase').value = priceSettings.commercialBase;
+            document.getElementById('priceCommercialSqFt').value = priceSettings.commercialSqFt;
+            document.getElementById('priceChurchBase').value = priceSettings.churchBase;
+            document.getElementById('priceChurchSqFt').value = priceSettings.churchSqFt;
+            document.getElementById('priceRvSmall').value = priceSettings.rvSmall;
+            document.getElementById('priceRvMedium').value = priceSettings.rvMedium;
+            document.getElementById('priceRvLarge').value = priceSettings.rvLarge;
+            document.getElementById('pricePetFee').value = priceSettings.petFee;
+            document.getElementById('priceChildFee').value = priceSettings.childFee;
+            document.getElementById('priceUrgentFee').value = priceSettings.urgentFee;
+        }
+
+        function savePriceSettings() {
+            priceSettings = {
+                bedroom: parseFloat(document.getElementById('priceBedroom').value) || 35,
+                bathroom: parseFloat(document.getElementById('priceBathroom').value) || 40,
+                shower: parseFloat(document.getElementById('priceShower').value) || 25,
+                base: parseFloat(document.getElementById('priceBase').value) || 50,
+                carpetSqFt: parseFloat(document.getElementById('priceCarpetSqFt').value) || 0.35,
+                carpetMin: parseFloat(document.getElementById('priceCarpetMin').value) || 50,
+                moveBase: parseFloat(document.getElementById('priceMoveBase').value) || 120,
+                moveBedroom: parseFloat(document.getElementById('priceMoveBedroom').value) || 35,
+                moveBathroom: parseFloat(document.getElementById('priceMoveBathroom').value) || 40,
+                constructionBase: parseFloat(document.getElementById('priceConstructionBase').value) || 150,
+                constructionSqFt: parseFloat(document.getElementById('priceConstructionSqFt').value) || 0.50,
+                commercialBase: parseFloat(document.getElementById('priceCommercialBase').value) || 100,
+                commercialSqFt: parseFloat(document.getElementById('priceCommercialSqFt').value) || 0.30,
+                churchBase: parseFloat(document.getElementById('priceChurchBase').value) || 120,
+                churchSqFt: parseFloat(document.getElementById('priceChurchSqFt').value) || 0.40,
+                rvSmall: parseFloat(document.getElementById('priceRvSmall').value) || 150,
+                rvMedium: parseFloat(document.getElementById('priceRvMedium').value) || 200,
+                rvLarge: parseFloat(document.getElementById('priceRvLarge').value) || 300,
+                petFee: parseFloat(document.getElementById('pricePetFee').value) || 10,
+                childFee: parseFloat(document.getElementById('priceChildFee').value) || 0,
+                urgentFee: parseFloat(document.getElementById('priceUrgentFee').value) || 25
+            };
+            
+            localStorage.setItem('priceSettings', JSON.stringify(priceSettings));
+            showToast('Price settings saved successfully!', 'success');
+            
+            // Recalculate if on schedule form
+            if (document.getElementById('scheduleFormContainer').style.display === 'block') {
+                calculateEstimatedPrice();
+            }
+        }
+
+        function resetPriceSettings() {
+            if (confirm('Reset all price settings to default values?')) {
+                localStorage.removeItem('priceSettings');
+                loadPriceSettings();
+                showToast('Price settings reset to default', 'success');
+            }
+        }
+
         // Date picker
         function initDatePicker() {
             const input = document.getElementById('cleaningDate');
             if (input && !flatpickrInstance) {
-                flatpickrInstance = flatpickr(input, { minDate: 'today', dateFormat: 'Y-m-d' });
+                flatpickrInstance = flatpickr(input, { 
+                    minDate: 'today', 
+                    dateFormat: 'Y-m-d',
+                    onChange: function() {
+                        calculateEstimatedPrice();
+                    }
+                });
             }
         }
 
@@ -2578,6 +3133,9 @@
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
                 btn.disabled = true;
                 
+                // Calculate estimated price to include in submission
+                const estimatedPrice = document.getElementById('estimatedPriceValue').textContent.replace('$', '');
+                
                 const formData = {
                     full_name: document.getElementById('fullName').value,
                     phone: document.getElementById('phone').value,
@@ -2595,6 +3153,7 @@
                     cleaning_time: document.getElementById('cleaningTime').value,
                     description: document.getElementById('description').value,
                     status: 'pending',
+                    estimated_value: parseFloat(estimatedPrice) || null,
                     agreed_value: null,
                     created_at: new Date().toISOString()
                 };
@@ -2650,7 +3209,7 @@
         // Admin functions
         function initAdminPanel() {
             document.getElementById('loginBtn')?.addEventListener('click', handleAdminLogin);
-            document.getElementById('exportExcelBtn')?.addEventListener('click', () => alert('Export function ready'));
+            document.getElementById('exportExcelBtn')?.addEventListener('click', exportToExcel);
             document.getElementById('refreshBtn')?.addEventListener('click', loadServiceRequests);
             document.getElementById('statusFilter')?.addEventListener('change', function() {
                 currentFilters.status = this.value;
@@ -2664,6 +3223,23 @@
                 currentFilters.search = this.value;
                 loadServiceRequests();
             }, 500));
+        }
+
+        function switchAdminTab(tab) {
+            const tabs = document.querySelectorAll('.dashboard-tab');
+            const contents = document.querySelectorAll('.dashboard-tab-content');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            if (tab === 'requests') {
+                tabs[0].classList.add('active');
+                document.getElementById('requestsTab').classList.add('active');
+            } else {
+                tabs[1].classList.add('active');
+                document.getElementById('pricesTab').classList.add('active');
+                loadPriceSettings(); // Refresh price settings when switching to tab
+            }
         }
 
         function handleAdminLogin() {
@@ -2683,7 +3259,7 @@
         function logoutAdmin() {
             localStorage.removeItem('adminLoggedIn');
             document.getElementById('adminDashboard').style.display = 'none';
-            document.getElementById('adminLogin').style.display = 'block';
+            document.getElementById('adminLogin').style.display = 'flex';
         }
 
         async function loadDashboardData() {
@@ -2728,12 +3304,35 @@
                 query = query.or(`full_name.ilike.${term},email.ilike.${term}`);
             }
             
+            // Date filtering
+            if (currentFilters.date !== 'all') {
+                const today = new Date();
+                let startDate = new Date();
+                
+                if (currentFilters.date === 'today') {
+                    startDate = today;
+                } else if (currentFilters.date === 'week') {
+                    startDate.setDate(today.getDate() - 7);
+                } else if (currentFilters.date === 'month') {
+                    startDate.setMonth(today.getMonth() - 1);
+                }
+                
+                query = query.gte('created_at', startDate.toISOString());
+            }
+            
             const from = (page - 1) * pageSize;
-            const { data, count } = await query.order('created_at', { ascending: false }).range(from, from + pageSize - 1);
+            const { data, count, error } = await query.order('created_at', { ascending: false }).range(from, from + pageSize - 1);
+            
+            if (error) {
+                console.error('Error loading requests:', error);
+                return;
+            }
             
             const tbody = document.getElementById('requestsTableBody');
             if (!data || data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">No requests</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">No requests found</td></tr>';
+                document.getElementById('tableInfo').textContent = 'Showing 0 requests';
+                document.getElementById('pagination').innerHTML = '';
                 return;
             }
             
@@ -2745,15 +3344,15 @@
                                 r.status === 'completed' ? '<i class="fas fa-flag-checkered"></i>' : '<i class="fas fa-times-circle"></i>';
                 
                 html += `<tr>
-                    <td><strong>${r.full_name}</strong><br><small>ID: ${r.id}</small></td>
+                    <td><strong>${r.full_name}</strong><br><small>ID: ${r.id?.substring(0, 8)}</small></td>
                     <td>${r.phone}<br>${r.email}</td>
                     <td>${r.service_type}</td>
                     <td>${new Date(r.cleaning_date).toLocaleDateString()}<br>${r.cleaning_time}</td>
                     <td><span class="status-badge ${statusClass}">${statusIcon} ${r.status}</span></td>
-                    <td>${r.agreed_value ? '$' + r.agreed_value : '-'}</td>
+                    <td>${r.agreed_value ? '$' + r.agreed_value : (r.estimated_value ? 'Est: $' + r.estimated_value : '-')}</td>
                     <td>
-                        <button class="btn btn-primary btn-small" onclick="editServiceRequest(${r.id})"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-danger btn-small" onclick="deleteServiceRequest(${r.id})"><i class="fas fa-trash"></i></button>
+                        <button class="btn btn-primary btn-small" onclick="editServiceRequest('${r.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-small" onclick="deleteServiceRequest('${r.id}')"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>`;
             });
@@ -2765,6 +3364,12 @@
                 pages += `<button class="${i === page ? 'active' : ''}" onclick="loadServiceRequests(${i})">${i}</button>`;
             }
             document.getElementById('pagination').innerHTML = pages;
+        }
+
+        // Export to Excel
+        function exportToExcel() {
+            alert('Export to Excel functionality will be implemented here');
+            // In a real implementation, you would generate a CSV or use a library like SheetJS
         }
 
         // Edit modal
@@ -2793,18 +3398,27 @@
                 };
                 
                 if (supabaseClient) {
-                    await supabaseClient.from('service_requests').update(data).eq('id', id);
-                    closeEditModal();
-                    loadServiceRequests(currentPage);
-                    loadStats();
-                    showToast('Updated successfully', 'success');
+                    const { error } = await supabaseClient.from('service_requests').update(data).eq('id', id);
+                    if (!error) {
+                        closeEditModal();
+                        loadServiceRequests(currentPage);
+                        loadStats();
+                        showToast('Updated successfully', 'success');
+                    } else {
+                        showToast('Error updating: ' + error.message, 'error');
+                    }
                 }
             });
         }
 
         async function editServiceRequest(id) {
             if (!supabaseClient) return;
-            const { data } = await supabaseClient.from('service_requests').select().eq('id', id).single();
+            const { data, error } = await supabaseClient.from('service_requests').select().eq('id', id).single();
+            if (error) {
+                showToast('Error loading request: ' + error.message, 'error');
+                return;
+            }
+            
             if (data) {
                 document.getElementById('editRequestId').value = data.id;
                 document.getElementById('editFullName').value = data.full_name;
@@ -2829,11 +3443,15 @@
         }
 
         async function deleteServiceRequest(id) {
-            if (confirm('Delete this request?')) {
-                await supabaseClient.from('service_requests').delete().eq('id', id);
-                loadServiceRequests(currentPage);
-                loadStats();
-                showToast('Deleted', 'success');
+            if (confirm('Are you sure you want to delete this request? This action cannot be undone.')) {
+                const { error } = await supabaseClient.from('service_requests').delete().eq('id', id);
+                if (!error) {
+                    loadServiceRequests(currentPage);
+                    loadStats();
+                    showToast('Request deleted successfully', 'success');
+                } else {
+                    showToast('Error deleting: ' + error.message, 'error');
+                }
             }
         }
 
@@ -2849,7 +3467,8 @@
         function showToast(msg, type) {
             const toast = document.createElement('div');
             toast.className = `toast toast-${type}`;
-            toast.innerHTML = `<div class="toast-content"><i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i> ${msg}</div>`;
+            toast.style.borderLeftColor = type === 'success' ? '#00c853' : '#ff6b6b';
+            toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}" style="color: ${type === 'success' ? '#00c853' : '#ff6b6b'};"></i> ${msg}`;
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), 3000);
         }
@@ -2860,6 +3479,14 @@
                 clearTimeout(t);
                 t = setTimeout(() => fn.apply(this, arguments), delay);
             };
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) {
+                closeEditModal();
+            }
         }
     </script>
 </body>
