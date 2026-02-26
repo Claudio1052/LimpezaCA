@@ -230,9 +230,7 @@
             background-color: var(--gray-100);
         }
 
-        .admin-link {
-            color: var(--accent-color) !important;
-        }
+        /* Admin link removido do menu - agora está no rodapé */
 
         .menu-toggle {
             display: none;
@@ -424,7 +422,7 @@
         }
 
         /* =========================================== */
-        /* TESTIMONIALS SECTION */
+        /* TESTIMONIALS SECTION - EXATAMENTE COMO SOLICITADO */
         /* =========================================== */
         .testimonials-section {
             padding: 60px 0;
@@ -643,7 +641,7 @@
         }
 
         /* =========================================== */
-        /* FOOTER */
+        /* FOOTER - COM ADMIN DISCRETO */
         /* =========================================== */
         footer {
             background: var(--dark-color);
@@ -722,6 +720,26 @@
             color: rgba(255,255,255,0.6);
             font-size: 0.9rem;
         }
+        
+        /* Admin link discreto no rodapé */
+        .admin-discreet {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+        .admin-discreet:hover {
+            opacity: 1;
+        }
+        .admin-discreet a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            border-bottom: 1px dotted rgba(255,255,255,0.3);
+        }
+        .admin-discreet a:hover {
+            color: white;
+            border-bottom-color: white;
+        }
 
         /* =========================================== */
         /* BUTTONS */
@@ -772,7 +790,7 @@
         }
 
         /* =========================================== */
-        /* FORM STYLES */
+        /* FORM STYLES - COM CAMPOS CONDICIONAIS */
         /* =========================================== */
         .schedule-form {
             padding: 40px 0;
@@ -914,6 +932,19 @@
             border-radius: var(--border-radius);
             border-left: 4px solid var(--primary-color);
         }
+        
+        /* Campos condicionais */
+        .conditional-field {
+            display: none;
+        }
+        
+        .dimension-group {
+            display: flex;
+            gap: 10px;
+        }
+        .dimension-group input {
+            width: 50%;
+        }
 
         /* =========================================== */
         /* ADMIN STYLES */
@@ -1046,7 +1077,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 800px;
+            min-width: 900px;
         }
 
         thead {
@@ -1230,7 +1261,7 @@
             
             .nav-links {
                 position: fixed;
-                top: 100px;
+                top: 70px;
                 left: 0;
                 width: 100%;
                 background: white;
@@ -1241,7 +1272,7 @@
                 transform: translateX(-100%);
                 transition: transform 0.3s ease;
                 z-index: 1000;
-                max-height: calc(100vh - 100px);
+                max-height: calc(100vh - 70px);
                 overflow-y: auto;
             }
             
@@ -1375,7 +1406,7 @@
                 <li><a href="#testimonials" onclick="scrollToSection('testimonials')">Reviews</a></li>
                 <li><a href="#about" onclick="scrollToSection('about')">About</a></li>
                 <li><a href="#" onclick="showScheduleForm()">Schedule</a></li>
-                <li><a href="#" onclick="showAdminPanel()" class="admin-link"><i class="fas fa-lock"></i> Admin</a></li>
+                <!-- Admin link removido daqui -->
             </ul>
         </div>
     </nav>
@@ -1441,7 +1472,7 @@
             </div>
         </section>
 
-        <!-- Testimonials Section -->
+        <!-- Testimonials Section - EXATAMENTE COMO FORNECIDO -->
         <section id="testimonials" class="testimonials-section">
             <div class="container">
                 <h2 class="section-title">What Our Clients Say</h2>
@@ -1450,25 +1481,89 @@
                         <div class="testimonial-rating">
                             <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                         </div>
-                        <p class="testimonial-text">"Rio Cleaning did an amazing job on our move-out cleaning. The apartment was spotless and we got our full deposit back. Highly recommend!"</p>
-                        <p class="testimonial-author">- Sarah M.</p>
-                        <p class="testimonial-date">March 2024</p>
+                        <p class="testimonial-text">"I hired Rio to make sure my apartment was perfect for the move‑out inspection. It was definitely the best investment – we got our full security deposit back and I could focus on unpacking in our new home. Thank you Sabrina and team for the incredible work!"</p>
+                        <p class="testimonial-author">- Thais Gonçalves</p>
+                        <p class="testimonial-date">5 months ago</p>
                     </div>
                     <div class="testimonial-card">
                         <div class="testimonial-rating">
                             <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                         </div>
-                        <p class="testimonial-text">"Professional, punctual, and thorough. They cleaned our church facility with great attention to detail. Will definitely use them again."</p>
-                        <p class="testimonial-author">- Pastor John D.</p>
-                        <p class="testimonial-date">February 2024</p>
+                        <p class="testimonial-text">"Rio Cleaning YYC exceeded my expectations. The cleaning was impeccable and detailed, exactly what I needed for my home. I recommend their services without reservation."</p>
+                        <p class="testimonial-author">- Marina Barreto</p>
+                        <p class="testimonial-date">4 days ago (edited)</p>
                     </div>
                     <div class="testimonial-card">
                         <div class="testimonial-rating">
                             <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                         </div>
-                        <p class="testimonial-text">"The carpet cleaning service was exceptional. They removed stains I thought would never come out. Fair pricing and great communication."</p>
-                        <p class="testimonial-author">- Michael R.</p>
-                        <p class="testimonial-date">January 2024</p>
+                        <p class="testimonial-text">"I highly recommend Rio Cleaning YYC for their reliable and trustworthy service. I couldn't be more satisfied. What really stood out was the comfort I felt trusting my home and belongings to them."</p>
+                        <p class="testimonial-author">- Tata Miller</p>
+                        <p class="testimonial-date">7 months ago</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"I was lucky to have Sabrina clean my house – I've never seen a house so clean!! She is extremely detail‑oriented, very experienced and professional. Also very fast and doesn't waste time. I will definitely hire Rio Cleaning again!"</p>
+                        <p class="testimonial-author">- Gabriela Camarotti</p>
+                        <p class="testimonial-date">8 months ago</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"Sabrina from Rio Cleaning is incredibly attentive to details and always goes the extra mile, cleaning areas most people wouldn't even think of. It's rare to find someone who takes such pride in their own work."</p>
+                        <p class="testimonial-author">- Aghata Oliveira</p>
+                        <p class="testimonial-date">8 months ago</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"A true lifesaver. Forget paying for each service individually, forget being unsatisfied. The cleaning is done with great care and attention from start to finish. They really clean everything, on top and under cabinets; my bathrooms are unrecognizable."</p>
+                        <p class="testimonial-author">- jozzi jordao</p>
+                        <p class="testimonial-date">8 months ago</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"I had an amazing experience with the cleaning service provided by this company. Everything was absolutely perfect, they paid attention to every detail, worked quickly and efficiently and left the space spotless."</p>
+                        <p class="testimonial-author">- Iris Specht</p>
+                        <p class="testimonial-date">8 months ago</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"The best cleaning services in town! Highly recommend."</p>
+                        <p class="testimonial-author">- Sandro Brito</p>
+                        <p class="testimonial-date">2 days ago</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"Exceptional cleaning services! Total peace of mind during my recent move. They did a thorough deep cleaning of bathrooms and kitchen: that means cleaning literally every nook and cranny of tubs, showers, cabinets..."</p>
+                        <p class="testimonial-author">- Rodrigo Dal Ben</p>
+                        <p class="testimonial-date">3 days ago</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"Incredible work! The Rio Cleaning team is extremely diligent, friendly and attentive to details. They did a fantastic job cleaning our carpet; when we got home everything smelled wonderful."</p>
+                        <p class="testimonial-author">- Arthur de Oliveira Bandeira</p>
+                        <p class="testimonial-date">4 days ago</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"I recently hired Rio Cleaning for a deep cleaning of my house and was extremely impressed with the service. Attention to detail is exceptional — they didn't leave any corner uncleaned. The team went above and beyond."</p>
+                        <p class="testimonial-author">- Heloisa0702</p>
+                        <p class="testimonial-date">1 week ago</p>
                     </div>
                 </div>
                 <div class="google-reviews-link">
@@ -1568,7 +1663,7 @@
         </section>
     </div>
 
-    <!-- Schedule Form (Hidden) -->
+    <!-- Schedule Form (sem botão Back) -->
     <div id="scheduleFormContainer" class="schedule-form" style="display: none;">
         <div class="container">
             <div class="form-container">
@@ -1605,7 +1700,7 @@
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label><i class="fas fa-tasks"></i> Service Type <span class="required">*</span></label>
-                                    <select id="serviceType" required>
+                                    <select id="serviceType" required onchange="updateConditionalFields()">
                                         <option value="">Select</option>
                                         <option value="move">Move In/Out Cleaning</option>
                                         <option value="construction">Post-Construction</option>
@@ -1617,7 +1712,9 @@
                                         <option value="other">Other</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
+                                
+                                <!-- Campos para serviços residenciais (quartos, banheiros, shower) -->
+                                <div class="form-group conditional-field residential-fields" style="display:none">
                                     <label><i class="fas fa-bed"></i> Bedrooms</label>
                                     <select id="bedrooms">
                                         <option value="0">None</option>
@@ -1628,7 +1725,7 @@
                                         <option value="5">5+</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group conditional-field residential-fields" style="display:none">
                                     <label><i class="fas fa-bath"></i> Bathrooms</label>
                                     <select id="bathrooms">
                                         <option value="0">None</option>
@@ -1639,7 +1736,7 @@
                                         <option value="5">5+</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group conditional-field residential-fields" style="display:none">
                                     <label><i class="fas fa-shower"></i> Shower Box</label>
                                     <select id="showerBoxCount">
                                         <option value="0">None</option>
@@ -1649,28 +1746,42 @@
                                         <option value="4">4+</option>
                                     </select>
                                 </div>
+                                
+                                <!-- Campo para carpete (dimensões) -->
+                                <div class="form-group conditional-field carpet-field" style="display:none; grid-column: span 2;">
+                                    <label><i class="fas fa-ruler"></i> Carpet Dimensions (sq ft)</label>
+                                    <div class="dimension-group">
+                                        <input type="number" id="carpetLength" placeholder="Length (ft)" min="0" step="0.1">
+                                        <input type="number" id="carpetWidth" placeholder="Width (ft)" min="0" step="0.1">
+                                    </div>
+                                </div>
+                                
+                                <!-- Pets: apenas SIM/NÃO -->
                                 <div class="form-group">
                                     <label><i class="fas fa-paw"></i> Pets?</label>
-                                    <select id="hasPets">
-                                        <option value="false">No</option>
-                                        <option value="true">Yes</option>
+                                    <select id="hasPets" onchange="togglePetCount()">
+                                        <option value="false">Não</option>
+                                        <option value="true">Sim</option>
                                     </select>
                                 </div>
                                 <div class="form-group" id="petCountGroup" style="display:none">
                                     <label><i class="fas fa-dog"></i> How many?</label>
                                     <input type="number" id="petCount" min="0" value="0">
                                 </div>
+                                
+                                <!-- Children: apenas SIM/NÃO -->
                                 <div class="form-group">
                                     <label><i class="fas fa-child"></i> Children?</label>
-                                    <select id="hasChildren">
-                                        <option value="false">No</option>
-                                        <option value="true">Yes</option>
+                                    <select id="hasChildren" onchange="toggleChildrenCount()">
+                                        <option value="false">Não</option>
+                                        <option value="true">Sim</option>
                                     </select>
                                 </div>
                                 <div class="form-group" id="childrenCountGroup" style="display:none">
                                     <label><i class="fas fa-baby"></i> How many?</label>
                                     <input type="number" id="childrenCount" min="0" value="0">
                                 </div>
+                                
                                 <div class="form-group">
                                     <label><i class="fas fa-calendar"></i> Date <span class="required">*</span></label>
                                     <input type="text" id="cleaningDate" class="datepicker" required placeholder="Select date">
@@ -1696,7 +1807,7 @@
                         
                         <div class="form-actions">
                             <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Submit</button>
-                            <button type="button" class="btn btn-secondary" onclick="showHomePage()"><i class="fas fa-home"></i> Back</button>
+                            <!-- Botão Back removido -->
                         </div>
                         <div id="formMessage" class="form-message"></div>
                     </form>
@@ -1750,8 +1861,8 @@
                         <div class="stat-info"><h3 id="completedCount">0</h3><p>Completed</p></div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon total"><i class="fas fa-calendar-alt"></i></div>
-                        <div class="stat-info"><h3 id="totalCount">0</h3><p>This Month</p></div>
+                        <div class="stat-icon total"><i class="fas fa-dollar-sign"></i></div>
+                        <div class="stat-info"><h3 id="totalValueConfirmed">$0</h3><p>Confirmed Value</p></div>
                     </div>
                 </div>
                 
@@ -1790,6 +1901,7 @@
                                     <th>Service</th>
                                     <th>Date/Time</th>
                                     <th>Status</th>
+                                    <th>Agreed $</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -1802,7 +1914,7 @@
         </div>
     </div>
 
-    <!-- Edit Modal -->
+    <!-- Edit Modal (com campo de valor acordado) -->
     <div id="editModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1877,8 +1989,8 @@
                     <div class="modal-form-group">
                         <label>Pets?</label>
                         <select id="editHasPets">
-                            <option value="false">No</option>
-                            <option value="true">Yes</option>
+                            <option value="false">Não</option>
+                            <option value="true">Sim</option>
                         </select>
                     </div>
                     <div class="modal-form-group">
@@ -1888,8 +2000,8 @@
                     <div class="modal-form-group">
                         <label>Children?</label>
                         <select id="editHasChildren">
-                            <option value="false">No</option>
-                            <option value="true">Yes</option>
+                            <option value="false">Não</option>
+                            <option value="true">Sim</option>
                         </select>
                     </div>
                     <div class="modal-form-group">
@@ -1919,6 +2031,10 @@
                         </select>
                     </div>
                     <div class="modal-form-group">
+                        <label>Agreed Value ($)</label>
+                        <input type="number" id="editAgreedValue" step="0.01" value="0">
+                    </div>
+                    <div class="modal-form-group">
                         <label>Description *</label>
                         <textarea id="editDescription" rows="4" required></textarea>
                     </div>
@@ -1931,7 +2047,7 @@
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer com admin discreto -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -1959,6 +2075,10 @@
             </div>
             <div class="footer-bottom">
                 <p>&copy; <span id="currentYear"></span> Rio Cleaning Services. All rights reserved.</p>
+                <!-- Admin link discreto no rodapé -->
+                <div class="admin-discreet">
+                    <a href="#" onclick="showAdminPanel()"><i class="fas fa-lock"></i> admin</a>
+                </div>
             </div>
         </div>
     </footer>
@@ -1991,6 +2111,9 @@
             initEditModal();
             initConditionalFields();
             document.getElementById('currentYear').textContent = new Date().getFullYear();
+            
+            // Inicializar campos condicionais
+            updateConditionalFields();
         });
 
         // Carousel scroll
@@ -2052,15 +2175,43 @@
             }
         }
 
-        // Conditional fields
-        function initConditionalFields() {
-            const hasPets = document.getElementById('hasPets');
-            const petGroup = document.getElementById('petCountGroup');
-            const hasChildren = document.getElementById('hasChildren');
-            const childGroup = document.getElementById('childrenCountGroup');
+        // Conditional fields functions
+        function updateConditionalFields() {
+            const serviceType = document.getElementById('serviceType').value;
+            const residentialFields = document.querySelectorAll('.residential-fields');
+            const carpetField = document.querySelector('.carpet-field');
             
-            if (hasPets) hasPets.addEventListener('change', () => petGroup.style.display = hasPets.value === 'true' ? 'block' : 'none');
-            if (hasChildren) hasChildren.addEventListener('change', () => childGroup.style.display = hasChildren.value === 'true' ? 'block' : 'none');
+            // Tipos que devem mostrar campos residenciais
+            const residentialTypes = ['move', 'construction', 'commercial', 'church', 'residential'];
+            
+            if (residentialTypes.includes(serviceType)) {
+                residentialFields.forEach(field => field.style.display = 'block');
+            } else {
+                residentialFields.forEach(field => field.style.display = 'none');
+            }
+            
+            if (serviceType === 'carpet') {
+                carpetField.style.display = 'block';
+            } else {
+                carpetField.style.display = 'none';
+            }
+        }
+
+        function togglePetCount() {
+            const hasPets = document.getElementById('hasPets').value;
+            document.getElementById('petCountGroup').style.display = hasPets === 'true' ? 'block' : 'none';
+        }
+
+        function toggleChildrenCount() {
+            const hasChildren = document.getElementById('hasChildren').value;
+            document.getElementById('childrenCountGroup').style.display = hasChildren === 'true' ? 'block' : 'none';
+        }
+
+        function initConditionalFields() {
+            // Inicializar listeners
+            document.getElementById('hasPets').addEventListener('change', togglePetCount);
+            document.getElementById('hasChildren').addEventListener('change', toggleChildrenCount);
+            document.getElementById('serviceType').addEventListener('change', updateConditionalFields);
         }
 
         // Date picker
@@ -2089,29 +2240,37 @@
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
                 btn.disabled = true;
                 
+                // Coletar dados básicos
                 const formData = {
-                    fullName: document.getElementById('fullName').value,
+                    full_name: document.getElementById('fullName').value,
                     phone: document.getElementById('phone').value,
                     email: document.getElementById('email').value,
                     address: document.getElementById('address').value,
-                    serviceType: document.getElementById('serviceType').value,
-                    bedrooms: parseInt(document.getElementById('bedrooms').value) || 0,
-                    bathrooms: parseInt(document.getElementById('bathrooms').value) || 0,
-                    showerBoxCount: parseInt(document.getElementById('showerBoxCount').value) || 0,
-                    hasPets: document.getElementById('hasPets').value === 'true',
-                    petCount: parseInt(document.getElementById('petCount').value) || 0,
-                    hasChildren: document.getElementById('hasChildren').value === 'true',
-                    childrenCount: parseInt(document.getElementById('childrenCount').value) || 0,
-                    cleaningDate: document.getElementById('cleaningDate').value,
-                    cleaningTime: document.getElementById('cleaningTime').value,
+                    service_type: document.getElementById('serviceType').value,
+                    bedrooms: parseInt(document.getElementById('bedrooms')?.value) || 0,
+                    bathrooms: parseInt(document.getElementById('bathrooms')?.value) || 0,
+                    shower_box_count: parseInt(document.getElementById('showerBoxCount')?.value) || 0,
+                    has_pets: document.getElementById('hasPets').value === 'true',
+                    pet_count: parseInt(document.getElementById('petCount')?.value) || 0,
+                    has_children: document.getElementById('hasChildren').value === 'true',
+                    children_count: parseInt(document.getElementById('childrenCount')?.value) || 0,
+                    cleaning_date: document.getElementById('cleaningDate').value,
+                    cleaning_time: document.getElementById('cleaningTime').value,
                     description: document.getElementById('description').value,
                     status: 'pending',
-                    createdAt: new Date().toISOString()
+                    agreed_value: null,
+                    created_at: new Date().toISOString()
                 };
+                
+                // Adicionar dimensões do carpete se aplicável
+                if (formData.service_type === 'carpet') {
+                    formData.carpet_length = parseFloat(document.getElementById('carpetLength')?.value) || 0;
+                    formData.carpet_width = parseFloat(document.getElementById('carpetWidth')?.value) || 0;
+                }
                 
                 const msg = document.getElementById('formMessage');
                 
-                if (!formData.fullName || !formData.phone || !formData.email || !formData.address || !formData.serviceType || !formData.cleaningDate || !formData.cleaningTime || !formData.description) {
+                if (!formData.full_name || !formData.phone || !formData.email || !formData.address || !formData.service_type || !formData.cleaning_date || !formData.cleaning_time || !formData.description) {
                     showError('Please fill all required fields', msg, btn);
                     return;
                 }
@@ -2145,21 +2304,14 @@
         async function addServiceRequest(data) {
             if (!supabaseClient) return { success: false, error: 'No connection' };
             try {
-                const { error } = await supabaseClient.from('service_requests').insert([{
-                    full_name: data.fullName, phone: data.phone, email: data.email, address: data.address,
-                    service_type: data.serviceType, bedrooms: data.bedrooms, bathrooms: data.bathrooms,
-                    shower_box_count: data.showerBoxCount, has_pets: data.hasPets, pet_count: data.petCount,
-                    has_children: data.hasChildren, children_count: data.childrenCount,
-                    cleaning_date: data.cleaningDate, cleaning_time: data.cleaningTime,
-                    description: data.description, status: data.status, created_at: data.createdAt
-                }]);
+                const { error } = await supabaseClient.from('service_requests').insert([data]);
                 return error ? { success: false, error: error.message } : { success: true };
             } catch (e) {
                 return { success: false, error: e.message };
             }
         }
 
-        // Admin functions (simplified for demo)
+        // Admin functions
         function initAdminPanel() {
             document.getElementById('loginBtn')?.addEventListener('click', handleAdminLogin);
             document.getElementById('exportExcelBtn')?.addEventListener('click', () => alert('Export function ready'));
@@ -2205,23 +2357,24 @@
 
         async function loadStats() {
             if (!supabaseClient) return;
-            const now = new Date();
-            const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
             
-            const { data: monthly } = await supabaseClient.from('service_requests').select('status').gte('created_at', startOfMonth);
-            const { data: all } = await supabaseClient.from('service_requests').select('status');
+            const { data: all } = await supabaseClient.from('service_requests').select('status, agreed_value');
             
-            let pending = 0, confirmed = 0, completed = 0, total = monthly?.length || 0;
+            let pending = 0, confirmed = 0, completed = 0, totalValue = 0;
+            
             all?.forEach(r => {
                 if (r.status === 'pending') pending++;
-                else if (r.status === 'confirmed') confirmed++;
+                else if (r.status === 'confirmed') {
+                    confirmed++;
+                    totalValue += r.agreed_value || 0;
+                }
                 else if (r.status === 'completed') completed++;
             });
             
             document.getElementById('pendingCount').textContent = pending;
             document.getElementById('confirmedCount').textContent = confirmed;
             document.getElementById('completedCount').textContent = completed;
-            document.getElementById('totalCount').textContent = total;
+            document.getElementById('totalValueConfirmed').textContent = '$' + totalValue.toFixed(2);
         }
 
         async function loadServiceRequests(page = 1) {
@@ -2240,7 +2393,7 @@
             
             const tbody = document.getElementById('requestsTableBody');
             if (!data || data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">No requests</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">No requests</td></tr>';
                 return;
             }
             
@@ -2257,6 +2410,7 @@
                     <td>${r.service_type}</td>
                     <td>${new Date(r.cleaning_date).toLocaleDateString()}<br>${r.cleaning_time}</td>
                     <td><span class="status-badge ${statusClass}">${statusIcon} ${r.status}</span></td>
+                    <td>${r.agreed_value ? '$' + r.agreed_value : '-'}</td>
                     <td>
                         <button class="btn btn-primary btn-small" onclick="editServiceRequest(${r.id})"><i class="fas fa-edit"></i></button>
                         <button class="btn btn-danger btn-small" onclick="deleteServiceRequest(${r.id})"><i class="fas fa-trash"></i></button>
@@ -2284,16 +2438,17 @@
                     email: document.getElementById('editEmail').value,
                     address: document.getElementById('editAddress').value,
                     service_type: document.getElementById('editServiceType').value,
-                    bedrooms: parseInt(document.getElementById('editBedrooms').value),
-                    bathrooms: parseInt(document.getElementById('editBathrooms').value),
-                    shower_box_count: parseInt(document.getElementById('editShowerBoxCount').value),
+                    bedrooms: parseInt(document.getElementById('editBedrooms').value) || 0,
+                    bathrooms: parseInt(document.getElementById('editBathrooms').value) || 0,
+                    shower_box_count: parseInt(document.getElementById('editShowerBoxCount').value) || 0,
                     has_pets: document.getElementById('editHasPets').value === 'true',
-                    pet_count: parseInt(document.getElementById('editPetCount').value),
+                    pet_count: parseInt(document.getElementById('editPetCount').value) || 0,
                     has_children: document.getElementById('editHasChildren').value === 'true',
-                    children_count: parseInt(document.getElementById('editChildrenCount').value),
+                    children_count: parseInt(document.getElementById('editChildrenCount').value) || 0,
                     cleaning_date: document.getElementById('editCleaningDate').value,
                     cleaning_time: document.getElementById('editCleaningTime').value,
                     status: document.getElementById('editStatus').value,
+                    agreed_value: parseFloat(document.getElementById('editAgreedValue').value) || 0,
                     description: document.getElementById('editDescription').value
                 };
                 
@@ -2324,9 +2479,10 @@
                 document.getElementById('editPetCount').value = data.pet_count;
                 document.getElementById('editHasChildren').value = data.has_children ? 'true' : 'false';
                 document.getElementById('editChildrenCount').value = data.children_count;
-                document.getElementById('editCleaningDate').value = data.cleaning_date.split('T')[0];
+                document.getElementById('editCleaningDate').value = data.cleaning_date?.split('T')[0] || data.cleaning_date;
                 document.getElementById('editCleaningTime').value = data.cleaning_time;
                 document.getElementById('editStatus').value = data.status;
+                document.getElementById('editAgreedValue').value = data.agreed_value || 0;
                 document.getElementById('editDescription').value = data.description;
                 openEditModal();
             }
