@@ -115,6 +115,48 @@
         .contact-link { color: white; display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 8px; background: rgba(255,255,255,0.1); }
         .contact-link:hover { background: rgba(255,255,255,0.2); }
 
+        /* Carpet Page Specific Styles */
+        .carpet-hero {
+            background: linear-gradient(135deg, #1a2a4f, #0f1a33);
+            padding: 80px 0;
+            text-align: center;
+            color: white;
+        }
+        .carpet-hero h1 {
+            color: white;
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            margin-bottom: 20px;
+        }
+        .carpet-hero h1 span {
+            color: #ffd700;
+        }
+        .carpet-hero p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        .carpet-stats {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        .carpet-stat-item {
+            text-align: center;
+        }
+        .carpet-stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ffd700;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+        .carpet-stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
         .carpet-gallery-section { padding: 60px 0; background: linear-gradient(135deg, #f8fafc 0%, #f0f7ff 100%); }
         .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 40px; }
         .gallery-card { background: white; border-radius: var(--border-radius-lg); overflow: hidden; box-shadow: var(--shadow-lg); transition: all 0.3s ease; border: 1px solid var(--gray-200); position: relative; }
@@ -145,6 +187,95 @@
         .testimonial-carpet-date { font-size: 0.85rem; color: var(--gray-600); }
         .carpet-cta { text-align: center; margin-top: 50px; }
         .carpet-cta .btn { padding: 16px 50px; font-size: 1.2rem; }
+        .carpet-services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 50px 0;
+        }
+        .carpet-service-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s ease;
+        }
+        .carpet-service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+        .carpet-service-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(42,110,255,0.1), rgba(0,168,150,0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+        }
+        .carpet-service-card h3 {
+            margin-bottom: 15px;
+        }
+        .carpet-service-card p {
+            color: var(--gray-600);
+            margin-bottom: 20px;
+        }
+        .carpet-service-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        .carpet-faq {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            padding: 40px;
+            margin: 50px 0;
+            box-shadow: var(--shadow-md);
+        }
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .faq-item {
+            border-bottom: 1px solid var(--gray-200);
+            padding-bottom: 20px;
+        }
+        .faq-question {
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .faq-question i {
+            color: var(--primary-color);
+        }
+        .faq-answer {
+            color: var(--gray-600);
+            margin-left: 26px;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .back-to-home:hover {
+            color: var(--primary-dark);
+        }
 
         .different-section { padding: 60px 0; background: linear-gradient(135deg, #f8fafc 0%, #f0f7ff 100%); }
         .different-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 40px; }
@@ -242,7 +373,7 @@
         .dimension-group { display: flex; gap: 10px; }
         .dimension-group input { width: 50%; }
 
-        .estimated-price-box { background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; padding: 20px; border-radius: var(--border-radius-lg); margin-bottom: 25px; text-align: center; box-shadow: var(--shadow-lg); position: relative; overflow: hidden; }
+        .estimated-price-box { background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; padding: 20px; border-radius: var(--border-radius-lg); margin-top: 25px; margin-bottom: 25px; text-align: center; box-shadow: var(--shadow-lg); position: relative; overflow: hidden; }
         .estimated-price-box::before { content: ''; position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); animation: rotate 20s linear infinite; }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .estimated-price-box h4 { color: white; font-size: 1.1rem; margin-bottom: 10px; position: relative; z-index: 1; }
@@ -346,13 +477,13 @@
             .nav-links { position: fixed; top: 70px; left: 0; width: 100%; background: white; flex-direction: column; align-items: stretch; padding: 20px; box-shadow: var(--shadow-lg); transform: translateX(-100%); transition: transform 0.3s ease; z-index: 1000; max-height: calc(100vh - 70px); overflow-y: auto; }
             .nav-links.active { transform: translateX(0); }
             .nav-links a { display: block; padding: 15px; border-bottom: 1px solid var(--gray-200); }
-            .different-grid, .testimonials-grid, .dashboard-stats, .price-grid { grid-template-columns: repeat(2, 1fr); }
+            .different-grid, .testimonials-grid, .dashboard-stats, .price-grid, .carpet-services-grid, .faq-grid { grid-template-columns: repeat(2, 1fr); }
             .gallery-grid { grid-template-columns: repeat(2, 1fr); }
             .gallery-card.featured { grid-column: span 2; grid-template-columns: 1fr; }
             .testimonials-carpet-grid { grid-template-columns: 1fr; }
         }
         @media (max-width: 768px) {
-            .different-grid, .testimonials-grid, .gallery-grid, .price-grid { grid-template-columns: 1fr; }
+            .different-grid, .testimonials-grid, .gallery-grid, .price-grid, .carpet-services-grid, .faq-grid { grid-template-columns: 1fr; }
             .gallery-card.featured { grid-column: span 1; }
             .form-grid { grid-template-columns: 1fr; }
             .dashboard-stats { grid-template-columns: 1fr; }
@@ -398,7 +529,7 @@
                 <li><a href="#home" onclick="scrollToSection('home')">Home</a></li>
                 <li><a href="#different" onclick="scrollToSection('different')">Why Choose Us</a></li>
                 <li><a href="#services-carousel" onclick="scrollToSection('services-carousel')">Services</a></li>
-                <li><a href="#carpet-gallery" onclick="scrollToSection('carpet-gallery')">Carpet</a></li>
+                <li><a href="#" onclick="showCarpetPage()">Carpet</a></li>
                 <li><a href="#testimonials" onclick="scrollToSection('testimonials')">Reviews</a></li>
                 <li><a href="#about" onclick="scrollToSection('about')">About</a></li>
                 <li><a href="#" onclick="showScheduleForm()">Schedule</a></li>
@@ -406,6 +537,7 @@
         </div>
     </nav>
 
+    <!-- Home Page Content -->
     <div id="mainContent">
         <section id="home" class="hero">
             <div class="hero-video-container">
@@ -450,74 +582,6 @@
                         <h3>TRUSTWORTHY</h3>
                         <p>Trust is at the heart of everything we do. Professional, reliable, and responsible. Your home is treated with care.</p>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="carpet-gallery" class="carpet-gallery-section">
-            <div class="container">
-                <h2 class="section-title">Carpet & Upholstery Cleaning</h2>
-                <p class="text-center" style="max-width: 700px; margin: 0 auto 40px;">See the dramatic difference our professional cleaning makes. Before and after results that speak for themselves.</p>
-                <div class="gallery-grid">
-                    <div class="gallery-card featured">
-                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Ramon_foto.png" alt="Ramon - Satisfied Client" class="gallery-image">
-                        <div class="gallery-content">
-                            <span class="gallery-badge"><i class="fas fa-star"></i> Client Spotlight</span>
-                            <h3>Ramon's Experience</h3>
-                            <p>"I was amazed by the results! My carpets look brand new. The team was professional, on time, and paid attention to every detail. Highly recommend Rio Cleaning for anyone looking for quality carpet care."</p>
-                            <div class="gallery-stats">
-                                <div class="stat-item"><i class="fas fa-calendar-check"></i> 5+ years client</div>
-                                <div class="stat-item"><i class="fas fa-thumbs-up"></i> 100% satisfied</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="gallery-card">
-                        <div class="before-after-label"><i class="fas fa-images"></i> Before & After</div>
-                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Capet_antes_depois.png" alt="Carpet Before and After" class="gallery-image">
-                        <div class="gallery-content"><h3>Residential Carpet</h3><p>Deep cleaning removed years of embedded dirt and stains, restoring the carpet's original color and texture.</p></div>
-                    </div>
-                    <div class="gallery-card">
-                        <div class="before-after-label"><i class="fas fa-images"></i> Before & After</div>
-                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Carpet_escritorio_antes_depois.png" alt="Office Carpet Before and After" class="gallery-image">
-                        <div class="gallery-content"><h3>Commercial Office</h3><p>High-traffic office carpet revitalized, creating a fresh and professional environment for employees and clients.</p></div>
-                    </div>
-                    <div class="gallery-card">
-                        <div class="before-after-label"><i class="fas fa-images"></i> Before & After</div>
-                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Estofado_antes_depois.png" alt="Upholstery Before and After" class="gallery-image">
-                        <div class="gallery-content"><h3>Upholstery Cleaning</h3><p>Furniture deep cleaning that removes allergens, stains, and odors, extending the life of your pieces.</p></div>
-                    </div>
-                    <div class="gallery-card">
-                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Ramon.png" alt="Ramon's Clean Carpet" class="gallery-image">
-                        <div class="gallery-content"><h3>Spotless Results</h3><p>Ramon's carpet after professional treatment - stain-free, fresh, and deeply cleaned.</p></div>
-                    </div>
-                    <div class="gallery-card">
-                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Resultado.png" alt="Final Cleaning Result" class="gallery-image">
-                        <div class="gallery-content"><h3>Impeccable Finish</h3><p>The final result speaks for itself. Our process ensures every fiber is thoroughly cleaned and sanitized.</p></div>
-                    </div>
-                </div>
-                <div class="carpet-testimonials">
-                    <h3><i class="fas fa-quote-right"></i> What Clients Say About Our Carpet Cleaning</h3>
-                    <div class="testimonials-carpet-grid">
-                        <div class="testimonial-carpet-card">
-                            <div class="testimonial-avatar"></div>
-                            <div class="testimonial-carpet-content">
-                                <p>"Incredible work! The Rio Cleaning team is extremely diligent, friendly and attentive to details. They did a fantastic job cleaning our carpet; when we got home everything smelled wonderful."</p>
-                                <div class="testimonial-carpet-author">- Arthur de Oliveira Bandeira</div>
-                                <div class="testimonial-carpet-date">4 days ago</div>
-                            </div>
-                        </div>
-                        <div class="testimonial-carpet-card">
-                            <div class="testimonial-avatar"></div>
-                            <div class="testimonial-carpet-content">
-                                <p>"Exceptional cleaning services! Total peace of mind during my recent move. They did a thorough deep cleaning of bathrooms and kitchen: that means cleaning literally every nook and cranny."</p>
-                                <div class="testimonial-carpet-author">- Rodrigo Dal Ben</div>
-                                <div class="testimonial-carpet-date">3 days ago</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carpet-cta">
-                    <button class="btn btn-primary" onclick="showScheduleForm()"><i class="fas fa-calendar-check"></i> Schedule Your Carpet Cleaning</button>
                 </div>
             </div>
         </section>
@@ -579,6 +643,188 @@
                 </div>
             </div>
         </section>
+    </div>
+
+    <!-- Carpet Page Content -->
+    <div id="carpetPage" style="display: none;">
+        <!-- Hero Section -->
+        <section class="carpet-hero">
+            <div class="container">
+                <div class="back-to-home" onclick="showHomePage()">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </div>
+                <h1>Professional <span>Carpet & Upholstery</span> Cleaning</h1>
+                <p>Restore the beauty and freshness of your carpets and furniture with our specialized deep cleaning services. We remove embedded dirt, stains, and allergens using professional-grade equipment.</p>
+                <button class="btn btn-primary hero-btn" onclick="showScheduleFormWithCarpet()"><i class="fas fa-calendar-check"></i> Schedule Carpet Cleaning</button>
+                
+                <div class="carpet-stats">
+                    <div class="carpet-stat-item">
+                        <div class="carpet-stat-number">98%</div>
+                        <div class="carpet-stat-label">Satisfaction Rate</div>
+                    </div>
+                    <div class="carpet-stat-item">
+                        <div class="carpet-stat-number">500+</div>
+                        <div class="carpet-stat-label">Carpets Cleaned</div>
+                    </div>
+                    <div class="carpet-stat-item">
+                        <div class="carpet-stat-number">24h</div>
+                        <div class="carpet-stat-label">Fast Drying</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Carpet Gallery Section -->
+        <section class="carpet-gallery-section">
+            <div class="container">
+                <h2 class="section-title">Before & After Results</h2>
+                <p class="text-center" style="max-width: 700px; margin: 0 auto 40px;">See the dramatic difference our professional cleaning makes. These real results speak for themselves.</p>
+                <div class="gallery-grid">
+                    <div class="gallery-card featured">
+                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Ramon_foto.png" alt="Ramon - Satisfied Client" class="gallery-image">
+                        <div class="gallery-content">
+                            <span class="gallery-badge"><i class="fas fa-star"></i> Client Spotlight</span>
+                            <h3>Ramon's Experience</h3>
+                            <p>"I was amazed by the results! My carpets look brand new. The team was professional, on time, and paid attention to every detail. Highly recommend Rio Cleaning for anyone looking for quality carpet care."</p>
+                            <div class="gallery-stats">
+                                <div class="stat-item"><i class="fas fa-calendar-check"></i> 5+ years client</div>
+                                <div class="stat-item"><i class="fas fa-thumbs-up"></i> 100% satisfied</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gallery-card">
+                        <div class="before-after-label"><i class="fas fa-images"></i> Before & After</div>
+                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Capet_antes_depois.png" alt="Carpet Before and After" class="gallery-image">
+                        <div class="gallery-content"><h3>Residential Carpet</h3><p>Deep cleaning removed years of embedded dirt and stains, restoring the carpet's original color and texture.</p></div>
+                    </div>
+                    <div class="gallery-card">
+                        <div class="before-after-label"><i class="fas fa-images"></i> Before & After</div>
+                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Carpet_escritorio_antes_depois.png" alt="Office Carpet Before and After" class="gallery-image">
+                        <div class="gallery-content"><h3>Commercial Office</h3><p>High-traffic office carpet revitalized, creating a fresh and professional environment for employees and clients.</p></div>
+                    </div>
+                    <div class="gallery-card">
+                        <div class="before-after-label"><i class="fas fa-images"></i> Before & After</div>
+                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Estofado_antes_depois.png" alt="Upholstery Before and After" class="gallery-image">
+                        <div class="gallery-content"><h3>Upholstery Cleaning</h3><p>Furniture deep cleaning that removes allergens, stains, and odors, extending the life of your pieces.</p></div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Ramon.png" alt="Ramon's Clean Carpet" class="gallery-image">
+                        <div class="gallery-content"><h3>Spotless Results</h3><p>Ramon's carpet after professional treatment - stain-free, fresh, and deeply cleaned.</p></div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Resultado.png" alt="Final Cleaning Result" class="gallery-image">
+                        <div class="gallery-content"><h3>Impeccable Finish</h3><p>The final result speaks for itself. Our process ensures every fiber is thoroughly cleaned and sanitized.</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Carpet Services -->
+        <section class="services-carousel-section">
+            <div class="container">
+                <h2 class="section-title">Our Carpet & Upholstery Services</h2>
+                <div class="carpet-services-grid">
+                    <div class="carpet-service-card">
+                        <div class="carpet-service-icon">
+                            <i class="fas fa-rug"></i>
+                        </div>
+                        <h3>Full Carpet Cleaning</h3>
+                        <p>Complete deep cleaning for wall-to-wall carpets using hot water extraction method.</p>
+                        <div class="carpet-service-price">From $0.35/sq ft</div>
+                        <button class="btn btn-primary btn-small" onclick="showScheduleFormWithCarpet()">Book Now</button>
+                    </div>
+                    <div class="carpet-service-card">
+                        <div class="carpet-service-icon">
+                            <i class="fas fa-couch"></i>
+                        </div>
+                        <h3>Upholstery Cleaning</h3>
+                        <p>Deep cleaning for sofas, chairs, and other fabric furniture. Stain removal and sanitizing.</p>
+                        <div class="carpet-service-price">From $50/item</div>
+                        <button class="btn btn-primary btn-small" onclick="showScheduleFormWithCarpet()">Book Now</button>
+                    </div>
+                    <div class="carpet-service-card">
+                        <div class="carpet-service-icon">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <h3>Commercial Carpet</h3>
+                        <p>High-traffic area cleaning for offices, restaurants, and retail spaces.</p>
+                        <div class="carpet-service-price">Custom Quote</div>
+                        <button class="btn btn-primary btn-small" onclick="showScheduleFormWithCarpet()">Book Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Carpet Testimonials -->
+        <section class="carpet-testimonials">
+            <div class="container">
+                <h3><i class="fas fa-quote-right"></i> What Clients Say About Our Carpet Cleaning</h3>
+                <div class="testimonials-carpet-grid">
+                    <div class="testimonial-carpet-card">
+                        <div class="testimonial-avatar"></div>
+                        <div class="testimonial-carpet-content">
+                            <p>"Incredible work! The Rio Cleaning team is extremely diligent, friendly and attentive to details. They did a fantastic job cleaning our carpet; when we got home everything smelled wonderful."</p>
+                            <div class="testimonial-carpet-author">- Arthur de Oliveira Bandeira</div>
+                            <div class="testimonial-carpet-date">4 days ago</div>
+                        </div>
+                    </div>
+                    <div class="testimonial-carpet-card">
+                        <div class="testimonial-avatar"></div>
+                        <div class="testimonial-carpet-content">
+                            <p>"Exceptional cleaning services! Total peace of mind during my recent move. They did a thorough deep cleaning of bathrooms and kitchen: that means cleaning literally every nook and cranny."</p>
+                            <div class="testimonial-carpet-author">- Rodrigo Dal Ben</div>
+                            <div class="testimonial-carpet-date">3 days ago</div>
+                        </div>
+                    </div>
+                    <div class="testimonial-carpet-card">
+                        <div class="testimonial-avatar"></div>
+                        <div class="testimonial-carpet-content">
+                            <p>"I was amazed by how they removed old stains I thought were permanent. My living room carpet looks brand new! Professional service from start to finish."</p>
+                            <div class="testimonial-carpet-author">- Maria Santos</div>
+                            <div class="testimonial-carpet-date">1 week ago</div>
+                        </div>
+                    </div>
+                    <div class="testimonial-carpet-card">
+                        <div class="testimonial-avatar"></div>
+                        <div class="testimonial-carpet-content">
+                            <p>"The team arrived on time, worked efficiently, and left my carpets spotless. The drying time was much faster than I expected. Highly recommended!"</p>
+                            <div class="testimonial-carpet-author">- John Smith</div>
+                            <div class="testimonial-carpet-date">2 weeks ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Carpet FAQ -->
+        <section class="carpet-faq">
+            <div class="container">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <div class="faq-question"><i class="fas fa-clock"></i> How long does it take to dry?</div>
+                        <div class="faq-answer">With our professional equipment, carpets typically dry within 4-8 hours depending on humidity and airflow. We use powerful extraction to remove as much water as possible.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question"><i class="fas fa-dog"></i> Is it safe for pets and children?</div>
+                        <div class="faq-answer">Yes! We use environmentally friendly, non-toxic cleaning solutions that are safe for your entire family, including furry members. All products are pet-friendly and child-safe.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question"><i class="fas fa-trash-alt"></i> Will you move furniture?</div>
+                        <div class="faq-answer">We can move light furniture such as coffee tables and chairs. For larger items like sofas and beds, we'll clean around them or you can arrange to have them moved prior to service.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question"><i class="fas fa-calendar"></i> How often should I clean my carpets?</div>
+                        <div class="faq-answer">For most homes, we recommend professional cleaning every 12-18 months. Homes with pets, children, or allergy sufferers may benefit from more frequent cleaning every 6-12 months.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Carpet CTA -->
+        <div class="carpet-cta">
+            <button class="btn btn-primary" onclick="showScheduleFormWithCarpet()"><i class="fas fa-calendar-check"></i> Schedule Your Carpet Cleaning Today</button>
+        </div>
     </div>
 
     <!-- Schedule Form -->
@@ -670,7 +916,7 @@
                             <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Submit</button>
                         </div>
                         
-                        <!-- Estimated Price Box - Moved below submit button -->
+                        <!-- Estimated Price Box - Below submit button -->
                         <div class="estimated-price-box" id="estimatedPriceBox" style="display: none;">
                             <h4><i class="fas fa-calculator"></i> Estimated Price</h4>
                             <div class="price-value" id="estimatedPriceValue">$0.00</div>
@@ -912,9 +1158,8 @@ ON CONFLICT DO NOTHING;</pre>
                     <h4>Quick Links</h4>
                     <ul>
                         <li><a href="#" onclick="showHomePage()">Home</a></li>
+                        <li><a href="#" onclick="showCarpetPage()">Carpet Cleaning</a></li>
                         <li><a href="#different" onclick="scrollToSection('different')">Why Choose Us</a></li>
-                        <li><a href="#services-carousel" onclick="scrollToSection('services-carousel')">Services</a></li>
-                        <li><a href="#carpet-gallery" onclick="scrollToSection('carpet-gallery')">Carpet</a></li>
                         <li><a href="#testimonials" onclick="scrollToSection('testimonials')">Reviews</a></li>
                         <li><a href="#" onclick="showScheduleForm()">Schedule</a></li>
                     </ul>
@@ -1368,6 +1613,15 @@ ON CONFLICT DO NOTHING;</pre>
 
         function showHomePage() {
             document.getElementById('mainContent').style.display = 'block';
+            document.getElementById('carpetPage').style.display = 'none';
+            document.getElementById('scheduleFormContainer').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+            closeMobileMenu();
+        }
+
+        function showCarpetPage() {
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('carpetPage').style.display = 'block';
             document.getElementById('scheduleFormContainer').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'none';
             closeMobileMenu();
@@ -1375,14 +1629,39 @@ ON CONFLICT DO NOTHING;</pre>
 
         function showScheduleForm() {
             document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('carpetPage').style.display = 'none';
             document.getElementById('scheduleFormContainer').style.display = 'block';
             document.getElementById('adminPanel').style.display = 'none';
+            
+            // Reset form and set service type to empty
+            const serviceType = document.getElementById('serviceType');
+            if (serviceType) serviceType.value = '';
+            
+            setTimeout(initDatePicker, 100);
+            closeMobileMenu();
+        }
+
+        function showScheduleFormWithCarpet() {
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('carpetPage').style.display = 'none';
+            document.getElementById('scheduleFormContainer').style.display = 'block';
+            document.getElementById('adminPanel').style.display = 'none';
+            
+            // Set service type to carpet
+            const serviceType = document.getElementById('serviceType');
+            if (serviceType) {
+                serviceType.value = 'carpet';
+                updateConditionalFields();
+                calculateEstimatedPrice();
+            }
+            
             setTimeout(initDatePicker, 100);
             closeMobileMenu();
         }
 
         function showAdminPanel() {
             document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('carpetPage').style.display = 'none';
             document.getElementById('scheduleFormContainer').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'block';
             if (localStorage.getItem('adminLoggedIn') === 'true') {
