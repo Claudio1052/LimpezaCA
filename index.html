@@ -927,44 +927,42 @@ ON CONFLICT DO NOTHING;</pre>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onload="onSupabaseLoaded()"></script>
-    
+
+    <!-- PRE-INIT: Must be defined BEFORE Supabase CDN so onSupabaseLoaded() exists when onload fires -->
     <script>
-        // ============================================================
-        // CONFIGURATION
-        // ============================================================
-        const ADMIN_CREDENTIALS = { username: "admin_rio_cleaning", password: "SecurePass2024!" };
-        const SUPABASE_URL = 'https://nekbbkenxcukoortusge.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5la2Jia2VueGN1a29vcnR1c2dlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzOTU5MDIsImV4cCI6MjA3ODk3MTkwMn0.D72914Vyz1du1ZDKoNDdwT7YI-D8WPgZe38LbBV2bfc';
+        var SUPABASE_URL     = 'https://nekbbkenxcukoortusge.supabase.co';
+        var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5la2Jia2VueGN1a29vcnR1c2dlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzOTU5MDIsImV4cCI6MjA3ODk3MTkwMn0.D72914Vyz1du1ZDKoNDdwT7YI-D8WPgZe38LbBV2bfc';
+        var supabaseClient   = null;
+        var domReady         = false;
+        var _pendingInit     = false;
 
-        let supabaseClient = null;
-        let currentPage = 1;
-        const pageSize = 10;
-        let currentFilters = { status: 'all', date: 'all', search: '' };
-        let flatpickrInstance = null;
-        let priceSettingsDbId = null;
-        let priceSettingsLoaded = false;
-        let domReady = false;
-
-        // Price settings object — always kept in sync with DB
-        let priceSettings = getDefaultPriceSettings();
-
-        // ============================================================
-        // SUPABASE ONLOAD — called by onload= attribute on the script tag
-        // This guarantees supabase lib is available before we use it
-        // ============================================================
         function onSupabaseLoaded() {
             try {
                 supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                console.log('✅ Supabase initialized via onload');
-                // If DOM is already ready, kick off price load now
-                if (domReady) {
+                console.log('✅ Supabase initialized');
+                if (domReady && typeof loadPriceSettings === 'function') {
                     loadPriceSettings(false);
+                } else {
+                    _pendingInit = true; // DOMContentLoaded will pick this up
                 }
-            } catch (e) {
-                console.error('❌ Supabase init error:', e);
+            } catch(e) {
+                console.error('❌ supabase.createClient failed:', e);
             }
         }
+    </script>
+
+    <!-- Supabase CDN: onload fires after the PREINIT script above is parsed ✅ -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onload="onSupabaseLoaded()"></script>
+
+    <script>
+        // App globals (supabaseClient, domReady, SUPABASE_URL/KEY defined in pre-init above)
+        var currentPage = 1;
+        const pageSize = 10;
+        var currentFilters = { status: 'all', date: 'all', search: '' };
+        var flatpickrInstance = null;
+        var priceSettingsDbId = null;
+        var priceSettingsLoaded = false;
+        var priceSettings = getDefaultPriceSettings();
 
         // ============================================================
         // DOM READY
@@ -979,11 +977,11 @@ ON CONFLICT DO NOTHING;</pre>
             document.getElementById('currentYear').textContent = new Date().getFullYear();
             updateConditionalFields();
 
-            // If supabase already loaded (fast CDN), load prices now
+            // If CDN finished before DOM (fast cache), _pendingInit was set
             if (supabaseClient) {
                 loadPriceSettings(false);
             }
-            // Otherwise onSupabaseLoaded() will fire and trigger it
+            // Otherwise onSupabaseLoaded() already set _pendingInit=true or will call loadPriceSettings itself
         });
 
         // ============================================================
