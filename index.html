@@ -762,8 +762,9 @@
                         <!-- SQL Setup Info (shown only if table doesn't exist) -->
                         <div id="sqlInfoBox" class="sql-info-box" style="display:none;">
                             <h4><i class="fas fa-database"></i> Database Setup Required</h4>
-                            <p>The <strong>price_settings</strong> table was not found in your Supabase database. Run this SQL in your Supabase SQL Editor:</p>
-                            <pre>CREATE TABLE IF NOT EXISTS price_settings (
+                            <p>The <strong>price_settings</strong> table was not found or cannot be accessed. Run this SQL in your <strong>Supabase → SQL Editor</strong>:</p>
+                            <pre>-- 1. Create the table
+CREATE TABLE IF NOT EXISTS price_settings (
   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   base numeric DEFAULT 50,
   bedroom numeric DEFAULT 35,
@@ -782,9 +783,17 @@
   child_fee numeric DEFAULT 0,
   updated_at timestamptz DEFAULT now()
 );
--- Insert default row
+
+-- 2. Enable RLS and allow anonymous access
+ALTER TABLE price_settings ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "anon_all_price" ON price_settings;
+CREATE POLICY "anon_all_price" ON price_settings
+  FOR ALL TO anon USING (true) WITH CHECK (true);
+
+-- 3. Insert first row with defaults
 INSERT INTO price_settings (base) VALUES (50)
 ON CONFLICT DO NOTHING;</pre>
+                            <p style="margin-top:10px;">After running, click <strong>Reload from Database</strong> below.</p>
                         </div>
                         
                         <div class="price-grid" id="priceGrid">
@@ -918,7 +927,7 @@ ON CONFLICT DO NOTHING;</pre>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onload="onSupabaseLoaded()"></script>
     
     <script>
         // ============================================================
@@ -933,17 +942,35 @@ ON CONFLICT DO NOTHING;</pre>
         const pageSize = 10;
         let currentFilters = { status: 'all', date: 'all', search: '' };
         let flatpickrInstance = null;
-        let priceSettingsDbId = null; // stores the id of the row in price_settings
+        let priceSettingsDbId = null;
         let priceSettingsLoaded = false;
+        let domReady = false;
 
         // Price settings object — always kept in sync with DB
         let priceSettings = getDefaultPriceSettings();
 
         // ============================================================
-        // INIT
+        // SUPABASE ONLOAD — called by onload= attribute on the script tag
+        // This guarantees supabase lib is available before we use it
+        // ============================================================
+        function onSupabaseLoaded() {
+            try {
+                supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log('✅ Supabase initialized via onload');
+                // If DOM is already ready, kick off price load now
+                if (domReady) {
+                    loadPriceSettings(false);
+                }
+            } catch (e) {
+                console.error('❌ Supabase init error:', e);
+            }
+        }
+
+        // ============================================================
+        // DOM READY
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
-            initSupabase();
+            domReady = true;
             initMobileMenu();
             initScheduleForm();
             initAdminPanel();
@@ -952,27 +979,12 @@ ON CONFLICT DO NOTHING;</pre>
             document.getElementById('currentYear').textContent = new Date().getFullYear();
             updateConditionalFields();
 
-            // Load prices from DB once Supabase is ready (slight delay to ensure lib loaded)
-            setTimeout(() => {
-                loadPriceSettings(false); // silent load for schedule form
-            }, 500);
-        });
-
-        // ============================================================
-        // SUPABASE INIT
-        // ============================================================
-        function initSupabase() {
-            try {
-                if (window.supabase) {
-                    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                    console.log('✅ Supabase initialized');
-                } else {
-                    console.error('❌ Supabase library not loaded');
-                }
-            } catch (e) {
-                console.error('❌ Supabase init error:', e);
+            // If supabase already loaded (fast CDN), load prices now
+            if (supabaseClient) {
+                loadPriceSettings(false);
             }
-        }
+            // Otherwise onSupabaseLoaded() will fire and trigger it
+        });
 
         // ============================================================
         // PRICE SETTINGS — DEFAULT
@@ -988,128 +1000,60 @@ ON CONFLICT DO NOTHING;</pre>
         }
 
         // ============================================================
-        // PRICE SETTINGS — LOAD FROM DB
+        // PRICE SETTINGS — HELPERS
         // ============================================================
-        async function loadPriceSettings(showInAdmin = true) {
-            if (!supabaseClient) {
-                console.warn('Supabase not ready, using default prices');
-                priceSettings = getDefaultPriceSettings();
-                if (showInAdmin) updatePriceUI('error', 'Supabase not connected');
-                return;
-            }
-
-            if (showInAdmin) {
-                updatePriceUI('loading', 'Loading from database...');
-            }
-
-            try {
-                const { data, error } = await supabaseClient
-                    .from('price_settings')
-                    .select('*')
-                    .limit(1);
-
-                if (error) {
-                    // Table might not exist
-                    console.error('Error loading price_settings:', error);
-                    priceSettings = getDefaultPriceSettings();
-                    if (showInAdmin) {
-                        updatePriceUI('error', 'Table not found — see setup instructions');
-                        document.getElementById('sqlInfoBox').style.display = 'block';
-                    }
-                    updatePriceInputFields();
-                    return;
-                }
-
-                if (showInAdmin) {
-                    document.getElementById('sqlInfoBox').style.display = 'none';
-                }
-
-                if (data && data.length > 0) {
-                    const row = data[0];
-                    priceSettingsDbId = row.id;
-                    priceSettings = mapDbToSettings(row);
-                    priceSettingsLoaded = true;
-                    console.log('✅ Prices loaded from DB:', priceSettings);
-
-                    if (showInAdmin) {
-                        const updatedAt = row.updated_at ? new Date(row.updated_at).toLocaleString('en-US') : 'Unknown';
-                        updatePriceUI('loaded', `Loaded from database`);
-                        const lastUpdatedEl = document.getElementById('priceLastUpdated');
-                        if (lastUpdatedEl) {
-                            lastUpdatedEl.textContent = `Last saved: ${updatedAt}`;
-                            lastUpdatedEl.style.display = 'block';
-                        }
-                    }
-                } else {
-                    // Table exists but empty — insert defaults
-                    console.log('price_settings table empty, inserting defaults...');
-                    priceSettings = getDefaultPriceSettings();
-                    await insertDefaultPrices();
-                    if (showInAdmin) updatePriceUI('loaded', 'Default prices created in database');
-                }
-
-                updatePriceInputFields();
-
-            } catch (err) {
-                console.error('Unexpected error in loadPriceSettings:', err);
-                priceSettings = getDefaultPriceSettings();
-                if (showInAdmin) updatePriceUI('error', 'Unexpected error: ' + err.message);
-                updatePriceInputFields();
-            }
-        }
-
         function mapDbToSettings(row) {
             return {
-                base: parseFloat(row.base) || 50,
-                bedroom: parseFloat(row.bedroom) || 35,
-                bathroom: parseFloat(row.bathroom) || 40,
-                shower: parseFloat(row.shower) || 25,
-                carpetSqFt: parseFloat(row.carpet_sq_ft) || 0.35,
-                carpetMin: parseFloat(row.carpet_min) || 50,
-                moveBase: parseFloat(row.move_base) || 120,
-                moveBedroom: parseFloat(row.move_bedroom) || 35,
-                moveBathroom: parseFloat(row.move_bathroom) || 40,
-                constructionBase: parseFloat(row.construction_base) || 150,
-                commercialBase: parseFloat(row.commercial_base) || 100,
-                churchBase: parseFloat(row.church_base) || 120,
-                rvMedium: parseFloat(row.rv_medium) || 200,
-                petFee: parseFloat(row.pet_fee) || 10,
-                childFee: parseFloat(row.child_fee) || 0
+                base:             parseFloat(row.base)              ?? 50,
+                bedroom:          parseFloat(row.bedroom)           ?? 35,
+                bathroom:         parseFloat(row.bathroom)          ?? 40,
+                shower:           parseFloat(row.shower)            ?? 25,
+                carpetSqFt:       parseFloat(row.carpet_sq_ft)      ?? 0.35,
+                carpetMin:        parseFloat(row.carpet_min)        ?? 50,
+                moveBase:         parseFloat(row.move_base)         ?? 120,
+                moveBedroom:      parseFloat(row.move_bedroom)      ?? 35,
+                moveBathroom:     parseFloat(row.move_bathroom)     ?? 40,
+                constructionBase: parseFloat(row.construction_base) ?? 150,
+                commercialBase:   parseFloat(row.commercial_base)   ?? 100,
+                churchBase:       parseFloat(row.church_base)       ?? 120,
+                rvMedium:         parseFloat(row.rv_medium)         ?? 200,
+                petFee:           parseFloat(row.pet_fee)           ?? 10,
+                childFee:         parseFloat(row.child_fee)         ?? 0
             };
         }
 
-        function mapSettingsToDb(settings) {
+        function readPriceFields() {
             return {
-                base: settings.base,
-                bedroom: settings.bedroom,
-                bathroom: settings.bathroom,
-                shower: settings.shower,
-                carpet_sq_ft: settings.carpetSqFt,
-                carpet_min: settings.carpetMin,
-                move_base: settings.moveBase,
-                move_bedroom: settings.moveBedroom,
-                move_bathroom: settings.moveBathroom,
-                construction_base: settings.constructionBase,
-                commercial_base: settings.commercialBase,
-                church_base: settings.churchBase,
-                rv_medium: settings.rvMedium,
-                pet_fee: settings.petFee,
-                child_fee: settings.childFee,
+                base:             parseFloat(document.getElementById('priceBase')?.value)             || 0,
+                bedroom:          parseFloat(document.getElementById('priceBedroom')?.value)          || 0,
+                bathroom:         parseFloat(document.getElementById('priceBathroom')?.value)         || 0,
+                shower:           parseFloat(document.getElementById('priceShower')?.value)           || 0,
+                carpetSqFt:       parseFloat(document.getElementById('priceCarpetSqFt')?.value)       || 0,
+                carpetMin:        parseFloat(document.getElementById('priceCarpetMin')?.value)        || 0,
+                moveBase:         parseFloat(document.getElementById('priceMoveBase')?.value)         || 0,
+                moveBedroom:      parseFloat(document.getElementById('priceMoveBedroom')?.value)      || 0,
+                moveBathroom:     parseFloat(document.getElementById('priceMoveBathroom')?.value)     || 0,
+                constructionBase: parseFloat(document.getElementById('priceConstructionBase')?.value) || 0,
+                commercialBase:   parseFloat(document.getElementById('priceCommercialBase')?.value)   || 0,
+                churchBase:       parseFloat(document.getElementById('priceChurchBase')?.value)       || 0,
+                rvMedium:         parseFloat(document.getElementById('priceRvMedium')?.value)         || 0,
+                petFee:           parseFloat(document.getElementById('pricePetFee')?.value)           || 0,
+                childFee:         parseFloat(document.getElementById('priceChildFee')?.value)         || 0
+            };
+        }
+
+        function settingsToDbRow(s) {
+            return {
+                base: s.base, bedroom: s.bedroom, bathroom: s.bathroom, shower: s.shower,
+                carpet_sq_ft: s.carpetSqFt, carpet_min: s.carpetMin,
+                move_base: s.moveBase, move_bedroom: s.moveBedroom, move_bathroom: s.moveBathroom,
+                construction_base: s.constructionBase, commercial_base: s.commercialBase,
+                church_base: s.churchBase, rv_medium: s.rvMedium,
+                pet_fee: s.petFee, child_fee: s.childFee,
                 updated_at: new Date().toISOString()
             };
         }
 
-        async function insertDefaultPrices() {
-            const dbData = mapSettingsToDb(priceSettings);
-            const { data, error } = await supabaseClient.from('price_settings').insert([dbData]).select();
-            if (!error && data && data.length > 0) {
-                priceSettingsDbId = data[0].id;
-            }
-        }
-
-        // ============================================================
-        // PRICE SETTINGS — UPDATE UI STATUS
-        // ============================================================
         function updatePriceUI(status, message) {
             const el = document.getElementById('priceDbStatus');
             if (!el) return;
@@ -1118,9 +1062,6 @@ ON CONFLICT DO NOTHING;</pre>
             el.innerHTML = `<i class="${icons[status] || 'fas fa-info-circle'}"></i> ${message}`;
         }
 
-        // ============================================================
-        // PRICE SETTINGS — UPDATE INPUT FIELDS
-        // ============================================================
         function updatePriceInputFields() {
             const map = {
                 priceBase: 'base', priceBedroom: 'bedroom', priceBathroom: 'bathroom',
@@ -1132,97 +1073,157 @@ ON CONFLICT DO NOTHING;</pre>
             };
             Object.entries(map).forEach(([fieldId, key]) => {
                 const el = document.getElementById(fieldId);
-                if (el) {
-                    el.value = priceSettings[key] !== undefined ? priceSettings[key] : 0;
-                    el.classList.remove('changed');
-                }
+                if (el) { el.value = priceSettings[key] ?? 0; el.classList.remove('changed'); }
             });
         }
 
         // ============================================================
-        // PRICE SETTINGS — SAVE TO DB
+        // PRICE SETTINGS — LOAD FROM DB
         // ============================================================
-        async function savePriceSettings() {
+        async function loadPriceSettings(showInAdmin = true) {
             if (!supabaseClient) {
-                showToast('Supabase not connected', 'error');
+                console.warn('⚠️ Supabase not ready yet, using defaults');
+                priceSettings = getDefaultPriceSettings();
+                if (showInAdmin) updatePriceUI('error', 'Supabase not connected — check console');
                 return;
             }
+
+            if (showInAdmin) updatePriceUI('loading', 'Loading from database...');
+            console.log('🔄 Loading price_settings from Supabase...');
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('price_settings')
+                    .select('*')
+                    .order('updated_at', { ascending: false })
+                    .limit(1);
+
+                if (error) {
+                    console.error('❌ price_settings load error:', error.code, error.message, error.details);
+                    priceSettings = getDefaultPriceSettings();
+                    if (showInAdmin) {
+                        updatePriceUI('error', `DB error: ${error.message}`);
+                        document.getElementById('sqlInfoBox').style.display = 'block';
+                    }
+                    updatePriceInputFields();
+                    return;
+                }
+
+                if (showInAdmin) document.getElementById('sqlInfoBox').style.display = 'none';
+
+                if (data && data.length > 0) {
+                    const row = data[0];
+                    priceSettingsDbId = row.id;
+                    priceSettings = mapDbToSettings(row);
+                    priceSettingsLoaded = true;
+                    console.log('✅ Prices loaded from DB, id:', priceSettingsDbId, priceSettings);
+                    if (showInAdmin) {
+                        const ts = row.updated_at ? new Date(row.updated_at).toLocaleString() : 'N/A';
+                        updatePriceUI('loaded', `✓ Loaded from database`);
+                        const el = document.getElementById('priceLastUpdated');
+                        if (el) { el.textContent = `Last saved: ${ts}`; el.style.display = 'block'; }
+                    }
+                } else {
+                    // Table exists but empty → insert defaults now
+                    console.log('⚠️ price_settings empty, inserting defaults...');
+                    priceSettings = getDefaultPriceSettings();
+                    const dbRow = settingsToDbRow(priceSettings);
+                    const { data: ins, error: insErr } = await supabaseClient
+                        .from('price_settings').insert([dbRow]).select();
+                    if (insErr) {
+                        console.error('❌ Insert defaults error:', insErr.message);
+                    } else if (ins && ins.length > 0) {
+                        priceSettingsDbId = ins[0].id;
+                        priceSettingsLoaded = true;
+                        console.log('✅ Default prices inserted, id:', priceSettingsDbId);
+                    }
+                    if (showInAdmin) updatePriceUI('loaded', '✓ Defaults created in database');
+                }
+
+                updatePriceInputFields();
+
+            } catch (err) {
+                console.error('❌ Unexpected error loadPriceSettings:', err);
+                priceSettings = getDefaultPriceSettings();
+                if (showInAdmin) updatePriceUI('error', 'Error: ' + err.message);
+                updatePriceInputFields();
+            }
+        }
+
+        // ============================================================
+        // PRICE SETTINGS — SAVE TO DB (upsert — works even if ID unknown)
+        // ============================================================
+        async function savePriceSettings() {
+            if (!supabaseClient) { showToast('Supabase not connected!', 'error'); return; }
 
             const btn = document.getElementById('savePricesBtn');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
             btn.disabled = true;
 
-            // Read from input fields
-            const newSettings = {
-                base: parseFloat(document.getElementById('priceBase')?.value) || 0,
-                bedroom: parseFloat(document.getElementById('priceBedroom')?.value) || 0,
-                bathroom: parseFloat(document.getElementById('priceBathroom')?.value) || 0,
-                shower: parseFloat(document.getElementById('priceShower')?.value) || 0,
-                carpetSqFt: parseFloat(document.getElementById('priceCarpetSqFt')?.value) || 0,
-                carpetMin: parseFloat(document.getElementById('priceCarpetMin')?.value) || 0,
-                moveBase: parseFloat(document.getElementById('priceMoveBase')?.value) || 0,
-                moveBedroom: parseFloat(document.getElementById('priceMoveBedroom')?.value) || 0,
-                moveBathroom: parseFloat(document.getElementById('priceMoveBathroom')?.value) || 0,
-                constructionBase: parseFloat(document.getElementById('priceConstructionBase')?.value) || 0,
-                commercialBase: parseFloat(document.getElementById('priceCommercialBase')?.value) || 0,
-                churchBase: parseFloat(document.getElementById('priceChurchBase')?.value) || 0,
-                rvMedium: parseFloat(document.getElementById('priceRvMedium')?.value) || 0,
-                petFee: parseFloat(document.getElementById('pricePetFee')?.value) || 0,
-                childFee: parseFloat(document.getElementById('priceChildFee')?.value) || 0
-            };
-
-            const dbData = mapSettingsToDb(newSettings);
+            const newSettings = readPriceFields();
+            const dbRow = settingsToDbRow(newSettings);
+            console.log('💾 Saving prices...', dbRow);
 
             try {
-                let result;
+                let savedId = null;
 
                 if (priceSettingsDbId) {
-                    // UPDATE existing row
-                    result = await supabaseClient
+                    // --- UPDATE existing row by known id ---
+                    console.log('Updating row id:', priceSettingsDbId);
+                    const { data, error } = await supabaseClient
                         .from('price_settings')
-                        .update(dbData)
+                        .update(dbRow)
                         .eq('id', priceSettingsDbId)
-                        .select();
+                        .select('id');
+                    if (error) throw error;
+                    savedId = data?.[0]?.id || priceSettingsDbId;
+                    console.log('✅ Updated row:', savedId);
                 } else {
-                    // Check if any row exists first
-                    const { data: existing } = await supabaseClient.from('price_settings').select('id').limit(1);
+                    // --- Find existing row or insert new one ---
+                    const { data: existing, error: selErr } = await supabaseClient
+                        .from('price_settings').select('id').limit(1);
+                    if (selErr) throw selErr;
+
                     if (existing && existing.length > 0) {
                         priceSettingsDbId = existing[0].id;
-                        result = await supabaseClient.from('price_settings').update(dbData).eq('id', priceSettingsDbId).select();
+                        console.log('Found existing row, updating id:', priceSettingsDbId);
+                        const { data, error } = await supabaseClient
+                            .from('price_settings')
+                            .update(dbRow)
+                            .eq('id', priceSettingsDbId)
+                            .select('id');
+                        if (error) throw error;
+                        savedId = data?.[0]?.id || priceSettingsDbId;
                     } else {
-                        // INSERT new row
-                        result = await supabaseClient.from('price_settings').insert([dbData]).select();
-                        if (result.data && result.data.length > 0) {
-                            priceSettingsDbId = result.data[0].id;
-                        }
+                        console.log('No row found, inserting new...');
+                        const { data, error } = await supabaseClient
+                            .from('price_settings')
+                            .insert([dbRow])
+                            .select('id');
+                        if (error) throw error;
+                        savedId = data?.[0]?.id;
+                        priceSettingsDbId = savedId;
+                        console.log('✅ Inserted new row:', savedId);
                     }
                 }
 
-                if (result.error) throw result.error;
-
-                // Update in-memory settings
+                // Update in-memory
                 priceSettings = newSettings;
                 priceSettingsLoaded = true;
-
-                // Remove "changed" highlights
                 document.querySelectorAll('.price-input.changed').forEach(el => el.classList.remove('changed'));
 
-                // Update status
-                const now = new Date().toLocaleString('en-US');
-                updatePriceUI('loaded', 'Saved successfully ✓');
-                const lastUpdatedEl = document.getElementById('priceLastUpdated');
-                if (lastUpdatedEl) {
-                    lastUpdatedEl.textContent = `Last saved: ${now}`;
-                    lastUpdatedEl.style.display = 'block';
-                }
+                const now = new Date().toLocaleString();
+                updatePriceUI('loaded', `✓ Saved successfully`);
+                const el = document.getElementById('priceLastUpdated');
+                if (el) { el.textContent = `Last saved: ${now}`; el.style.display = 'block'; }
 
-                showToast('Prices saved to database!', 'success');
-                console.log('✅ Prices saved:', priceSettings);
+                showToast('✅ Prices saved to database!', 'success');
 
             } catch (err) {
-                console.error('Error saving prices:', err);
-                updatePriceUI('error', 'Save failed: ' + err.message);
-                showToast('Error saving prices: ' + err.message, 'error');
+                console.error('❌ savePriceSettings error:', err.code, err.message, err.details);
+                const msg = err.message || 'Unknown error';
+                updatePriceUI('error', `Save failed: ${msg}`);
+                showToast('Error saving: ' + msg, 'error');
             } finally {
                 btn.innerHTML = '<i class="fas fa-save"></i> Save Prices to Database';
                 btn.disabled = false;
@@ -1233,23 +1234,25 @@ ON CONFLICT DO NOTHING;</pre>
         // PRICE SETTINGS — RESET TO DEFAULTS
         // ============================================================
         async function resetPriceSettings() {
-            if (!confirm('Reset all price settings to default values and save to database?')) return;
+            if (!confirm('Reset all prices to default values and save to database?')) return;
             priceSettings = getDefaultPriceSettings();
             updatePriceInputFields();
-
             if (supabaseClient) {
-                const dbData = mapSettingsToDb(priceSettings);
+                const dbRow = settingsToDbRow(priceSettings);
                 try {
                     if (priceSettingsDbId) {
-                        await supabaseClient.from('price_settings').update(dbData).eq('id', priceSettingsDbId);
+                        const { error } = await supabaseClient.from('price_settings').update(dbRow).eq('id', priceSettingsDbId);
+                        if (error) throw error;
                     } else {
-                        const { data } = await supabaseClient.from('price_settings').insert([dbData]).select();
-                        if (data && data.length > 0) priceSettingsDbId = data[0].id;
+                        const { data, error } = await supabaseClient.from('price_settings').insert([dbRow]).select('id');
+                        if (error) throw error;
+                        priceSettingsDbId = data?.[0]?.id;
                     }
-                    updatePriceUI('loaded', 'Defaults restored and saved ✓');
-                    showToast('Prices reset to default and saved!', 'success');
+                    updatePriceUI('loaded', '✓ Defaults restored and saved');
+                    showToast('Prices reset and saved!', 'success');
                 } catch (err) {
-                    showToast('Reset saved locally only. DB error: ' + err.message, 'error');
+                    console.error('❌ resetPriceSettings error:', err);
+                    showToast('Local reset done. DB error: ' + err.message, 'error');
                 }
             }
         }
@@ -1722,23 +1725,69 @@ ON CONFLICT DO NOTHING;</pre>
         async function testSupabaseConnection() {
             document.getElementById('debugPanel').style.display = 'block';
             const debugInfo = document.getElementById('debugInfo');
-            if (!supabaseClient) { debugInfo.innerHTML = '<span class="debug-error">❌ Supabase not initialized</span>'; return; }
+            if (!supabaseClient) {
+                debugInfo.innerHTML = '<span class="debug-error">❌ Supabase not initialized — CDN may still be loading. Wait a moment and try again.</span>';
+                return;
+            }
 
-            let html = '<strong>Testing Supabase Connection...</strong>\n\n';
+            debugInfo.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
+            let html = '<strong>Supabase Connection Test</strong>\n\n';
+            html += `<span>URL: ${SUPABASE_URL}</span>\n\n`;
+
             try {
-                const { data: d1, error: e1 } = await supabaseClient.from('service_requests').select('count', { count: 'exact', head: true });
-                html += e1 ? `<span class="debug-error">❌ service_requests: ${e1.message}</span>\n` : `<span class="debug-success">✅ service_requests: connected</span>\n`;
-
-                const { data: d2, error: e2 } = await supabaseClient.from('price_settings').select('*').limit(1);
-                if (e2) {
-                    html += `<span class="debug-error">❌ price_settings: ${e2.message}</span>\n`;
-                    html += `<span class="debug-warning">⚠️ Create the price_settings table (see Prices tab for SQL)</span>\n`;
+                // Test service_requests
+                const { data: d1, error: e1 } = await supabaseClient
+                    .from('service_requests').select('*').limit(1);
+                if (e1) {
+                    html += `<span class="debug-error">❌ service_requests SELECT: ${e1.code} — ${e1.message}</span>\n`;
+                    if (e1.code === 'PGRST301' || e1.message?.includes('RLS')) {
+                        html += `<span class="debug-warning">   → RLS policy blocking read. Add policy: ALTER TABLE service_requests ENABLE ROW LEVEL SECURITY; CREATE POLICY "anon_all" ON service_requests FOR ALL TO anon USING (true) WITH CHECK (true);</span>\n`;
+                    }
                 } else {
-                    html += `<span class="debug-success">✅ price_settings: ${d2.length} row(s) found</span>\n`;
-                    if (d2.length > 0) html += `<span class="debug-success">   ID: ${d2[0].id} | Base: $${d2[0].base}</span>\n`;
+                    html += `<span class="debug-success">✅ service_requests: OK (${d1.length} row(s) visible)</span>\n`;
                 }
+
+                // Test price_settings SELECT
+                const { data: d2, error: e2 } = await supabaseClient
+                    .from('price_settings').select('*').limit(1);
+                if (e2) {
+                    html += `<span class="debug-error">❌ price_settings SELECT: ${e2.code} — ${e2.message}</span>\n`;
+                    if (e2.code === '42P01') {
+                        html += `<span class="debug-warning">   → Table does not exist! Run SQL in the Prices tab.</span>\n`;
+                    } else if (e2.code === 'PGRST301' || e2.message?.includes('RLS')) {
+                        html += `<span class="debug-warning">   → RLS blocking. See SQL below.</span>\n`;
+                    }
+                } else {
+                    html += `<span class="debug-success">✅ price_settings SELECT: OK (${d2.length} row(s))</span>\n`;
+                    if (d2.length > 0) {
+                        html += `<span class="debug-success">   ID: ${d2[0].id}</span>\n`;
+                        html += `<span class="debug-success">   base=$${d2[0].base} bedroom=$${d2[0].bedroom} bathroom=$${d2[0].bathroom}</span>\n`;
+                        html += `<span class="debug-success">   updated_at: ${d2[0].updated_at}</span>\n`;
+                    }
+                }
+
+                // Test price_settings INSERT (write test)
+                if (!e2) {
+                    const testRow = { base: -1, updated_at: new Date().toISOString() };
+                    const { data: ins, error: insErr } = await supabaseClient
+                        .from('price_settings').insert([testRow]).select('id');
+                    if (insErr) {
+                        html += `<span class="debug-error">❌ price_settings INSERT: ${insErr.code} — ${insErr.message}</span>\n`;
+                        html += `<span class="debug-warning">   → Cannot write. Add RLS INSERT policy:\n   CREATE POLICY "anon_insert" ON price_settings FOR INSERT TO anon WITH CHECK (true);</span>\n`;
+                    } else {
+                        html += `<span class="debug-success">✅ price_settings INSERT: OK</span>\n`;
+                        // Clean up the test row
+                        if (ins && ins.length > 0) {
+                            await supabaseClient.from('price_settings').delete().eq('id', ins[0].id);
+                            html += `<span class="debug-success">   (test row cleaned up)</span>\n`;
+                        }
+                    }
+                }
+
+                html += '\n<span class="debug-warning">📋 RLS fix SQL (run in Supabase SQL Editor if needed):\n-- Allow anonymous read/write on both tables:\nGRANT ALL ON price_settings TO anon;\nCREATE POLICY IF NOT EXISTS "anon_all_price" ON price_settings FOR ALL TO anon USING (true) WITH CHECK (true);\nCREATE POLICY IF NOT EXISTS "anon_all_req" ON service_requests FOR ALL TO anon USING (true) WITH CHECK (true);</span>\n';
+
             } catch (err) {
-                html += `<span class="debug-error">❌ Unexpected: ${err.message}</span>`;
+                html += `<span class="debug-error">❌ Unexpected error: ${err.message}</span>`;
             }
             debugInfo.innerHTML = html;
         }
