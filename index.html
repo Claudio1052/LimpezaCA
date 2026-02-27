@@ -3077,33 +3077,42 @@
             }
             
             try {
+                console.log('Loading price settings from database...');
+                
+                // Buscar todos os registros (deve haver apenas um, mas vamos pegar o primeiro)
                 const { data, error } = await supabaseClient
                     .from('price_settings')
                     .select('*')
-                    .limit(1)
-                    .single();
+                    .limit(1);
                 
                 if (error) {
                     console.error('Error loading price settings:', error);
                     priceSettings = getDefaultPriceSettings();
-                } else if (data) {
+                } else if (data && data.length > 0) {
+                    console.log('Price settings loaded:', data[0]);
+                    // Mapear os dados do banco para o formato usado no código
+                    const dbData = data[0];
                     priceSettings = {
-                        base: data.base || 50,
-                        bedroom: data.bedroom || 35,
-                        bathroom: data.bathroom || 40,
-                        shower: data.shower || 25,
-                        carpetSqFt: data.carpet_sq_ft || 0.35,
-                        carpetMin: data.carpet_min || 50,
-                        moveBase: data.move_base || 120,
-                        moveBedroom: data.move_bedroom || 35,
-                        moveBathroom: data.move_bathroom || 40,
-                        constructionBase: data.construction_base || 150,
-                        commercialBase: data.commercial_base || 100,
-                        churchBase: data.church_base || 120,
-                        rvMedium: data.rv_medium || 200,
-                        petFee: data.pet_fee || 10,
-                        childFee: data.child_fee || 0
+                        base: dbData.base || 50,
+                        bedroom: dbData.bedroom || 35,
+                        bathroom: dbData.bathroom || 40,
+                        shower: dbData.shower || 25,
+                        carpetSqFt: dbData.carpet_sq_ft || 0.35,
+                        carpetMin: dbData.carpet_min || 50,
+                        moveBase: dbData.move_base || 120,
+                        moveBedroom: dbData.move_bedroom || 35,
+                        moveBathroom: dbData.move_bathroom || 40,
+                        constructionBase: dbData.construction_base || 150,
+                        commercialBase: dbData.commercial_base || 100,
+                        churchBase: dbData.church_base || 120,
+                        rvMedium: dbData.rv_medium || 200,
+                        petFee: dbData.pet_fee || 10,
+                        childFee: dbData.child_fee || 0
                     };
+                    console.log('Mapped price settings:', priceSettings);
+                } else {
+                    console.log('No price settings found, using defaults');
+                    priceSettings = getDefaultPriceSettings();
                 }
                 
                 updatePriceInputFields();
@@ -3138,6 +3147,8 @@
 
         // Atualizar campos de input com os valores carregados
         function updatePriceInputFields() {
+            console.log('Updating price input fields with:', priceSettings);
+            
             const fields = [
                 'priceBase', 'priceBedroom', 'priceBathroom', 'priceShower',
                 'priceCarpetSqFt', 'priceCarpetMin',
@@ -3167,7 +3178,10 @@
             fields.forEach(fieldId => {
                 const element = document.getElementById(fieldId);
                 if (element) {
-                    element.value = priceSettings[priceMap[fieldId]] || 0;
+                    const priceKey = priceMap[fieldId];
+                    const value = priceSettings[priceKey] !== undefined ? priceSettings[priceKey] : 0;
+                    element.value = value;
+                    console.log(`Field ${fieldId} (${priceKey}) set to ${value}`);
                 }
             });
         }
@@ -3197,7 +3211,10 @@
                 child_fee: parseFloat(document.getElementById('priceChildFee')?.value) || 0
             };
             
+            console.log('Saving price settings:', newSettings);
+            
             try {
+                // Verificar se já existe um registro
                 const { data: existingData, error: checkError } = await supabaseClient
                     .from('price_settings')
                     .select('id')
@@ -3205,17 +3222,25 @@
                 
                 if (checkError) throw checkError;
                 
+                let result;
                 if (existingData && existingData.length > 0) {
-                    await supabaseClient
+                    // Atualizar registro existente
+                    result = await supabaseClient
                         .from('price_settings')
                         .update(newSettings)
                         .eq('id', existingData[0].id);
+                    console.log('Updated existing record with ID:', existingData[0].id);
                 } else {
-                    await supabaseClient
+                    // Inserir novo registro
+                    result = await supabaseClient
                         .from('price_settings')
                         .insert([newSettings]);
+                    console.log('Inserted new record');
                 }
                 
+                if (result.error) throw result.error;
+                
+                // Atualizar a variável local
                 priceSettings = {
                     base: newSettings.base,
                     bedroom: newSettings.bedroom,
