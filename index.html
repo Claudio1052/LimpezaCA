@@ -590,13 +590,6 @@
                     <p>Fill out the form and we'll contact you to confirm.</p>
                 </div>
                 <div class="form-content">
-                    <div class="estimated-price-box" id="estimatedPriceBox" style="display: none;">
-                        <div id="priceLoadingBadge" class="price-loading-badge" style="display:none;"><i class="fas fa-sync-alt fa-spin"></i> Loading prices from database...</div>
-                        <h4><i class="fas fa-calculator"></i> Estimated Price</h4>
-                        <div class="price-value" id="estimatedPriceValue">$0.00</div>
-                        <div class="price-detail" id="estimatedPriceDetail">Based on current rates</div>
-                    </div>
-                    
                     <form id="cleaningServiceForm">
                         <div class="form-section">
                             <h3><i class="fas fa-user"></i> Personal Information</h3>
@@ -677,6 +670,11 @@
                             <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Submit</button>
                         </div>
                         <div id="formMessage" class="form-message"></div>
+                        <div class="estimated-price-box" id="estimatedPriceBox" style="display: none;">
+                            <h4><i class="fas fa-calculator"></i> Estimated Price</h4>
+                            <div class="price-value" id="estimatedPriceValue">$0.00</div>
+                            <div class="price-detail" id="estimatedPriceDetail">Based on current rates</div>
+                        </div>
                     </form>
                     <div class="form-footer"><p><i class="fas fa-info-circle"></i> We'll contact you within 24 hours.</p></div>
                 </div>
