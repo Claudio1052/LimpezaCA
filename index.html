@@ -928,39 +928,74 @@ ON CONFLICT DO NOTHING;</pre>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-    <!-- PRE-INIT: Must be defined BEFORE Supabase CDN so onSupabaseLoaded() exists when onload fires -->
     <script>
-        var SUPABASE_URL     = 'https://nekbbkenxcukoortusge.supabase.co';
-        var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5la2Jia2VueGN1a29vcnR1c2dlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzOTU5MDIsImV4cCI6MjA3ODk3MTkwMn0.D72914Vyz1du1ZDKoNDdwT7YI-D8WPgZe38LbBV2bfc';
-        var supabaseClient   = null;
-        var domReady         = false;
-        var _pendingInit     = false;
+        // ============================================================
+        // CONFIG
+        // ============================================================
+        const ADMIN_CREDENTIALS = { username: "admin_rio_cleaning", password: "SecurePass2024!" };
+        const SB_URL  = 'https://nekbbkenxcukoortusge.supabase.co';
+        const SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5la2Jia2VueGN1a29vcnR1c2dlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzOTU5MDIsImV4cCI6MjA3ODk3MTkwMn0.D72914Vyz1du1ZDKoNDdwT7YI-D8WPgZe38LbBV2bfc';
 
-        function onSupabaseLoaded() {
-            try {
-                supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                console.log('✅ Supabase initialized');
-                if (domReady && typeof loadPriceSettings === 'function') {
-                    loadPriceSettings(false);
-                } else {
-                    _pendingInit = true; // DOMContentLoaded will pick this up
-                }
-            } catch(e) {
-                console.error('❌ supabase.createClient failed:', e);
+        // ============================================================
+        // SUPABASE REST WRAPPER — no CDN library needed
+        // ============================================================
+        const sb = {
+            _h: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
+
+            async select(table, query = '') {
+                const r = await fetch(`${SB_URL}/rest/v1/${table}?${query}`, { headers: this._h });
+                const d = await r.json();
+                if (!r.ok) return { data: null, error: d, count: 0 };
+                const count = parseInt(r.headers.get('content-range')?.split('/')[1]) || d.length;
+                return { data: d, error: null, count };
+            },
+
+            async selectCount(table, query = '') {
+                const r = await fetch(`${SB_URL}/rest/v1/${table}?${query}`, {
+                    headers: { ...this._h, 'Prefer': 'count=exact', 'Range-Unit': 'items', 'Range': '0-0' }
+                });
+                const total = parseInt(r.headers.get('content-range')?.split('/')[1]) || 0;
+                const d = await r.json();
+                if (!r.ok) return { data: null, error: d, count: 0 };
+                return { data: d, error: null, count: total };
+            },
+
+            async insert(table, row) {
+                const r = await fetch(`${SB_URL}/rest/v1/${table}`, {
+                    method: 'POST', headers: this._h, body: JSON.stringify(row)
+                });
+                const d = await r.json();
+                if (!r.ok) return { data: null, error: d };
+                return { data: Array.isArray(d) ? d : [d], error: null };
+            },
+
+            async update(table, row, match) {
+                const qs = Object.entries(match).map(([k,v]) => `${k}=eq.${v}`).join('&');
+                const r = await fetch(`${SB_URL}/rest/v1/${table}?${qs}`, {
+                    method: 'PATCH', headers: this._h, body: JSON.stringify(row)
+                });
+                const d = await r.json();
+                if (!r.ok) return { data: null, error: d };
+                return { data: Array.isArray(d) ? d : [d], error: null };
+            },
+
+            async delete(table, match) {
+                const qs = Object.entries(match).map(([k,v]) => `${k}=eq.${v}`).join('&');
+                const r = await fetch(`${SB_URL}/rest/v1/${table}?${qs}`, {
+                    method: 'DELETE', headers: { ...this._h, 'Prefer': '' }
+                });
+                return { error: r.ok ? null : await r.json() };
             }
-        }
-    </script>
+        };
 
-    <!-- Supabase CDN: onload fires after the PREINIT script above is parsed ✅ -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onload="onSupabaseLoaded()"></script>
-
-    <script>
-        // App globals (supabaseClient, domReady, SUPABASE_URL/KEY defined in pre-init above)
+        // ============================================================
+        // APP STATE
+        // ============================================================
         var currentPage = 1;
-        const pageSize = 10;
-        var currentFilters = { status: 'all', date: 'all', search: '' };
-        var flatpickrInstance = null;
-        var priceSettingsDbId = null;
+        const pageSize  = 10;
+        var currentFilters     = { status: 'all', date: 'all', search: '' };
+        var flatpickrInstance  = null;
+        var priceSettingsDbId  = null;
         var priceSettingsLoaded = false;
         var priceSettings = getDefaultPriceSettings();
 
@@ -968,7 +1003,6 @@ ON CONFLICT DO NOTHING;</pre>
         // DOM READY
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
-            domReady = true;
             initMobileMenu();
             initScheduleForm();
             initAdminPanel();
@@ -976,16 +1010,11 @@ ON CONFLICT DO NOTHING;</pre>
             initConditionalFields();
             document.getElementById('currentYear').textContent = new Date().getFullYear();
             updateConditionalFields();
-
-            // If CDN finished before DOM (fast cache), _pendingInit was set
-            if (supabaseClient) {
-                loadPriceSettings(false);
-            }
-            // Otherwise onSupabaseLoaded() already set _pendingInit=true or will call loadPriceSettings itself
+            loadPriceSettings(false); // load for schedule form estimate
         });
 
         // ============================================================
-        // PRICE SETTINGS — DEFAULT
+        // PRICE SETTINGS — DEFAULTS
         // ============================================================
         function getDefaultPriceSettings() {
             return {
@@ -997,9 +1026,6 @@ ON CONFLICT DO NOTHING;</pre>
             };
         }
 
-        // ============================================================
-        // PRICE SETTINGS — HELPERS
-        // ============================================================
         function mapDbToSettings(row) {
             return {
                 base:             parseFloat(row.base)              ?? 50,
@@ -1017,6 +1043,18 @@ ON CONFLICT DO NOTHING;</pre>
                 rvMedium:         parseFloat(row.rv_medium)         ?? 200,
                 petFee:           parseFloat(row.pet_fee)           ?? 10,
                 childFee:         parseFloat(row.child_fee)         ?? 0
+            };
+        }
+
+        function settingsToDbRow(s) {
+            return {
+                base: s.base, bedroom: s.bedroom, bathroom: s.bathroom, shower: s.shower,
+                carpet_sq_ft: s.carpetSqFt, carpet_min: s.carpetMin,
+                move_base: s.moveBase, move_bedroom: s.moveBedroom, move_bathroom: s.moveBathroom,
+                construction_base: s.constructionBase, commercial_base: s.commercialBase,
+                church_base: s.churchBase, rv_medium: s.rvMedium,
+                pet_fee: s.petFee, child_fee: s.childFee,
+                updated_at: new Date().toISOString()
             };
         }
 
@@ -1040,37 +1078,25 @@ ON CONFLICT DO NOTHING;</pre>
             };
         }
 
-        function settingsToDbRow(s) {
-            return {
-                base: s.base, bedroom: s.bedroom, bathroom: s.bathroom, shower: s.shower,
-                carpet_sq_ft: s.carpetSqFt, carpet_min: s.carpetMin,
-                move_base: s.moveBase, move_bedroom: s.moveBedroom, move_bathroom: s.moveBathroom,
-                construction_base: s.constructionBase, commercial_base: s.commercialBase,
-                church_base: s.churchBase, rv_medium: s.rvMedium,
-                pet_fee: s.petFee, child_fee: s.childFee,
-                updated_at: new Date().toISOString()
-            };
-        }
-
-        function updatePriceUI(status, message) {
+        function updatePriceUI(status, msg) {
             const el = document.getElementById('priceDbStatus');
             if (!el) return;
             el.className = 'price-db-status ' + status;
             const icons = { loading: 'fas fa-sync-alt fa-spin', loaded: 'fas fa-check-circle', error: 'fas fa-exclamation-triangle' };
-            el.innerHTML = `<i class="${icons[status] || 'fas fa-info-circle'}"></i> ${message}`;
+            el.innerHTML = `<i class="${icons[status] || 'fas fa-info-circle'}"></i> ${msg}`;
         }
 
         function updatePriceInputFields() {
             const map = {
-                priceBase: 'base', priceBedroom: 'bedroom', priceBathroom: 'bathroom',
-                priceShower: 'shower', priceCarpetSqFt: 'carpetSqFt', priceCarpetMin: 'carpetMin',
-                priceMoveBase: 'moveBase', priceMoveBedroom: 'moveBedroom', priceMoveBathroom: 'moveBathroom',
-                priceConstructionBase: 'constructionBase', priceCommercialBase: 'commercialBase',
-                priceChurchBase: 'churchBase', priceRvMedium: 'rvMedium',
-                pricePetFee: 'petFee', priceChildFee: 'childFee'
+                priceBase:'base', priceBedroom:'bedroom', priceBathroom:'bathroom',
+                priceShower:'shower', priceCarpetSqFt:'carpetSqFt', priceCarpetMin:'carpetMin',
+                priceMoveBase:'moveBase', priceMoveBedroom:'moveBedroom', priceMoveBathroom:'moveBathroom',
+                priceConstructionBase:'constructionBase', priceCommercialBase:'commercialBase',
+                priceChurchBase:'churchBase', priceRvMedium:'rvMedium',
+                pricePetFee:'petFee', priceChildFee:'childFee'
             };
-            Object.entries(map).forEach(([fieldId, key]) => {
-                const el = document.getElementById(fieldId);
+            Object.entries(map).forEach(([id, key]) => {
+                const el = document.getElementById(id);
                 if (el) { el.value = priceSettings[key] ?? 0; el.classList.remove('changed'); }
             });
         }
@@ -1079,34 +1105,20 @@ ON CONFLICT DO NOTHING;</pre>
         // PRICE SETTINGS — LOAD FROM DB
         // ============================================================
         async function loadPriceSettings(showInAdmin = true) {
-            if (!supabaseClient) {
-                console.warn('⚠️ Supabase not ready yet, using defaults');
-                priceSettings = getDefaultPriceSettings();
-                if (showInAdmin) updatePriceUI('error', 'Supabase not connected — check console');
-                return;
-            }
-
             if (showInAdmin) updatePriceUI('loading', 'Loading from database...');
-            console.log('🔄 Loading price_settings from Supabase...');
-
             try {
-                const { data, error } = await supabaseClient
-                    .from('price_settings')
-                    .select('*')
-                    .order('updated_at', { ascending: false })
-                    .limit(1);
-
+                const { data, error } = await sb.select('price_settings', 'select=*&order=updated_at.desc&limit=1');
                 if (error) {
-                    console.error('❌ price_settings load error:', error.code, error.message, error.details);
+                    const msg = error.message || error.hint || JSON.stringify(error);
+                    console.error('❌ price_settings load error:', error);
                     priceSettings = getDefaultPriceSettings();
                     if (showInAdmin) {
-                        updatePriceUI('error', `DB error: ${error.message}`);
+                        updatePriceUI('error', 'Erro DB: ' + msg);
                         document.getElementById('sqlInfoBox').style.display = 'block';
                     }
                     updatePriceInputFields();
                     return;
                 }
-
                 if (showInAdmin) document.getElementById('sqlInfoBox').style.display = 'none';
 
                 if (data && data.length > 0) {
@@ -1114,114 +1126,78 @@ ON CONFLICT DO NOTHING;</pre>
                     priceSettingsDbId = row.id;
                     priceSettings = mapDbToSettings(row);
                     priceSettingsLoaded = true;
-                    console.log('✅ Prices loaded from DB, id:', priceSettingsDbId, priceSettings);
+                    console.log('✅ Prices loaded from DB, id:', priceSettingsDbId);
                     if (showInAdmin) {
                         const ts = row.updated_at ? new Date(row.updated_at).toLocaleString() : 'N/A';
-                        updatePriceUI('loaded', `✓ Loaded from database`);
+                        updatePriceUI('loaded', '✓ Carregado do banco de dados');
                         const el = document.getElementById('priceLastUpdated');
-                        if (el) { el.textContent = `Last saved: ${ts}`; el.style.display = 'block'; }
+                        if (el) { el.textContent = `Última atualização: ${ts}`; el.style.display = 'block'; }
                     }
                 } else {
-                    // Table exists but empty → insert defaults now
-                    console.log('⚠️ price_settings empty, inserting defaults...');
+                    // Table empty — insert defaults
+                    console.log('price_settings vazio, inserindo padrões...');
                     priceSettings = getDefaultPriceSettings();
-                    const dbRow = settingsToDbRow(priceSettings);
-                    const { data: ins, error: insErr } = await supabaseClient
-                        .from('price_settings').insert([dbRow]).select();
-                    if (insErr) {
-                        console.error('❌ Insert defaults error:', insErr.message);
-                    } else if (ins && ins.length > 0) {
+                    const { data: ins, error: insErr } = await sb.insert('price_settings', settingsToDbRow(priceSettings));
+                    if (!insErr && ins && ins.length > 0) {
                         priceSettingsDbId = ins[0].id;
                         priceSettingsLoaded = true;
-                        console.log('✅ Default prices inserted, id:', priceSettingsDbId);
                     }
-                    if (showInAdmin) updatePriceUI('loaded', '✓ Defaults created in database');
+                    if (showInAdmin) updatePriceUI('loaded', '✓ Valores padrão criados no banco');
                 }
-
                 updatePriceInputFields();
-
             } catch (err) {
-                console.error('❌ Unexpected error loadPriceSettings:', err);
+                console.error('❌ Unexpected loadPriceSettings error:', err);
                 priceSettings = getDefaultPriceSettings();
-                if (showInAdmin) updatePriceUI('error', 'Error: ' + err.message);
+                if (showInAdmin) updatePriceUI('error', 'Erro inesperado: ' + err.message);
                 updatePriceInputFields();
             }
         }
 
         // ============================================================
-        // PRICE SETTINGS — SAVE TO DB (upsert — works even if ID unknown)
+        // PRICE SETTINGS — SAVE TO DB
         // ============================================================
         async function savePriceSettings() {
-            if (!supabaseClient) { showToast('Supabase not connected!', 'error'); return; }
-
             const btn = document.getElementById('savePricesBtn');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
             btn.disabled = true;
 
             const newSettings = readPriceFields();
             const dbRow = settingsToDbRow(newSettings);
-            console.log('💾 Saving prices...', dbRow);
 
             try {
                 let savedId = null;
 
-                if (priceSettingsDbId) {
-                    // --- UPDATE existing row by known id ---
-                    console.log('Updating row id:', priceSettingsDbId);
-                    const { data, error } = await supabaseClient
-                        .from('price_settings')
-                        .update(dbRow)
-                        .eq('id', priceSettingsDbId)
-                        .select('id');
-                    if (error) throw error;
-                    savedId = data?.[0]?.id || priceSettingsDbId;
-                    console.log('✅ Updated row:', savedId);
-                } else {
-                    // --- Find existing row or insert new one ---
-                    const { data: existing, error: selErr } = await supabaseClient
-                        .from('price_settings').select('id').limit(1);
-                    if (selErr) throw selErr;
-
-                    if (existing && existing.length > 0) {
-                        priceSettingsDbId = existing[0].id;
-                        console.log('Found existing row, updating id:', priceSettingsDbId);
-                        const { data, error } = await supabaseClient
-                            .from('price_settings')
-                            .update(dbRow)
-                            .eq('id', priceSettingsDbId)
-                            .select('id');
-                        if (error) throw error;
-                        savedId = data?.[0]?.id || priceSettingsDbId;
-                    } else {
-                        console.log('No row found, inserting new...');
-                        const { data, error } = await supabaseClient
-                            .from('price_settings')
-                            .insert([dbRow])
-                            .select('id');
-                        if (error) throw error;
-                        savedId = data?.[0]?.id;
-                        priceSettingsDbId = savedId;
-                        console.log('✅ Inserted new row:', savedId);
-                    }
+                // Try to find existing row first
+                if (!priceSettingsDbId) {
+                    const { data: existing } = await sb.select('price_settings', 'select=id&limit=1');
+                    if (existing && existing.length > 0) priceSettingsDbId = existing[0].id;
                 }
 
-                // Update in-memory
+                if (priceSettingsDbId) {
+                    const { data, error } = await sb.update('price_settings', dbRow, { id: priceSettingsDbId });
+                    if (error) throw new Error(error.message || error.hint || JSON.stringify(error));
+                    savedId = data?.[0]?.id || priceSettingsDbId;
+                } else {
+                    const { data, error } = await sb.insert('price_settings', dbRow);
+                    if (error) throw new Error(error.message || error.hint || JSON.stringify(error));
+                    savedId = data?.[0]?.id;
+                    priceSettingsDbId = savedId;
+                }
+
                 priceSettings = newSettings;
                 priceSettingsLoaded = true;
                 document.querySelectorAll('.price-input.changed').forEach(el => el.classList.remove('changed'));
 
-                const now = new Date().toLocaleString();
-                updatePriceUI('loaded', `✓ Saved successfully`);
+                updatePriceUI('loaded', '✓ Salvo com sucesso');
                 const el = document.getElementById('priceLastUpdated');
-                if (el) { el.textContent = `Last saved: ${now}`; el.style.display = 'block'; }
-
-                showToast('✅ Prices saved to database!', 'success');
+                if (el) { el.textContent = `Última atualização: ${new Date().toLocaleString()}`; el.style.display = 'block'; }
+                showToast('✅ Preços salvos no banco de dados!', 'success');
+                console.log('✅ Prices saved, id:', savedId);
 
             } catch (err) {
-                console.error('❌ savePriceSettings error:', err.code, err.message, err.details);
-                const msg = err.message || 'Unknown error';
-                updatePriceUI('error', `Save failed: ${msg}`);
-                showToast('Error saving: ' + msg, 'error');
+                console.error('❌ savePriceSettings error:', err);
+                updatePriceUI('error', 'Falha ao salvar: ' + err.message);
+                showToast('Erro ao salvar: ' + err.message, 'error');
             } finally {
                 btn.innerHTML = '<i class="fas fa-save"></i> Save Prices to Database';
                 btn.disabled = false;
@@ -1229,54 +1205,42 @@ ON CONFLICT DO NOTHING;</pre>
         }
 
         // ============================================================
-        // PRICE SETTINGS — RESET TO DEFAULTS
+        // PRICE SETTINGS — RESET
         // ============================================================
         async function resetPriceSettings() {
-            if (!confirm('Reset all prices to default values and save to database?')) return;
+            if (!confirm('Resetar todos os preços para os valores padrão?')) return;
             priceSettings = getDefaultPriceSettings();
             updatePriceInputFields();
-            if (supabaseClient) {
+            try {
                 const dbRow = settingsToDbRow(priceSettings);
-                try {
-                    if (priceSettingsDbId) {
-                        const { error } = await supabaseClient.from('price_settings').update(dbRow).eq('id', priceSettingsDbId);
-                        if (error) throw error;
-                    } else {
-                        const { data, error } = await supabaseClient.from('price_settings').insert([dbRow]).select('id');
-                        if (error) throw error;
-                        priceSettingsDbId = data?.[0]?.id;
-                    }
-                    updatePriceUI('loaded', '✓ Defaults restored and saved');
-                    showToast('Prices reset and saved!', 'success');
-                } catch (err) {
-                    console.error('❌ resetPriceSettings error:', err);
-                    showToast('Local reset done. DB error: ' + err.message, 'error');
+                if (priceSettingsDbId) {
+                    const { error } = await sb.update('price_settings', dbRow, { id: priceSettingsDbId });
+                    if (error) throw new Error(JSON.stringify(error));
+                } else {
+                    const { data, error } = await sb.insert('price_settings', dbRow);
+                    if (error) throw new Error(JSON.stringify(error));
+                    priceSettingsDbId = data?.[0]?.id;
                 }
+                updatePriceUI('loaded', '✓ Padrões restaurados e salvos');
+                showToast('Preços resetados e salvos!', 'success');
+            } catch (err) {
+                showToast('Erro ao resetar: ' + err.message, 'error');
             }
         }
 
-        // Mark field as changed (visual indicator)
-        function markChanged(el) {
-            el.classList.add('changed');
-        }
+        function markChanged(el) { el.classList.add('changed'); }
 
         // ============================================================
-        // PRICE CALCULATION (Schedule Form)
+        // PRICE CALCULATION
         // ============================================================
         function calculateEstimatedPrice() {
             const serviceType = document.getElementById('serviceType').value;
-            const priceBox = document.getElementById('estimatedPriceBox');
-            const priceValueEl = document.getElementById('estimatedPriceValue');
+            const priceBox    = document.getElementById('estimatedPriceBox');
+            const priceValueEl  = document.getElementById('estimatedPriceValue');
             const priceDetailEl = document.getElementById('estimatedPriceDetail');
-
             if (!serviceType) { priceBox.style.display = 'none'; return; }
 
-            // Show loading badge if prices haven't loaded yet
-            const loadBadge = document.getElementById('priceLoadingBadge');
-            if (loadBadge) loadBadge.style.display = !priceSettingsLoaded ? 'block' : 'none';
-
-            let total = 0;
-            const details = [];
+            let total = 0, details = [];
 
             switch (serviceType) {
                 case 'residential': {
@@ -1285,9 +1249,9 @@ ON CONFLICT DO NOTHING;</pre>
                     const showers = parseInt(document.getElementById('showerBoxCount').value) || 0;
                     total = priceSettings.base;
                     details.push(`Base: $${priceSettings.base}`);
-                    if (beds > 0) { total += beds * priceSettings.bedroom; details.push(`${beds} bed(s): $${beds * priceSettings.bedroom}`); }
-                    if (baths > 0) { total += baths * priceSettings.bathroom; details.push(`${baths} bath(s): $${baths * priceSettings.bathroom}`); }
-                    if (showers > 0) { total += showers * priceSettings.shower; details.push(`${showers} shower(s): $${showers * priceSettings.shower}`); }
+                    if (beds)    { total += beds * priceSettings.bedroom;   details.push(`${beds} quarto(s): $${beds * priceSettings.bedroom}`); }
+                    if (baths)   { total += baths * priceSettings.bathroom; details.push(`${baths} banheiro(s): $${baths * priceSettings.bathroom}`); }
+                    if (showers) { total += showers * priceSettings.shower; details.push(`${showers} box(es): $${showers * priceSettings.shower}`); }
                     break;
                 }
                 case 'carpet': {
@@ -1297,10 +1261,10 @@ ON CONFLICT DO NOTHING;</pre>
                     if (sqft > 0) {
                         total = Math.max(sqft * priceSettings.carpetSqFt, priceSettings.carpetMin);
                         details.push(`${sqft.toFixed(1)} sq ft @ $${priceSettings.carpetSqFt}/sqft`);
-                        if (total === priceSettings.carpetMin) details.push(`(minimum: $${priceSettings.carpetMin})`);
+                        if (total === priceSettings.carpetMin) details.push(`(mínimo: $${priceSettings.carpetMin})`);
                     } else {
                         total = priceSettings.carpetMin;
-                        details.push(`Minimum charge: $${priceSettings.carpetMin}`);
+                        details.push(`Mínimo: $${priceSettings.carpetMin}`);
                     }
                     break;
                 }
@@ -1309,52 +1273,27 @@ ON CONFLICT DO NOTHING;</pre>
                     const baths = parseInt(document.getElementById('bathrooms').value) || 0;
                     total = priceSettings.moveBase;
                     details.push(`Base: $${priceSettings.moveBase}`);
-                    if (beds > 0) { total += beds * priceSettings.moveBedroom; details.push(`${beds} bed(s): $${beds * priceSettings.moveBedroom}`); }
-                    if (baths > 0) { total += baths * priceSettings.moveBathroom; details.push(`${baths} bath(s): $${baths * priceSettings.moveBathroom}`); }
+                    if (beds)  { total += beds * priceSettings.moveBedroom;   details.push(`${beds} quarto(s): $${beds * priceSettings.moveBedroom}`); }
+                    if (baths) { total += baths * priceSettings.moveBathroom; details.push(`${baths} banheiro(s): $${baths * priceSettings.moveBathroom}`); }
                     break;
                 }
-                case 'construction':
-                    total = priceSettings.constructionBase;
-                    details.push(`Base rate: $${priceSettings.constructionBase}`);
-                    break;
-                case 'commercial':
-                    total = priceSettings.commercialBase;
-                    details.push(`Base rate: $${priceSettings.commercialBase}`);
-                    break;
-                case 'church':
-                    total = priceSettings.churchBase;
-                    details.push(`Base rate: $${priceSettings.churchBase}`);
-                    break;
-                case 'rv':
-                    total = priceSettings.rvMedium;
-                    details.push(`RV cleaning: $${priceSettings.rvMedium}`);
-                    break;
-                default:
-                    total = 100;
-                    details.push('Base rate: $100');
+                case 'construction': total = priceSettings.constructionBase; details.push(`Base: $${priceSettings.constructionBase}`); break;
+                case 'commercial':   total = priceSettings.commercialBase;   details.push(`Base: $${priceSettings.commercialBase}`); break;
+                case 'church':       total = priceSettings.churchBase;       details.push(`Base: $${priceSettings.churchBase}`); break;
+                case 'rv':           total = priceSettings.rvMedium;         details.push(`RV: $${priceSettings.rvMedium}`); break;
+                default: total = 100; details.push('Base: $100');
             }
 
-            // Pet fee
             if (document.getElementById('hasPets').value === 'true') {
                 const pets = parseInt(document.getElementById('petCount').value) || 0;
-                if (pets > 0 && priceSettings.petFee > 0) {
-                    const fee = pets * priceSettings.petFee;
-                    total += fee;
-                    details.push(`${pets} pet(s): $${fee}`);
-                }
+                if (pets > 0 && priceSettings.petFee > 0) { total += pets * priceSettings.petFee; details.push(`${pets} pet(s): $${pets * priceSettings.petFee}`); }
             }
-
-            // Child fee
             if (document.getElementById('hasChildren').value === 'true') {
                 const kids = parseInt(document.getElementById('childrenCount').value) || 0;
-                if (kids > 0 && priceSettings.childFee > 0) {
-                    const fee = kids * priceSettings.childFee;
-                    total += fee;
-                    details.push(`${kids} child(ren): $${fee}`);
-                }
+                if (kids > 0 && priceSettings.childFee > 0) { total += kids * priceSettings.childFee; details.push(`${kids} criança(s): $${kids * priceSettings.childFee}`); }
             }
 
-            priceValueEl.textContent = `$${total.toFixed(2)}`;
+            priceValueEl.textContent  = `$${total.toFixed(2)}`;
             priceDetailEl.textContent = details.join(' • ');
             priceBox.style.display = 'block';
         }
@@ -1363,22 +1302,15 @@ ON CONFLICT DO NOTHING;</pre>
         // CONDITIONAL FIELDS
         // ============================================================
         function updateConditionalFields() {
-            const serviceType = document.getElementById('serviceType').value;
-            const residentialTypes = ['move', 'construction', 'commercial', 'church', 'residential'];
-            document.querySelectorAll('.residential-fields').forEach(f => {
-                f.style.display = residentialTypes.includes(serviceType) ? 'block' : 'none';
-            });
-            const carpetField = document.querySelector('.carpet-field');
-            if (carpetField) carpetField.style.display = serviceType === 'carpet' ? 'block' : 'none';
+            const t = document.getElementById('serviceType').value;
+            const res = ['move','construction','commercial','church','residential'];
+            document.querySelectorAll('.residential-fields').forEach(f => f.style.display = res.includes(t) ? 'block' : 'none');
+            const cf = document.querySelector('.carpet-field');
+            if (cf) cf.style.display = t === 'carpet' ? 'block' : 'none';
         }
 
-        function togglePetCount() {
-            document.getElementById('petCountGroup').style.display = document.getElementById('hasPets').value === 'true' ? 'block' : 'none';
-        }
-
-        function toggleChildrenCount() {
-            document.getElementById('childrenCountGroup').style.display = document.getElementById('hasChildren').value === 'true' ? 'block' : 'none';
-        }
+        function togglePetCount()      { document.getElementById('petCountGroup').style.display      = document.getElementById('hasPets').value === 'true' ? 'block' : 'none'; }
+        function toggleChildrenCount() { document.getElementById('childrenCountGroup').style.display = document.getElementById('hasChildren').value === 'true' ? 'block' : 'none'; }
 
         function initConditionalFields() {
             document.getElementById('hasPets').addEventListener('change', togglePetCount);
@@ -1386,23 +1318,13 @@ ON CONFLICT DO NOTHING;</pre>
             document.getElementById('serviceType').addEventListener('change', updateConditionalFields);
         }
 
-        // ============================================================
-        // DATE PICKER
-        // ============================================================
         function initDatePicker() {
             const input = document.getElementById('cleaningDate');
             if (input && !flatpickrInstance) {
-                flatpickrInstance = flatpickr(input, {
-                    minDate: 'today',
-                    dateFormat: 'Y-m-d',
-                    onChange: () => calculateEstimatedPrice()
-                });
+                flatpickrInstance = flatpickr(input, { minDate: 'today', dateFormat: 'Y-m-d', onChange: () => calculateEstimatedPrice() });
             }
         }
 
-        // ============================================================
-        // CAROUSEL
-        // ============================================================
         function scrollCarousel(direction) {
             const c = document.getElementById('servicesCarousel');
             if (c) c.scrollBy({ left: 300 * direction, behavior: 'smooth' });
@@ -1413,7 +1335,7 @@ ON CONFLICT DO NOTHING;</pre>
         // ============================================================
         function initMobileMenu() {
             const toggle = document.getElementById('menuToggle');
-            const links = document.getElementById('navLinks');
+            const links  = document.getElementById('navLinks');
             if (toggle && links) {
                 toggle.addEventListener('click', () => {
                     links.classList.toggle('active');
@@ -1424,8 +1346,8 @@ ON CONFLICT DO NOTHING;</pre>
 
         function closeMobileMenu() {
             const toggle = document.getElementById('menuToggle');
-            const links = document.getElementById('navLinks');
-            if (links && links.classList.contains('active')) {
+            const links  = document.getElementById('navLinks');
+            if (links?.classList.contains('active')) {
                 links.classList.remove('active');
                 if (toggle) toggle.innerHTML = '<i class="fas fa-bars"></i>';
             }
@@ -1435,14 +1357,11 @@ ON CONFLICT DO NOTHING;</pre>
         // NAVIGATION
         // ============================================================
         function scrollToSection(id) {
-            const section = document.getElementById(id);
-            if (section) {
-                showHomePage();
-                setTimeout(() => {
-                    const offset = document.querySelector('.navbar').offsetHeight;
-                    window.scrollTo({ top: section.offsetTop - offset, behavior: 'smooth' });
-                }, 100);
-            }
+            showHomePage();
+            setTimeout(() => {
+                const s = document.getElementById(id);
+                if (s) window.scrollTo({ top: s.offsetTop - document.querySelector('.navbar').offsetHeight, behavior: 'smooth' });
+            }, 100);
             closeMobileMenu();
         }
 
@@ -1458,10 +1377,6 @@ ON CONFLICT DO NOTHING;</pre>
             document.getElementById('scheduleFormContainer').style.display = 'block';
             document.getElementById('adminPanel').style.display = 'none';
             setTimeout(initDatePicker, 100);
-            // If prices not loaded yet, try loading them
-            if (!priceSettingsLoaded) {
-                loadPriceSettings(false);
-            }
             closeMobileMenu();
         }
 
@@ -1489,54 +1404,50 @@ ON CONFLICT DO NOTHING;</pre>
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const btn = form.querySelector('button[type="submit"]');
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
                 btn.disabled = true;
 
-                const priceText = document.getElementById('estimatedPriceValue').textContent;
-                const estimatedPrice = parseFloat(priceText.replace('$', '')) || 0;
-
+                const estimatedPrice = parseFloat(document.getElementById('estimatedPriceValue').textContent.replace('$','')) || 0;
                 const formData = {
-                    full_name: document.getElementById('fullName').value,
-                    phone: document.getElementById('phone').value,
-                    email: document.getElementById('email').value,
-                    address: document.getElementById('address').value,
-                    service_type: document.getElementById('serviceType').value,
-                    bedrooms: parseInt(document.getElementById('bedrooms')?.value) || 0,
-                    bathrooms: parseInt(document.getElementById('bathrooms')?.value) || 0,
-                    shower_box_count: parseInt(document.getElementById('showerBoxCount')?.value) || 0,
-                    has_pets: document.getElementById('hasPets').value === 'true',
-                    pet_count: parseInt(document.getElementById('petCount')?.value) || 0,
-                    has_children: document.getElementById('hasChildren').value === 'true',
-                    children_count: parseInt(document.getElementById('childrenCount')?.value) || 0,
-                    cleaning_date: document.getElementById('cleaningDate').value,
-                    cleaning_time: document.getElementById('cleaningTime').value,
-                    description: document.getElementById('description').value,
-                    status: 'pending',
+                    full_name:       document.getElementById('fullName').value,
+                    phone:           document.getElementById('phone').value,
+                    email:           document.getElementById('email').value,
+                    address:         document.getElementById('address').value,
+                    service_type:    document.getElementById('serviceType').value,
+                    bedrooms:        parseInt(document.getElementById('bedrooms')?.value)       || 0,
+                    bathrooms:       parseInt(document.getElementById('bathrooms')?.value)      || 0,
+                    shower_box_count:parseInt(document.getElementById('showerBoxCount')?.value) || 0,
+                    has_pets:        document.getElementById('hasPets').value === 'true',
+                    pet_count:       parseInt(document.getElementById('petCount')?.value)       || 0,
+                    has_children:    document.getElementById('hasChildren').value === 'true',
+                    children_count:  parseInt(document.getElementById('childrenCount')?.value)  || 0,
+                    cleaning_date:   document.getElementById('cleaningDate').value,
+                    cleaning_time:   document.getElementById('cleaningTime').value,
+                    description:     document.getElementById('description').value,
+                    status:          'pending',
                     estimated_value: estimatedPrice,
-                    agreed_value: null,
-                    created_at: new Date().toISOString()
+                    agreed_value:    null,
+                    created_at:      new Date().toISOString()
                 };
-
                 if (formData.service_type === 'carpet') {
                     formData.carpet_length = parseFloat(document.getElementById('carpetLength')?.value) || 0;
-                    formData.carpet_width = parseFloat(document.getElementById('carpetWidth')?.value) || 0;
+                    formData.carpet_width  = parseFloat(document.getElementById('carpetWidth')?.value)  || 0;
                 }
 
                 const msg = document.getElementById('formMessage');
                 const required = ['full_name','phone','email','address','service_type','cleaning_date','cleaning_time','description'];
-                const missing = required.filter(k => !formData[k]);
-                if (missing.length > 0) { showError('Please fill all required fields', msg, btn); return; }
+                if (required.some(k => !formData[k])) { showError('Please fill all required fields', msg, btn); return; }
                 if (!/^\S+@\S+\.\S+$/.test(formData.email)) { showError('Invalid email', msg, btn); return; }
 
-                const result = await addServiceRequest(formData);
-                if (result.success) {
+                const { error } = await sb.insert('service_requests', formData);
+                if (!error) {
                     msg.className = 'form-message success';
-                    msg.innerHTML = '<i class="fas fa-check-circle"></i> Submitted successfully! We\'ll contact you soon.';
+                    msg.innerHTML = '<i class="fas fa-check-circle"></i> Submitted! We\'ll contact you soon.';
                     form.reset();
                     document.getElementById('estimatedPriceBox').style.display = 'none';
                     setTimeout(() => showHomePage(), 2500);
                 } else {
-                    showError(result.error || 'Submission failed. Please try again.', msg, btn);
+                    showError((error.message || error.hint || JSON.stringify(error)), msg, btn);
                 }
                 btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit';
                 btn.disabled = false;
@@ -1546,18 +1457,7 @@ ON CONFLICT DO NOTHING;</pre>
         function showError(text, msg, btn) {
             msg.className = 'form-message error';
             msg.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${text}`;
-            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit';
-            btn.disabled = false;
-        }
-
-        async function addServiceRequest(data) {
-            if (!supabaseClient) return { success: false, error: 'No database connection' };
-            try {
-                const { error } = await supabaseClient.from('service_requests').insert([data]);
-                return error ? { success: false, error: error.message } : { success: true };
-            } catch (e) {
-                return { success: false, error: e.message };
-            }
+            if (btn) { btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit'; btn.disabled = false; }
         }
 
         // ============================================================
@@ -1565,29 +1465,19 @@ ON CONFLICT DO NOTHING;</pre>
         // ============================================================
         function initAdminPanel() {
             document.getElementById('loginBtn')?.addEventListener('click', handleAdminLogin);
-            document.getElementById('exportExcelBtn')?.addEventListener('click', exportToExcel);
+            document.getElementById('exportExcelBtn')?.addEventListener('click', () => showToast('Export coming soon!', 'info'));
             document.getElementById('refreshBtn')?.addEventListener('click', () => loadServiceRequests(1));
-            document.getElementById('testConnectionBtn')?.addEventListener('click', testSupabaseConnection);
+            document.getElementById('testConnectionBtn')?.addEventListener('click', testConnection);
             document.getElementById('statusFilter')?.addEventListener('change', function() { currentFilters.status = this.value; loadServiceRequests(1); });
             document.getElementById('dateFilter')?.addEventListener('change', function() { currentFilters.date = this.value; loadServiceRequests(1); });
             document.getElementById('searchFilter')?.addEventListener('input', debounce(function() { currentFilters.search = this.value; loadServiceRequests(1); }, 500));
         }
 
         function switchAdminTab(tab) {
-            const tabs = document.querySelectorAll('.dashboard-tab');
-            const contents = document.querySelectorAll('.dashboard-tab-content');
-            tabs.forEach(t => t.classList.remove('active'));
-            contents.forEach(c => c.classList.remove('active'));
-            if (tab === 'requests') {
-                tabs[0].classList.add('active');
-                document.getElementById('requestsTab').classList.add('active');
-                loadServiceRequests(1);
-            } else {
-                tabs[1].classList.add('active');
-                document.getElementById('pricesTab').classList.add('active');
-                // Always reload prices from DB when opening the tab
-                loadPriceSettings(true);
-            }
+            document.querySelectorAll('.dashboard-tab').forEach((t,i) => t.classList.toggle('active', (tab==='requests' && i===0)||(tab==='prices' && i===1)));
+            document.querySelectorAll('.dashboard-tab-content').forEach((c,i) => c.classList.toggle('active', (tab==='requests' && i===0)||(tab==='prices' && i===1)));
+            if (tab === 'requests') loadServiceRequests(1);
+            else loadPriceSettings(true);
         }
 
         function handleAdminLogin() {
@@ -1600,10 +1490,9 @@ ON CONFLICT DO NOTHING;</pre>
                 loadDashboardData();
                 showToast('Login successful', 'success');
             } else {
-                const msg = document.getElementById('loginMessage');
-                msg.className = 'form-message error';
-                msg.innerHTML = '<i class="fas fa-exclamation-circle"></i> Invalid credentials';
-                msg.style.display = 'block';
+                const m = document.getElementById('loginMessage');
+                m.className = 'form-message error'; m.style.display = 'block';
+                m.innerHTML = '<i class="fas fa-exclamation-circle"></i> Invalid credentials';
             }
         }
 
@@ -1619,100 +1508,96 @@ ON CONFLICT DO NOTHING;</pre>
         }
 
         async function loadStats() {
-            if (!supabaseClient) return;
             try {
-                const { data: all, error } = await supabaseClient.from('service_requests').select('status, agreed_value');
-                if (error) { console.error('Error loading stats:', error); return; }
-                let pending = 0, confirmed = 0, completed = 0, totalValue = 0;
-                all?.forEach(r => {
-                    if (r.status === 'pending') pending++;
-                    else if (r.status === 'confirmed') { confirmed++; totalValue += parseFloat(r.agreed_value) || 0; }
-                    else if (r.status === 'completed') { completed++; totalValue += parseFloat(r.agreed_value) || 0; }
+                const { data, error } = await sb.select('service_requests', 'select=status,agreed_value');
+                if (error || !data) return;
+                let pending=0, confirmed=0, completed=0, total=0;
+                data.forEach(r => {
+                    if (r.status==='pending') pending++;
+                    else if (r.status==='confirmed') { confirmed++; total += parseFloat(r.agreed_value)||0; }
+                    else if (r.status==='completed') { completed++; total += parseFloat(r.agreed_value)||0; }
                 });
-                document.getElementById('pendingCount').textContent = pending;
+                document.getElementById('pendingCount').textContent   = pending;
                 document.getElementById('confirmedCount').textContent = confirmed;
                 document.getElementById('completedCount').textContent = completed;
-                document.getElementById('totalValueConfirmed').textContent = '$' + totalValue.toFixed(2);
-            } catch (err) { console.error('Error in loadStats:', err); }
+                document.getElementById('totalValueConfirmed').textContent = '$' + total.toFixed(2);
+            } catch(e) { console.error('loadStats error:', e); }
         }
 
         async function loadServiceRequests(page = 1) {
-            if (!supabaseClient) {
-                document.getElementById('requestsTableBody').innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 40px; color: #ff6b6b;">❌ Supabase not initialized</td></tr>';
-                return;
-            }
             currentPage = page;
-            document.getElementById('requestsTableBody').innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 40px;"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>';
+            const tbody = document.getElementById('requestsTableBody');
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>';
 
             try {
-                let query = supabaseClient.from('service_requests').select('*', { count: 'exact' });
-                if (currentFilters.status !== 'all') query = query.eq('status', currentFilters.status);
+                // Build query string
+                let qs = 'select=*&order=created_at.desc';
+                if (currentFilters.status !== 'all') qs += `&status=eq.${currentFilters.status}`;
                 if (currentFilters.search.trim()) {
-                    const s = `%${currentFilters.search.trim()}%`;
-                    query = query.or(`full_name.ilike.${s},email.ilike.${s}`);
+                    const s = currentFilters.search.trim();
+                    qs += `&or=(full_name.ilike.*${s}*,email.ilike.*${s}*)`;
                 }
                 if (currentFilters.date !== 'all') {
-                    const today = new Date();
-                    let startDate = new Date();
-                    if (currentFilters.date === 'today') startDate.setHours(0,0,0,0);
-                    else if (currentFilters.date === 'week') startDate.setDate(today.getDate() - 7);
-                    else if (currentFilters.date === 'month') startDate.setMonth(today.getMonth() - 1);
-                    query = query.gte('created_at', startDate.toISOString());
+                    const d = new Date();
+                    if (currentFilters.date === 'today')  d.setHours(0,0,0,0);
+                    if (currentFilters.date === 'week')   d.setDate(d.getDate()-7);
+                    if (currentFilters.date === 'month')  d.setMonth(d.getMonth()-1);
+                    qs += `&created_at=gte.${d.toISOString()}`;
                 }
 
-                const { count, error: countError } = await query;
-                if (countError) throw countError;
+                // Get total count
+                const countQs = qs.replace('select=*','select=id');
+                const { count } = await sb.selectCount('service_requests', countQs);
 
-                const from = (page - 1) * pageSize;
-                const { data, error } = await query.order('created_at', { ascending: false }).range(from, from + pageSize - 1);
-                if (error) throw error;
+                // Get page
+                const from = (page-1)*pageSize, to = from+pageSize-1;
+                const pageQs = qs + `&offset=${from}&limit=${pageSize}`;
+                const { data, error } = await sb.select('service_requests', pageQs);
+                if (error) throw new Error(JSON.stringify(error));
 
-                const tbody = document.getElementById('requestsTableBody');
                 if (!data || data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 40px;">📭 No requests found</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px">📭 No requests found</td></tr>';
                     document.getElementById('tableInfo').textContent = 'Showing 0 requests';
                     document.getElementById('pagination').innerHTML = '';
                     return;
                 }
 
+                const statusMap = {
+                    pending:   ['status-pending','fa-clock'],
+                    confirmed: ['status-confirmed','fa-check-circle'],
+                    completed: ['status-completed','fa-flag-checkered'],
+                    cancelled: ['status-cancelled','fa-times-circle']
+                };
+
                 let html = '';
                 data.forEach(r => {
-                    const statusMap = {
-                        pending: ['status-pending', 'fa-clock'],
-                        confirmed: ['status-confirmed', 'fa-check-circle'],
-                        completed: ['status-completed', 'fa-flag-checkered'],
-                        cancelled: ['status-cancelled', 'fa-times-circle']
-                    };
-                    const [cls, icon] = statusMap[r.status] || ['status-pending', 'fa-clock'];
-                    const cleanDate = r.cleaning_date ? new Date(r.cleaning_date + 'T00:00:00').toLocaleDateString('en-US') : 'N/A';
-                    const valueDisplay = r.agreed_value ? `$${parseFloat(r.agreed_value).toFixed(2)}` : (r.estimated_value ? `Est: $${parseFloat(r.estimated_value).toFixed(2)}` : '-');
+                    const [cls,icon] = statusMap[r.status] || ['status-pending','fa-clock'];
+                    const dt   = r.cleaning_date ? new Date(r.cleaning_date+'T00:00:00').toLocaleDateString('en-US') : 'N/A';
+                    const val  = r.agreed_value ? `$${parseFloat(r.agreed_value).toFixed(2)}` : (r.estimated_value ? `Est: $${parseFloat(r.estimated_value).toFixed(2)}` : '-');
                     html += `<tr>
-                        <td><strong>${r.full_name || 'N/A'}</strong></td>
-                        <td>${r.phone || 'N/A'}<br><small>${r.email || 'N/A'}</small></td>
-                        <td>${r.service_type || 'N/A'}</td>
-                        <td>${cleanDate}<br><small>${r.cleaning_time || 'N/A'}</small></td>
-                        <td><span class="status-badge ${cls}"><i class="fas ${icon}"></i> ${r.status || 'pending'}</span></td>
-                        <td>${valueDisplay}</td>
-                        <td><div style="display:flex;gap:5px;">
+                        <td><strong>${r.full_name||'N/A'}</strong></td>
+                        <td>${r.phone||'N/A'}<br><small>${r.email||'N/A'}</small></td>
+                        <td>${r.service_type||'N/A'}</td>
+                        <td>${dt}<br><small>${r.cleaning_time||'N/A'}</small></td>
+                        <td><span class="status-badge ${cls}"><i class="fas ${icon}"></i> ${r.status||'pending'}</span></td>
+                        <td>${val}</td>
+                        <td><div style="display:flex;gap:5px">
                             <button class="btn btn-primary btn-small" onclick="editServiceRequest('${r.id}')"><i class="fas fa-edit"></i></button>
                             <button class="btn btn-danger btn-small" onclick="deleteServiceRequest('${r.id}')"><i class="fas fa-trash"></i></button>
                         </div></td>
                     </tr>`;
                 });
-
                 tbody.innerHTML = html;
                 document.getElementById('tableInfo').textContent = `Showing ${data.length} of ${count} requests`;
 
-                const totalPages = Math.ceil(count / pageSize);
+                const totalPages = Math.ceil(count/pageSize);
                 let pHtml = '';
-                for (let i = 1; i <= totalPages; i++) {
-                    pHtml += `<button class="${i === page ? 'active' : ''}" onclick="loadServiceRequests(${i})">${i}</button>`;
-                }
+                for (let i=1;i<=totalPages;i++) pHtml += `<button class="${i===page?'active':''}" onclick="loadServiceRequests(${i})">${i}</button>`;
                 document.getElementById('pagination').innerHTML = pHtml;
 
-            } catch (err) {
-                console.error('Error loading requests:', err);
-                document.getElementById('requestsTableBody').innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 40px; color: #ff6b6b;">❌ Error: ${err.message}</td></tr>`;
+            } catch(err) {
+                console.error('loadServiceRequests error:', err);
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:40px;color:#ff6b6b">❌ ${err.message}</td></tr>`;
                 showToast('Error: ' + err.message, 'error');
             }
         }
@@ -1720,74 +1605,87 @@ ON CONFLICT DO NOTHING;</pre>
         // ============================================================
         // TEST CONNECTION
         // ============================================================
-        async function testSupabaseConnection() {
+        async function testConnection() {
             document.getElementById('debugPanel').style.display = 'block';
-            const debugInfo = document.getElementById('debugInfo');
-            if (!supabaseClient) {
-                debugInfo.innerHTML = '<span class="debug-error">❌ Supabase not initialized — CDN may still be loading. Wait a moment and try again.</span>';
-                return;
-            }
-
-            debugInfo.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
-            let html = '<strong>Supabase Connection Test</strong>\n\n';
-            html += `<span>URL: ${SUPABASE_URL}</span>\n\n`;
-
+            const di = document.getElementById('debugInfo');
+            di.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
+            let html = `<strong>Supabase REST API Test</strong>\nURL: ${SB_URL}\n\n`;
             try {
                 // Test service_requests
-                const { data: d1, error: e1 } = await supabaseClient
-                    .from('service_requests').select('*').limit(1);
-                if (e1) {
-                    html += `<span class="debug-error">❌ service_requests SELECT: ${e1.code} — ${e1.message}</span>\n`;
-                    if (e1.code === 'PGRST301' || e1.message?.includes('RLS')) {
-                        html += `<span class="debug-warning">   → RLS policy blocking read. Add policy: ALTER TABLE service_requests ENABLE ROW LEVEL SECURITY; CREATE POLICY "anon_all" ON service_requests FOR ALL TO anon USING (true) WITH CHECK (true);</span>\n`;
-                    }
+                const r1 = await fetch(`${SB_URL}/rest/v1/service_requests?select=id&limit=1`, { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } });
+                const d1 = await r1.json();
+                if (r1.ok) {
+                    html += `<span class="debug-success">✅ service_requests: OK (${Array.isArray(d1)?d1.length:0} rows)</span>\n`;
                 } else {
-                    html += `<span class="debug-success">✅ service_requests: OK (${d1.length} row(s) visible)</span>\n`;
+                    html += `<span class="debug-error">❌ service_requests: ${r1.status} — ${d1.message||d1.hint||JSON.stringify(d1)}</span>\n`;
+                    if (r1.status===401||r1.status===403) html += `<span class="debug-warning">   → RLS bloqueando. Veja SQL abaixo.</span>\n`;
+                    if (r1.status===404) html += `<span class="debug-warning">   → Tabela não existe!</span>\n`;
                 }
 
                 // Test price_settings SELECT
-                const { data: d2, error: e2 } = await supabaseClient
-                    .from('price_settings').select('*').limit(1);
-                if (e2) {
-                    html += `<span class="debug-error">❌ price_settings SELECT: ${e2.code} — ${e2.message}</span>\n`;
-                    if (e2.code === '42P01') {
-                        html += `<span class="debug-warning">   → Table does not exist! Run SQL in the Prices tab.</span>\n`;
-                    } else if (e2.code === 'PGRST301' || e2.message?.includes('RLS')) {
-                        html += `<span class="debug-warning">   → RLS blocking. See SQL below.</span>\n`;
+                const r2 = await fetch(`${SB_URL}/rest/v1/price_settings?select=*&limit=1`, { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } });
+                const d2 = await r2.json();
+                if (r2.ok) {
+                    html += `<span class="debug-success">✅ price_settings SELECT: OK</span>\n`;
+                    if (Array.isArray(d2) && d2.length > 0) {
+                        html += `<span class="debug-success">   ID: ${d2[0].id}</span>\n`;
+                        html += `<span class="debug-success">   base=$${d2[0].base} | bedroom=$${d2[0].bedroom} | bathroom=$${d2[0].bathroom}</span>\n`;
+                        html += `<span class="debug-success">   updated_at: ${d2[0].updated_at}</span>\n`;
+                    } else {
+                        html += `<span class="debug-warning">   ⚠️ Tabela vazia — clique "Reload from Database" para inserir padrões.</span>\n`;
                     }
                 } else {
-                    html += `<span class="debug-success">✅ price_settings SELECT: OK (${d2.length} row(s))</span>\n`;
-                    if (d2.length > 0) {
-                        html += `<span class="debug-success">   ID: ${d2[0].id}</span>\n`;
-                        html += `<span class="debug-success">   base=$${d2[0].base} bedroom=$${d2[0].bedroom} bathroom=$${d2[0].bathroom}</span>\n`;
-                        html += `<span class="debug-success">   updated_at: ${d2[0].updated_at}</span>\n`;
-                    }
+                    html += `<span class="debug-error">❌ price_settings SELECT: ${r2.status} — ${d2.message||d2.hint||JSON.stringify(d2)}</span>\n`;
+                    if (r2.status===404 || d2.code==='42P01') html += `<span class="debug-warning">   → Tabela não existe! Execute o SQL abaixo no Supabase.</span>\n`;
+                    if (r2.status===401||r2.status===403)     html += `<span class="debug-warning">   → RLS bloqueando leitura.</span>\n`;
                 }
 
-                // Test price_settings INSERT (write test)
-                if (!e2) {
-                    const testRow = { base: -1, updated_at: new Date().toISOString() };
-                    const { data: ins, error: insErr } = await supabaseClient
-                        .from('price_settings').insert([testRow]).select('id');
-                    if (insErr) {
-                        html += `<span class="debug-error">❌ price_settings INSERT: ${insErr.code} — ${insErr.message}</span>\n`;
-                        html += `<span class="debug-warning">   → Cannot write. Add RLS INSERT policy:\n   CREATE POLICY "anon_insert" ON price_settings FOR INSERT TO anon WITH CHECK (true);</span>\n`;
-                    } else {
+                // Test price_settings INSERT
+                if (r2.ok) {
+                    const testRow = { base: -999, updated_at: new Date().toISOString() };
+                    const r3 = await fetch(`${SB_URL}/rest/v1/price_settings`, {
+                        method: 'POST', headers: { apikey: SB_KEY, Authorization: 'Bearer '+SB_KEY, 'Content-Type':'application/json', Prefer:'return=representation' },
+                        body: JSON.stringify(testRow)
+                    });
+                    const d3 = await r3.json();
+                    if (r3.ok) {
                         html += `<span class="debug-success">✅ price_settings INSERT: OK</span>\n`;
-                        // Clean up the test row
-                        if (ins && ins.length > 0) {
-                            await supabaseClient.from('price_settings').delete().eq('id', ins[0].id);
-                            html += `<span class="debug-success">   (test row cleaned up)</span>\n`;
+                        const testId = Array.isArray(d3) ? d3[0]?.id : d3?.id;
+                        if (testId) {
+                            await fetch(`${SB_URL}/rest/v1/price_settings?id=eq.${testId}`, {
+                                method:'DELETE', headers:{apikey:SB_KEY, Authorization:'Bearer '+SB_KEY}
+                            });
+                            html += `<span class="debug-success">   (test row deleted)</span>\n`;
                         }
+                    } else {
+                        html += `<span class="debug-error">❌ price_settings INSERT: ${r3.status} — ${d3.message||d3.hint||JSON.stringify(d3)}</span>\n`;
+                        html += `<span class="debug-warning">   → Execute o SQL abaixo para liberar permissões.</span>\n`;
                     }
                 }
 
-                html += '\n<span class="debug-warning">📋 RLS fix SQL (run in Supabase SQL Editor if needed):\n-- Allow anonymous read/write on both tables:\nGRANT ALL ON price_settings TO anon;\nCREATE POLICY IF NOT EXISTS "anon_all_price" ON price_settings FOR ALL TO anon USING (true) WITH CHECK (true);\nCREATE POLICY IF NOT EXISTS "anon_all_req" ON service_requests FOR ALL TO anon USING (true) WITH CHECK (true);</span>\n';
+                html += `\n<span class="debug-warning">📋 SQL para criar tabela + permissões (Supabase SQL Editor):
 
-            } catch (err) {
-                html += `<span class="debug-error">❌ Unexpected error: ${err.message}</span>`;
+CREATE TABLE IF NOT EXISTS price_settings (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  base numeric DEFAULT 50, bedroom numeric DEFAULT 35,
+  bathroom numeric DEFAULT 40, shower numeric DEFAULT 25,
+  carpet_sq_ft numeric DEFAULT 0.35, carpet_min numeric DEFAULT 50,
+  move_base numeric DEFAULT 120, move_bedroom numeric DEFAULT 35,
+  move_bathroom numeric DEFAULT 40, construction_base numeric DEFAULT 150,
+  commercial_base numeric DEFAULT 100, church_base numeric DEFAULT 120,
+  rv_medium numeric DEFAULT 200, pet_fee numeric DEFAULT 10,
+  child_fee numeric DEFAULT 0, updated_at timestamptz DEFAULT now()
+);
+ALTER TABLE price_settings ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "anon_price" ON price_settings;
+CREATE POLICY "anon_price" ON price_settings FOR ALL TO anon USING (true) WITH CHECK (true);
+INSERT INTO price_settings (base) VALUES (50);</span>`;
+
+            } catch(err) {
+                html += `<span class="debug-error">❌ Fetch error: ${err.message}</span>\n`;
+                html += `<span class="debug-warning">Verifique sua conexão com a internet.</span>`;
             }
-            debugInfo.innerHTML = html;
+            di.innerHTML = html;
         }
 
         function hideDebugPanel() { document.getElementById('debugPanel').style.display = 'none'; }
@@ -1800,88 +1698,83 @@ ON CONFLICT DO NOTHING;</pre>
                 e.preventDefault();
                 const id = document.getElementById('editRequestId').value;
                 const data = {
-                    full_name: document.getElementById('editFullName').value,
-                    phone: document.getElementById('editPhone').value,
-                    email: document.getElementById('editEmail').value,
-                    address: document.getElementById('editAddress').value,
-                    service_type: document.getElementById('editServiceType').value,
-                    bedrooms: parseInt(document.getElementById('editBedrooms').value) || 0,
-                    bathrooms: parseInt(document.getElementById('editBathrooms').value) || 0,
-                    shower_box_count: parseInt(document.getElementById('editShowerBoxCount').value) || 0,
-                    has_pets: document.getElementById('editHasPets').value === 'true',
-                    pet_count: parseInt(document.getElementById('editPetCount').value) || 0,
-                    has_children: document.getElementById('editHasChildren').value === 'true',
-                    children_count: parseInt(document.getElementById('editChildrenCount').value) || 0,
-                    cleaning_date: document.getElementById('editCleaningDate').value,
-                    cleaning_time: document.getElementById('editCleaningTime').value,
-                    status: document.getElementById('editStatus').value,
-                    agreed_value: parseFloat(document.getElementById('editAgreedValue').value) || 0,
-                    description: document.getElementById('editDescription').value
+                    full_name:        document.getElementById('editFullName').value,
+                    phone:            document.getElementById('editPhone').value,
+                    email:            document.getElementById('editEmail').value,
+                    address:          document.getElementById('editAddress').value,
+                    service_type:     document.getElementById('editServiceType').value,
+                    bedrooms:         parseInt(document.getElementById('editBedrooms').value)      || 0,
+                    bathrooms:        parseInt(document.getElementById('editBathrooms').value)     || 0,
+                    shower_box_count: parseInt(document.getElementById('editShowerBoxCount').value)|| 0,
+                    has_pets:         document.getElementById('editHasPets').value === 'true',
+                    pet_count:        parseInt(document.getElementById('editPetCount').value)      || 0,
+                    has_children:     document.getElementById('editHasChildren').value === 'true',
+                    children_count:   parseInt(document.getElementById('editChildrenCount').value) || 0,
+                    cleaning_date:    document.getElementById('editCleaningDate').value,
+                    cleaning_time:    document.getElementById('editCleaningTime').value,
+                    status:           document.getElementById('editStatus').value,
+                    agreed_value:     parseFloat(document.getElementById('editAgreedValue').value) || 0,
+                    description:      document.getElementById('editDescription').value
                 };
-                const { error } = await supabaseClient.from('service_requests').update(data).eq('id', id);
+                const { error } = await sb.update('service_requests', data, { id });
                 if (!error) {
                     closeEditModal();
                     loadServiceRequests(currentPage);
                     loadStats();
                     showToast('Updated successfully', 'success');
                 } else {
-                    showToast('Error updating: ' + error.message, 'error');
+                    showToast('Error: ' + (error.message || JSON.stringify(error)), 'error');
                 }
             });
         }
 
         async function editServiceRequest(id) {
-            if (!supabaseClient) return;
-            const { data, error } = await supabaseClient.from('service_requests').select().eq('id', id).single();
-            if (error) { showToast('Error: ' + error.message, 'error'); return; }
-            if (data) {
-                document.getElementById('editRequestId').value = data.id;
-                document.getElementById('editFullName').value = data.full_name || '';
-                document.getElementById('editPhone').value = data.phone || '';
-                document.getElementById('editEmail').value = data.email || '';
-                document.getElementById('editAddress').value = data.address || '';
-                document.getElementById('editServiceType').value = data.service_type || '';
-                document.getElementById('editBedrooms').value = data.bedrooms || 0;
-                document.getElementById('editBathrooms').value = data.bathrooms || 0;
-                document.getElementById('editShowerBoxCount').value = data.shower_box_count || 0;
-                document.getElementById('editHasPets').value = data.has_pets ? 'true' : 'false';
-                document.getElementById('editPetCount').value = data.pet_count || 0;
-                document.getElementById('editHasChildren').value = data.has_children ? 'true' : 'false';
-                document.getElementById('editChildrenCount').value = data.children_count || 0;
-                document.getElementById('editCleaningDate').value = data.cleaning_date?.split('T')[0] || data.cleaning_date || '';
-                document.getElementById('editCleaningTime').value = data.cleaning_time || '';
-                document.getElementById('editStatus').value = data.status || 'pending';
-                document.getElementById('editAgreedValue').value = data.agreed_value || 0;
-                document.getElementById('editDescription').value = data.description || '';
-                openEditModal();
-            }
+            const { data, error } = await sb.select('service_requests', `select=*&id=eq.${id}&limit=1`);
+            if (error || !data || !data.length) { showToast('Error loading request', 'error'); return; }
+            const r = data[0];
+            document.getElementById('editRequestId').value    = r.id;
+            document.getElementById('editFullName').value     = r.full_name || '';
+            document.getElementById('editPhone').value        = r.phone || '';
+            document.getElementById('editEmail').value        = r.email || '';
+            document.getElementById('editAddress').value      = r.address || '';
+            document.getElementById('editServiceType').value  = r.service_type || '';
+            document.getElementById('editBedrooms').value     = r.bedrooms || 0;
+            document.getElementById('editBathrooms').value    = r.bathrooms || 0;
+            document.getElementById('editShowerBoxCount').value = r.shower_box_count || 0;
+            document.getElementById('editHasPets').value      = r.has_pets ? 'true' : 'false';
+            document.getElementById('editPetCount').value     = r.pet_count || 0;
+            document.getElementById('editHasChildren').value  = r.has_children ? 'true' : 'false';
+            document.getElementById('editChildrenCount').value= r.children_count || 0;
+            document.getElementById('editCleaningDate').value = (r.cleaning_date||'').split('T')[0];
+            document.getElementById('editCleaningTime').value = r.cleaning_time || '';
+            document.getElementById('editStatus').value       = r.status || 'pending';
+            document.getElementById('editAgreedValue').value  = r.agreed_value || 0;
+            document.getElementById('editDescription').value  = r.description || '';
+            openEditModal();
         }
 
         async function deleteServiceRequest(id) {
-            if (confirm('Delete this request? This cannot be undone.')) {
-                const { error } = await supabaseClient.from('service_requests').delete().eq('id', id);
-                if (!error) { loadServiceRequests(currentPage); loadStats(); showToast('Deleted', 'success'); }
-                else showToast('Error: ' + error.message, 'error');
-            }
+            if (!confirm('Delete this request? Cannot be undone.')) return;
+            const { error } = await sb.delete('service_requests', { id });
+            if (!error) { loadServiceRequests(currentPage); loadStats(); showToast('Deleted', 'success'); }
+            else showToast('Error: ' + (error.message || JSON.stringify(error)), 'error');
         }
 
-        function openEditModal() { document.getElementById('editModal').style.display = 'flex'; }
+        function openEditModal()  { document.getElementById('editModal').style.display = 'flex'; }
         function closeEditModal() { document.getElementById('editModal').style.display = 'none'; }
 
-        function exportToExcel() { showToast('Export functionality coming soon!', 'info'); }
-
         // ============================================================
-        // TOAST
+        // UTILITIES
         // ============================================================
         function showToast(msg, type) {
-            const colors = { success: '#00c853', error: '#ff6b6b', info: '#2a6eff', warning: '#ff9800' };
-            const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle', warning: 'fa-exclamation-triangle' };
+            const colors = { success:'#00c853', error:'#ff6b6b', info:'#2a6eff', warning:'#ff9800' };
+            const icons  = { success:'fa-check-circle', error:'fa-exclamation-circle', info:'fa-info-circle', warning:'fa-exclamation-triangle' };
             const toast = document.createElement('div');
             toast.className = 'toast';
             toast.style.borderLeftColor = colors[type] || '#2a6eff';
-            toast.innerHTML = `<i class="fas ${icons[type] || 'fa-info-circle'}" style="color:${colors[type] || '#2a6eff'};"></i> ${msg}`;
+            toast.innerHTML = `<i class="fas ${icons[type]||'fa-info-circle'}" style="color:${colors[type]||'#2a6eff'}"></i> ${msg}`;
             document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3500);
+            setTimeout(() => toast.remove(), 4000);
         }
 
         function debounce(fn, delay) {
