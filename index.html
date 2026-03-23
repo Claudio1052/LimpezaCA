@@ -99,11 +99,19 @@
         .nav-links a:hover, .nav-links a.active { color: var(--primary-color); background-color: var(--gray-100); }
         .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; background: none; border: none; padding: 10px; border-radius: var(--border-radius); z-index: 1001; }
 
-        .hero { position: relative; color: white; padding: clamp(60px, 12vh, 100px) 0; overflow: hidden; text-align: center; }
+        .hero { position: relative; color: white; padding: clamp(60px, 12vh, 100px) 0; overflow: hidden; text-align: center; min-height: 520px; }
         .hero-video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
-        .hero-video { width: 100%; height: 100%; object-fit: cover; }
-        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 100%); z-index: 2; }
+        .hero-video { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 100%); z-index: 2; }
         .hero-content { max-width: 800px; margin: 0 auto; position: relative; z-index: 3; }
+        @media (max-width: 768px) {
+            .hero { min-height: 420px; padding: clamp(40px, 10vh, 80px) 0; }
+            .hero-video { object-position: 60% top; }
+        }
+        @media (max-width: 480px) {
+            .hero { min-height: 360px; }
+            .hero-video { object-position: 65% top; }
+        }
         .hero h1 { color: white; font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1rem; }
         .hero h1 span { color: #ffd700; }
         .hero p { color: rgba(255,255,255,0.95); font-size: 1.1rem; margin-bottom: 2rem; }
@@ -436,6 +444,30 @@
             .carousel-item .carousel-icon { width: 140px; height: 140px; }
         }
 
+        /* Service Detail Pages */
+        .service-page { display: none; }
+        .service-detail-hero { background: linear-gradient(135deg, #1a2a4f, #0f1a33); padding: 70px 0; text-align: center; color: white; }
+        .service-detail-hero h1 { color: white; font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 15px; }
+        .service-detail-hero h1 span { color: #ffd700; }
+        .service-detail-hero p { color: rgba(255,255,255,0.9); font-size: 1.1rem; max-width: 700px; margin: 0 auto 25px; }
+        .service-detail-body { padding: 60px 0; background: #f8fafc; }
+        .service-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; margin-bottom: 50px; }
+        .service-detail-grid img { width: 100%; border-radius: var(--border-radius-lg); box-shadow: var(--shadow-lg); object-fit: cover; max-height: 400px; }
+        .service-detail-content h2 { font-size: 1.8rem; margin-bottom: 15px; color: var(--primary-color); }
+        .service-detail-content p { color: var(--gray-600); line-height: 1.8; margin-bottom: 15px; }
+        .service-includes { background: white; border-radius: var(--border-radius-lg); padding: 30px; margin-bottom: 40px; box-shadow: var(--shadow-md); }
+        .service-includes h3 { color: var(--primary-color); margin-bottom: 20px; font-size: 1.3rem; }
+        .service-includes ul { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .service-includes ul li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.97rem; color: var(--gray-800); }
+        .service-includes ul li i { color: var(--secondary-color); margin-top: 2px; flex-shrink: 0; }
+        .service-cta-box { background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; border-radius: var(--border-radius-lg); padding: 40px; text-align: center; margin-top: 30px; }
+        .service-cta-box h3 { color: white; font-size: 1.6rem; margin-bottom: 10px; }
+        .service-cta-box p { color: rgba(255,255,255,0.9); margin-bottom: 25px; }
+        @media (max-width: 768px) {
+            .service-detail-grid { grid-template-columns: 1fr; }
+            .service-includes ul { grid-template-columns: 1fr; }
+        }
+
         .text-center { text-align: center; }
         .mt-20 { margin-top: 20px; }
         .mb-20 { margin-bottom: 20px; }
@@ -544,13 +576,13 @@
                 <div class="carousel-container">
                     <div class="carousel-arrow left" onclick="scrollCarousel(-1)"><i class="fas fa-chevron-left"></i></div>
                     <div class="services-carousel" id="servicesCarousel">
-                        <div class="carousel-item"><div class="carousel-icon"><img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Move%20in-%20move%20out.jpeg" alt="Move In/Out"></div><h3>Move In/Out</h3><p>Professional move-in and move-out cleaning with deposit guarantee.</p></div>
-                        <div class="carousel-item"><div class="carousel-icon"><img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/post-construction.png" alt="Post-Construction"></div><h3>Post-Construction</h3><p>Detailed cleaning after construction or renovation.</p></div>
-                        <div class="carousel-item"><div class="carousel-icon"><img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/limpeza1.jpg" alt="Commercial"></div><h3>Commercial</h3><p>Tailored cleaning for offices and businesses.</p></div>
-                        <div class="carousel-item"><div class="carousel-icon"><img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/limpeza2.jpg" alt="Worship"></div><h3>Worship Facility</h3><p>Respectful cleaning for worship spaces.</p></div>
-                        <div class="carousel-item"><div class="carousel-icon"><img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/limpeza5.jpg" alt="Residential"></div><h3>Residential</h3><p>High-quality home cleaning services.</p></div>
-                        <div class="carousel-item"><div class="carousel-icon"><img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/carpet%20cleaning.png" alt="Carpet"></div><h3>Carpet Cleaning</h3><p>Deep clean with professional equipment.</p></div>
-                        <div class="carousel-item"><div class="carousel-icon"><img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/RV%20cleaning.jpg.jpeg" alt="RV"></div><h3>RV Cleaning</h3><p>Detailed interior RV cleaning.</p></div>
+                        <div class="carousel-item" onclick="showServicePage('move')" style="cursor:pointer"><div class="carousel-icon"><img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Move%20in-%20move%20out.jpeg" alt="Move In/Out"></div><h3>Move In/Out</h3><p>Professional move-in and move-out cleaning with deposit guarantee.</p></div>
+                        <div class="carousel-item" onclick="showServicePage('construction')" style="cursor:pointer"><div class="carousel-icon"><img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/post-construction.png" alt="Post-Construction"></div><h3>Post-Construction</h3><p>Detailed cleaning after construction or renovation.</p></div>
+                        <div class="carousel-item" onclick="showServicePage('commercial')" style="cursor:pointer"><div class="carousel-icon"><img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/limpeza1.jpg" alt="Commercial"></div><h3>Commercial</h3><p>Tailored cleaning for offices and businesses.</p></div>
+                        <div class="carousel-item" onclick="showServicePage('church')" style="cursor:pointer"><div class="carousel-icon"><img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/limpeza2.jpg" alt="Worship"></div><h3>Worship Facility</h3><p>Respectful cleaning for worship spaces.</p></div>
+                        <div class="carousel-item" onclick="showServicePage('residential')" style="cursor:pointer"><div class="carousel-icon"><img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/limpeza5.jpg" alt="Residential"></div><h3>Residential</h3><p>High-quality home cleaning services.</p></div>
+                        <div class="carousel-item" onclick="showCarpetPage()" style="cursor:pointer"><div class="carousel-icon"><img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/carpet%20cleaning.png" alt="Carpet"></div><h3>Carpet Cleaning</h3><p>Deep clean with professional equipment.</p></div>
+                        <div class="carousel-item" onclick="showServicePage('rv')" style="cursor:pointer"><div class="carousel-icon"><img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/RV%20cleaning.jpg.jpeg" alt="RV"></div><h3>RV Cleaning</h3><p>Detailed interior RV cleaning.</p></div>
                     </div>
                     <div class="carousel-arrow right" onclick="scrollCarousel(1)"><i class="fas fa-chevron-right"></i></div>
                 </div>
@@ -566,10 +598,269 @@
                     <p>We serve Calgary, Chestermere, Airdrie, and Okotoks with reliable, high-quality cleaning services.</p>
                     <div class="contact-info">
                         <p><i class="fas fa-phone"></i> <a href="tel:5192806261">519-280-6261</a></p>
-                        <p><i class="fas fa-envelope"></i> <a href="mailto:riocleaningyyc@gmail.com">riocleaningyyc@gmail.com</a></p>
+                        <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection#f183989e929d94909f989f96888892b1969c90989ddf929e9c"><span class="__cf_email__" data-cfemail="087a61676b646d696661666f71716b486f65696164266b6765">[email&#160;protected]</span></a></p>
                         <p><i class="fab fa-instagram"></i> <a href="https://www.instagram.com/riocleaningyyc" target="_blank">@riocleaningyyc</a></p>
                         <p><i class="fas fa-map-marker-alt"></i> Calgary, Chestermere, Airdrie, Okotoks</p>
                     </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ===================== SERVICE DETAIL PAGES ===================== -->
+    <!-- Move In/Out -->
+    <div id="servicePage-move" class="service-page">
+        <section class="service-detail-hero">
+            <div class="container">
+                <div onclick="showHomePage()" style="display:inline-flex;align-items:center;gap:8px;color:white;font-weight:600;margin-bottom:20px;cursor:pointer;"><i class="fas fa-arrow-left"></i> Back to Home</div>
+                <h1>Move In / <span>Move Out Cleaning</span></h1>
+                <p>Protect your security deposit and leave your old place spotless — or arrive to a perfectly clean new home. We handle it all.</p>
+                <button class="btn btn-primary" onclick="showScheduleFormWithService('move')" style="font-size:1.1rem;padding:14px 36px;"><i class="fas fa-calendar-check"></i> Get a Free Quote</button>
+            </div>
+        </section>
+        <section class="service-detail-body">
+            <div class="container">
+                <div class="service-detail-grid">
+                    <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Move%20in-%20move%20out.jpeg" alt="Move In/Out Cleaning">
+                    <div class="service-detail-content">
+                        <h2>Your Move, Stress-Free</h2>
+                        <p>Moving is already stressful enough — leave the cleaning to us. Our Move In/Out service is one of our most thorough offerings, designed to meet landlord and property manager standards so you get your full deposit back.</p>
+                        <p>Whether you're moving into a new place and want it clean before your belongings arrive, or leaving and need a professional clean for inspection, our team covers every detail.</p>
+                        <p>We're experienced with Calgary rental requirements and understand what landlords look for during move-out inspections.</p>
+                    </div>
+                </div>
+                <div class="service-includes">
+                    <h3><i class="fas fa-check-circle" style="color:var(--secondary-color);margin-right:8px;"></i> What's Included</h3>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Full kitchen deep clean (inside appliances, cabinets, counters)</li>
+                        <li><i class="fas fa-check"></i> Bathrooms scrubbed top to bottom</li>
+                        <li><i class="fas fa-check"></i> All bedrooms vacuumed and wiped</li>
+                        <li><i class="fas fa-check"></i> Inside all closets and storage areas</li>
+                        <li><i class="fas fa-check"></i> Walls, light switches and outlets wiped</li>
+                        <li><i class="fas fa-check"></i> Baseboards, window sills, ledges</li>
+                        <li><i class="fas fa-check"></i> Inside oven, fridge, and microwave</li>
+                        <li><i class="fas fa-check"></i> Floors mopped or vacuumed throughout</li>
+                    </ul>
+                </div>
+                <div class="service-cta-box">
+                    <h3>Ready to Book Your Move?</h3>
+                    <p>We respond within 24 hours and offer flexible scheduling to fit your move date.</p>
+                    <button class="btn" style="background:white;color:var(--primary-color);font-weight:700;font-size:1.1rem;padding:14px 40px;" onclick="showScheduleFormWithService('move')"><i class="fas fa-calendar-check"></i> Schedule Now</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Post-Construction -->
+    <div id="servicePage-construction" class="service-page">
+        <section class="service-detail-hero">
+            <div class="container">
+                <div onclick="showHomePage()" style="display:inline-flex;align-items:center;gap:8px;color:white;font-weight:600;margin-bottom:20px;cursor:pointer;"><i class="fas fa-arrow-left"></i> Back to Home</div>
+                <h1>Post-<span>Construction Cleaning</span></h1>
+                <p>After the builders leave, we come in. We remove dust, debris, and residues so your new or renovated space is truly ready to enjoy.</p>
+                <button class="btn btn-primary" onclick="showScheduleFormWithService('construction')" style="font-size:1.1rem;padding:14px 36px;"><i class="fas fa-calendar-check"></i> Get a Free Quote</button>
+            </div>
+        </section>
+        <section class="service-detail-body">
+            <div class="container">
+                <div class="service-detail-grid">
+                    <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/post-construction.png" alt="Post-Construction Cleaning">
+                    <div class="service-detail-content">
+                        <h2>From Construction Site to Clean Space</h2>
+                        <p>Post-construction cleaning is a specialized service that requires the right techniques and products. Drywall dust, adhesive residue, paint splatter, and construction debris require more than a regular clean.</p>
+                        <p>Our team is trained to safely remove all construction byproducts from every surface without damaging new finishes, floors, or fixtures.</p>
+                        <p>We serve both residential renovations and commercial construction projects across Calgary and the surrounding areas.</p>
+                    </div>
+                </div>
+                <div class="service-includes">
+                    <h3><i class="fas fa-check-circle" style="color:var(--secondary-color);margin-right:8px;"></i> What's Included</h3>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Removal of drywall dust and debris</li>
+                        <li><i class="fas fa-check"></i> Paint splatter cleaned from surfaces</li>
+                        <li><i class="fas fa-check"></i> All windows cleaned inside and out</li>
+                        <li><i class="fas fa-check"></i> New fixtures and appliances wiped and polished</li>
+                        <li><i class="fas fa-check"></i> Floors swept, vacuumed, and mopped</li>
+                        <li><i class="fas fa-check"></i> Cabinetry and countertops cleaned</li>
+                        <li><i class="fas fa-check"></i> Vents and ducts wiped of construction dust</li>
+                        <li><i class="fas fa-check"></i> Final touch-up and walkthrough</li>
+                    </ul>
+                </div>
+                <div class="service-cta-box">
+                    <h3>Let's Get Your Space Move-In Ready</h3>
+                    <p>Contact us for a custom quote based on the size and scope of your project.</p>
+                    <button class="btn" style="background:white;color:var(--primary-color);font-weight:700;font-size:1.1rem;padding:14px 40px;" onclick="showScheduleFormWithService('construction')"><i class="fas fa-calendar-check"></i> Schedule Now</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Commercial -->
+    <div id="servicePage-commercial" class="service-page">
+        <section class="service-detail-hero">
+            <div class="container">
+                <div onclick="showHomePage()" style="display:inline-flex;align-items:center;gap:8px;color:white;font-weight:600;margin-bottom:20px;cursor:pointer;"><i class="fas fa-arrow-left"></i> Back to Home</div>
+                <h1>Commercial <span>Cleaning Services</span></h1>
+                <p>A clean workspace boosts productivity, makes a great first impression, and shows your team you care. We keep your business spotless.</p>
+                <button class="btn btn-primary" onclick="showScheduleFormWithService('commercial')" style="font-size:1.1rem;padding:14px 36px;"><i class="fas fa-calendar-check"></i> Get a Free Quote</button>
+            </div>
+        </section>
+        <section class="service-detail-body">
+            <div class="container">
+                <div class="service-detail-grid">
+                    <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/limpeza1.jpg" alt="Commercial Cleaning">
+                    <div class="service-detail-content">
+                        <h2>Tailored for Your Business</h2>
+                        <p>Every business is different. We work with offices, retail spaces, medical clinics, salons, and more — creating a custom cleaning plan that fits your schedule and budget.</p>
+                        <p>We offer one-time deep cleans, recurring weekly or bi-weekly service, and after-hours scheduling to minimize disruption to your operations.</p>
+                        <p>Our team is insured, professional, and background-checked — so you can trust us with your space even outside business hours.</p>
+                    </div>
+                </div>
+                <div class="service-includes">
+                    <h3><i class="fas fa-check-circle" style="color:var(--secondary-color);margin-right:8px;"></i> What's Included</h3>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Offices and workstations cleaned and sanitized</li>
+                        <li><i class="fas fa-check"></i> Restrooms disinfected and restocked</li>
+                        <li><i class="fas fa-check"></i> Kitchen and breakroom areas cleaned</li>
+                        <li><i class="fas fa-check"></i> Reception and lobby polished</li>
+                        <li><i class="fas fa-check"></i> Trash removal and liner replacement</li>
+                        <li><i class="fas fa-check"></i> Vacuuming and mopping all floors</li>
+                        <li><i class="fas fa-check"></i> Glass doors and partition cleaning</li>
+                        <li><i class="fas fa-check"></i> Flexible scheduling (before/after hours)</li>
+                    </ul>
+                </div>
+                <div class="service-cta-box">
+                    <h3>Keep Your Business Looking Its Best</h3>
+                    <p>We'll create a custom cleaning plan for your space and schedule.</p>
+                    <button class="btn" style="background:white;color:var(--primary-color);font-weight:700;font-size:1.1rem;padding:14px 40px;" onclick="showScheduleFormWithService('commercial')"><i class="fas fa-calendar-check"></i> Request a Quote</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Church / Worship Facility -->
+    <div id="servicePage-church" class="service-page">
+        <section class="service-detail-hero">
+            <div class="container">
+                <div onclick="showHomePage()" style="display:inline-flex;align-items:center;gap:8px;color:white;font-weight:600;margin-bottom:20px;cursor:pointer;"><i class="fas fa-arrow-left"></i> Back to Home</div>
+                <h1>Worship Facility <span>Cleaning</span></h1>
+                <p>We treat worship spaces with the care and respect they deserve — delivering a thorough, professional clean for your congregation.</p>
+                <button class="btn btn-primary" onclick="showScheduleFormWithService('church')" style="font-size:1.1rem;padding:14px 36px;"><i class="fas fa-calendar-check"></i> Get a Free Quote</button>
+            </div>
+        </section>
+        <section class="service-detail-body">
+            <div class="container">
+                <div class="service-detail-grid">
+                    <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/limpeza2.jpg" alt="Worship Facility Cleaning">
+                    <div class="service-detail-content">
+                        <h2>A Clean Space for Community</h2>
+                        <p>Churches, mosques, temples, and other places of worship serve entire communities. We understand the importance of maintaining a clean, welcoming, and respectful environment for your members.</p>
+                        <p>Our team works with your schedule — before or after services, weekly, bi-weekly, or for special events — to ensure your space always looks its best.</p>
+                        <p>We're experienced with large common areas, multi-use rooms, and high-traffic entry ways.</p>
+                    </div>
+                </div>
+                <div class="service-includes">
+                    <h3><i class="fas fa-check-circle" style="color:var(--secondary-color);margin-right:8px;"></i> What's Included</h3>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Sanctuary and main hall cleaned</li>
+                        <li><i class="fas fa-check"></i> Pews, chairs, and kneelers wiped</li>
+                        <li><i class="fas fa-check"></i> All floors vacuumed and mopped</li>
+                        <li><i class="fas fa-check"></i> Restrooms deep cleaned and sanitized</li>
+                        <li><i class="fas fa-check"></i> Entry ways, lobbies, and hallways cleaned</li>
+                        <li><i class="fas fa-check"></i> Fellowship hall and meeting rooms</li>
+                        <li><i class="fas fa-check"></i> Kitchen/kitchenette areas cleaned</li>
+                        <li><i class="fas fa-check"></i> Trash removal and sanitizing high-touch surfaces</li>
+                    </ul>
+                </div>
+                <div class="service-cta-box">
+                    <h3>Serve Your Community in a Clean Space</h3>
+                    <p>We'll work around your service schedule. Contact us to set up a recurring plan.</p>
+                    <button class="btn" style="background:white;color:var(--primary-color);font-weight:700;font-size:1.1rem;padding:14px 40px;" onclick="showScheduleFormWithService('church')"><i class="fas fa-calendar-check"></i> Schedule Now</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Residential -->
+    <div id="servicePage-residential" class="service-page">
+        <section class="service-detail-hero">
+            <div class="container">
+                <div onclick="showHomePage()" style="display:inline-flex;align-items:center;gap:8px;color:white;font-weight:600;margin-bottom:20px;cursor:pointer;"><i class="fas fa-arrow-left"></i> Back to Home</div>
+                <h1>Residential <span>Cleaning Services</span></h1>
+                <p>Your home is your sanctuary. We deliver a thorough, detail-oriented clean so you can relax in a truly spotless space.</p>
+                <button class="btn btn-primary" onclick="showScheduleFormWithService('residential')" style="font-size:1.1rem;padding:14px 36px;"><i class="fas fa-calendar-check"></i> Get a Free Quote</button>
+            </div>
+        </section>
+        <section class="service-detail-body">
+            <div class="container">
+                <div class="service-detail-grid">
+                    <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/limpeza5.jpg" alt="Residential Cleaning">
+                    <div class="service-detail-content">
+                        <h2>Real Cleaning, Not Just a Wipe-Down</h2>
+                        <p>At Rio Cleaning, we don't believe a quick surface wipe is enough. Our residential service goes deep — cleaning behind appliances, inside cabinets, under furniture, and in every corner that regular cleaning misses.</p>
+                        <p>We offer one-time deep cleans and recurring service (weekly, bi-weekly, monthly). Our team brings all supplies and equipment — you don't need to provide anything.</p>
+                        <p>All our cleaners are carefully vetted, professional, and insured for your peace of mind.</p>
+                    </div>
+                </div>
+                <div class="service-includes">
+                    <h3><i class="fas fa-check-circle" style="color:var(--secondary-color);margin-right:8px;"></i> What's Included</h3>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Kitchen deep clean including appliances</li>
+                        <li><i class="fas fa-check"></i> Bathrooms scrubbed and disinfected</li>
+                        <li><i class="fas fa-check"></i> All bedrooms vacuumed, dusted, and wiped</li>
+                        <li><i class="fas fa-check"></i> Living areas cleaned top to bottom</li>
+                        <li><i class="fas fa-check"></i> Inside microwave, oven, and fridge</li>
+                        <li><i class="fas fa-check"></i> Baseboards, window sills, and ledges</li>
+                        <li><i class="fas fa-check"></i> All floors mopped or vacuumed</li>
+                        <li><i class="fas fa-check"></i> Light fixtures, switches, and door handles</li>
+                    </ul>
+                </div>
+                <div class="service-cta-box">
+                    <h3>Ready for a Truly Clean Home?</h3>
+                    <p>Schedule your first clean today — one-time or recurring service available.</p>
+                    <button class="btn" style="background:white;color:var(--primary-color);font-weight:700;font-size:1.1rem;padding:14px 40px;" onclick="showScheduleFormWithService('residential')"><i class="fas fa-calendar-check"></i> Book Now</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- RV Cleaning -->
+    <div id="servicePage-rv" class="service-page">
+        <section class="service-detail-hero">
+            <div class="container">
+                <div onclick="showHomePage()" style="display:inline-flex;align-items:center;gap:8px;color:white;font-weight:600;margin-bottom:20px;cursor:pointer;"><i class="fas fa-arrow-left"></i> Back to Home</div>
+                <h1>RV <span>Interior Cleaning</span></h1>
+                <p>Get your recreational vehicle clean and fresh before your next adventure. We do a thorough interior detail — no corner left untouched.</p>
+                <button class="btn btn-primary" onclick="showScheduleFormWithService('rv')" style="font-size:1.1rem;padding:14px 36px;"><i class="fas fa-calendar-check"></i> Get a Free Quote</button>
+            </div>
+        </section>
+        <section class="service-detail-body">
+            <div class="container">
+                <div class="service-detail-grid">
+                    <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/RV%20cleaning.jpg.jpeg" alt="RV Cleaning">
+                    <div class="service-detail-content">
+                        <h2>Ready for the Road</h2>
+                        <p>Your RV is a home on wheels, and it deserves the same level of attention as any home. Whether you're preparing for a trip, returning from a long haul, or getting ready for storage, our RV interior cleaning service will leave it fresh and spotless.</p>
+                        <p>We clean all interior spaces including the kitchen, bathroom, sleeping areas, living space, and storage compartments — with attention to detail that goes beyond a basic wipe-down.</p>
+                        <p>We serve the Calgary area and can come to your location or campground. Flexible scheduling available.</p>
+                    </div>
+                </div>
+                <div class="service-includes">
+                    <h3><i class="fas fa-check-circle" style="color:var(--secondary-color);margin-right:8px;"></i> What's Included</h3>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Full interior vacuum and sweep</li>
+                        <li><i class="fas fa-check"></i> Kitchen area deep cleaned</li>
+                        <li><i class="fas fa-check"></i> Bathroom/toilet sanitized</li>
+                        <li><i class="fas fa-check"></i> Sleeping area and mattress surfaces cleaned</li>
+                        <li><i class="fas fa-check"></i> Cabinets and storage areas wiped inside</li>
+                        <li><i class="fas fa-check"></i> Upholstery and seating cleaned</li>
+                        <li><i class="fas fa-check"></i> Windows and mirrors cleaned</li>
+                        <li><i class="fas fa-check"></i> Floors mopped throughout</li>
+                    </ul>
+                </div>
+                <div class="service-cta-box">
+                    <h3>Your Next Adventure Starts with a Clean RV</h3>
+                    <p>Contact us to schedule your RV detail at your convenience.</p>
+                    <button class="btn" style="background:white;color:var(--primary-color);font-weight:700;font-size:1.1rem;padding:14px 40px;" onclick="showScheduleFormWithService('rv')"><i class="fas fa-calendar-check"></i> Book Your RV Clean</button>
                 </div>
             </div>
         </section>
@@ -612,9 +903,6 @@
                     <div class="gallery-card featured">
                         <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Ramon_foto.png" alt="Ramon - Satisfied Client" class="gallery-image">
                         <div class="gallery-content">
-                            <span class="gallery-badge"><i class="fas fa-star"></i> CUSTOMER SPOTLIGHT</span>
-                            <h3>Ramon's experience</h3>
-                            <p>"I was impressed with the results! My carpets look like new. The team was professional, punctual, and paid attention to every detail. I highly recommend Rio Cleaning for anyone looking for quality carpet care."</p>
                             <div class="gallery-stats">
                                 <div class="stat-item"><i class="fas fa-calendar-check"></i> 5+ year customer</div>
                                 <div class="stat-item"><i class="fas fa-thumbs-up"></i> 100% satisfied</div>
@@ -736,40 +1024,50 @@
                                         <option value="other">Other</option>
                                     </select>
                                 </div>
-                                <div class="form-group conditional-field residential-fields" style="display:none">
+                                <!-- Bedrooms: residential, move, construction, commercial (not church, carpet, rv) -->
+                                <div class="form-group conditional-field field-bedrooms" style="display:none">
                                     <label><i class="fas fa-bed"></i> Bedrooms</label>
                                     <select id="bedrooms" onchange="calculateEstimatedPrice()"><option value="0">None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select>
                                 </div>
-                                <div class="form-group conditional-field residential-fields" style="display:none">
+                                <!-- Bathrooms: residential, move, construction, commercial (not church, carpet, rv) -->
+                                <div class="form-group conditional-field field-bathrooms" style="display:none">
                                     <label><i class="fas fa-bath"></i> Bathrooms</label>
                                     <select id="bathrooms" onchange="calculateEstimatedPrice()"><option value="0">None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select>
                                 </div>
-                                <div class="form-group conditional-field residential-fields" style="display:none">
+                                <!-- Shower Box: residential only -->
+                                <div class="form-group conditional-field field-shower" style="display:none">
                                     <label><i class="fas fa-shower"></i> Shower Box</label>
                                     <select id="showerBoxCount" onchange="calculateEstimatedPrice()"><option value="0">None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4+</option></select>
                                 </div>
-                                <div class="form-group conditional-field carpet-field" style="display:none; grid-column: span 2;">
+                                <!-- Carpet dimensions -->
+                                <div class="form-group conditional-field field-carpet" style="display:none; grid-column: span 2;">
                                     <label><i class="fas fa-ruler"></i> Carpet Dimensions (sq ft)</label>
                                     <div class="dimension-group">
                                         <input type="number" id="carpetLength" placeholder="Length (ft)" min="0" step="0.1" onchange="calculateEstimatedPrice()">
                                         <input type="number" id="carpetWidth" placeholder="Width (ft)" min="0" step="0.1" onchange="calculateEstimatedPrice()">
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label><i class="fas fa-paw"></i> Pets?</label>
-                                    <select id="hasPets" onchange="togglePetCount(); calculateEstimatedPrice();"><option value="false">No</option><option value="true">Yes</option></select>
-                                </div>
-                                <div class="form-group" id="petCountGroup" style="display:none">
-                                    <label><i class="fas fa-dog"></i> How many?</label>
-                                    <input type="number" id="petCount" min="0" value="0" onchange="calculateEstimatedPrice()">
-                                </div>
-                                <div class="form-group">
-                                    <label><i class="fas fa-child"></i> Children?</label>
-                                    <select id="hasChildren" onchange="toggleChildrenCount(); calculateEstimatedPrice();"><option value="false">No</option><option value="true">Yes</option></select>
-                                </div>
-                                <div class="form-group" id="childrenCountGroup" style="display:none">
-                                    <label><i class="fas fa-baby"></i> How many?</label>
-                                    <input type="number" id="childrenCount" min="0" value="0" onchange="calculateEstimatedPrice()">
+                                <!-- Children/Pets combined: residential, move, church only -->
+                                <div class="form-group conditional-field field-children-pets" style="display:none; grid-column: span 2;">
+                                    <label><i class="fas fa-users"></i> Children / Pets?</label>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 8px;">
+                                        <div>
+                                            <label style="font-weight:500; font-size:0.85rem; margin-bottom:5px; display:block;"><i class="fas fa-child" style="color:var(--primary-color)"></i> Children?</label>
+                                            <select id="hasChildren" onchange="toggleChildrenCount(); calculateEstimatedPrice();"><option value="false">No</option><option value="true">Yes</option></select>
+                                            <div id="childrenCountGroup" style="display:none; margin-top:8px;">
+                                                <label style="font-weight:500; font-size:0.85rem; margin-bottom:5px; display:block;"><i class="fas fa-baby" style="color:var(--primary-color)"></i> How many?</label>
+                                                <input type="number" id="childrenCount" min="0" value="0" onchange="calculateEstimatedPrice()">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label style="font-weight:500; font-size:0.85rem; margin-bottom:5px; display:block;"><i class="fas fa-paw" style="color:var(--primary-color)"></i> Pets?</label>
+                                            <select id="hasPets" onchange="togglePetCount(); calculateEstimatedPrice();"><option value="false">No</option><option value="true">Yes</option></select>
+                                            <div id="petCountGroup" style="display:none; margin-top:8px;">
+                                                <label style="font-weight:500; font-size:0.85rem; margin-bottom:5px; display:block;"><i class="fas fa-dog" style="color:var(--primary-color)"></i> How many?</label>
+                                                <input type="number" id="petCount" min="0" value="0" onchange="calculateEstimatedPrice()">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group"><label><i class="fas fa-calendar"></i> Date <span class="required">*</span></label><input type="text" id="cleaningDate" class="datepicker" required placeholder="Select date"></div>
                                 <div class="form-group">
@@ -1022,7 +1320,7 @@ ON CONFLICT DO NOTHING;</pre>
                 <div class="footer-contact">
                     <h4>Contact</h4>
                     <p><i class="fas fa-phone"></i> <a href="tel:5192806261">519-280-6261</a></p>
-                    <p><i class="fas fa-envelope"></i> <a href="mailto:riocleaningyyc@gmail.com">riocleaningyyc@gmail.com</a></p>
+                    <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection#ec9e85838f80898d8285828b95958fac8b818d8580c28f8381"><span class="__cf_email__" data-cfemail="2a58434549464f4b4443444d5353496a4d474b434604494547">[email&#160;protected]</span></a></p>
                     <p><i class="fab fa-instagram"></i> <a href="https://www.instagram.com/riocleaningyyc" target="_blank">@riocleaningyyc</a></p>
                     <p><i class="fas fa-map-marker-alt"></i> Calgary, Chestermere, Airdrie, Okotoks</p>
                 </div>
@@ -1044,7 +1342,7 @@ ON CONFLICT DO NOTHING;</pre>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script>
         // ============================================================
@@ -1421,10 +1719,30 @@ ON CONFLICT DO NOTHING;</pre>
         // ============================================================
         function updateConditionalFields() {
             const t = document.getElementById('serviceType').value;
-            const res = ['move','construction','commercial','church','residential'];
-            document.querySelectorAll('.residential-fields').forEach(f => f.style.display = res.includes(t) ? 'block' : 'none');
-            const cf = document.querySelector('.carpet-field');
-            if (cf) cf.style.display = t === 'carpet' ? 'block' : 'none';
+
+            // Define what each service shows
+            const showBedrooms     = ['move','construction','commercial','residential'].includes(t);
+            const showBathrooms    = ['move','construction','commercial','residential'].includes(t);
+            const showShower       = ['residential'].includes(t);
+            const showCarpet       = t === 'carpet';
+            const showChildrenPets = ['residential','move','church'].includes(t);
+
+            document.querySelectorAll('.field-bedrooms').forEach(f => f.style.display = showBedrooms ? 'block' : 'none');
+            document.querySelectorAll('.field-bathrooms').forEach(f => f.style.display = showBathrooms ? 'block' : 'none');
+            document.querySelectorAll('.field-shower').forEach(f => f.style.display = showShower ? 'block' : 'none');
+            document.querySelectorAll('.field-carpet').forEach(f => f.style.display = showCarpet ? 'block' : 'none');
+            document.querySelectorAll('.field-children-pets').forEach(f => f.style.display = showChildrenPets ? 'grid' : 'none');
+
+            // Reset hidden fields values when not shown
+            if (!showBedrooms) { const el = document.getElementById('bedrooms'); if (el) el.value = '0'; }
+            if (!showBathrooms) { const el = document.getElementById('bathrooms'); if (el) el.value = '0'; }
+            if (!showShower) { const el = document.getElementById('showerBoxCount'); if (el) el.value = '0'; }
+            if (!showChildrenPets) {
+                const hp = document.getElementById('hasPets'); if (hp) hp.value = 'false';
+                const hc = document.getElementById('hasChildren'); if (hc) hc.value = 'false';
+                document.getElementById('petCountGroup').style.display = 'none';
+                document.getElementById('childrenCountGroup').style.display = 'none';
+            }
         }
 
         function togglePetCount()      { document.getElementById('petCountGroup').style.display      = document.getElementById('hasPets').value === 'true' ? 'block' : 'none'; }
@@ -1483,58 +1801,77 @@ ON CONFLICT DO NOTHING;</pre>
             closeMobileMenu();
         }
 
-        function showHomePage() {
-            document.getElementById('mainContent').style.display = 'block';
+        function hideAllPages() {
+            document.getElementById('mainContent').style.display = 'none';
             document.getElementById('carpetPage').style.display = 'none';
             document.getElementById('scheduleFormContainer').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'none';
+            ['move','construction','commercial','church','residential','rv'].forEach(s => {
+                const el = document.getElementById('servicePage-' + s);
+                if (el) el.style.display = 'none';
+            });
+        }
+
+        function showServicePage(service) {
+            hideAllPages();
+            const el = document.getElementById('servicePage-' + service);
+            if (el) { el.style.display = 'block'; window.scrollTo(0,0); }
+            closeMobileMenu();
+        }
+
+        function showScheduleFormWithService(serviceValue) {
+            hideAllPages();
+            document.getElementById('scheduleFormContainer').style.display = 'block';
+            const serviceType = document.getElementById('serviceType');
+            if (serviceType) {
+                serviceType.value = serviceValue;
+                updateConditionalFields();
+                calculateEstimatedPrice();
+            }
+            setTimeout(initDatePicker, 100);
+            window.scrollTo(0,0);
+            closeMobileMenu();
+        }
+        function showHomePage() {
+            hideAllPages();
+            document.getElementById('mainContent').style.display = 'block';
             closeMobileMenu();
         }
 
         function showCarpetPage() {
-            document.getElementById('mainContent').style.display = 'none';
+            hideAllPages();
             document.getElementById('carpetPage').style.display = 'block';
-            document.getElementById('scheduleFormContainer').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'none';
+            window.scrollTo(0,0);
             closeMobileMenu();
         }
 
         function showScheduleForm() {
-            document.getElementById('mainContent').style.display = 'none';
-            document.getElementById('carpetPage').style.display = 'none';
+            hideAllPages();
             document.getElementById('scheduleFormContainer').style.display = 'block';
-            document.getElementById('adminPanel').style.display = 'none';
-            
-            // Reset form and set service type to empty
             const serviceType = document.getElementById('serviceType');
             if (serviceType) serviceType.value = '';
-            
+            updateConditionalFields();
             setTimeout(initDatePicker, 100);
+            window.scrollTo(0,0);
             closeMobileMenu();
         }
 
         function showScheduleFormWithCarpet() {
-            document.getElementById('mainContent').style.display = 'none';
-            document.getElementById('carpetPage').style.display = 'none';
+            hideAllPages();
             document.getElementById('scheduleFormContainer').style.display = 'block';
-            document.getElementById('adminPanel').style.display = 'none';
-            
-            // Set service type to carpet
             const serviceType = document.getElementById('serviceType');
             if (serviceType) {
                 serviceType.value = 'carpet';
                 updateConditionalFields();
                 calculateEstimatedPrice();
             }
-            
             setTimeout(initDatePicker, 100);
+            window.scrollTo(0,0);
             closeMobileMenu();
         }
 
         function showAdminPanel() {
-            document.getElementById('mainContent').style.display = 'none';
-            document.getElementById('carpetPage').style.display = 'none';
-            document.getElementById('scheduleFormContainer').style.display = 'none';
+            hideAllPages();
             document.getElementById('adminPanel').style.display = 'block';
             if (localStorage.getItem('adminLoggedIn') === 'true') {
                 document.getElementById('adminLogin').style.display = 'none';
@@ -1926,17 +2263,19 @@ INSERT INTO price_settings (base) VALUES (50);</span>`;
             toast.style.borderLeftColor = colors[type] || '#2a6eff';
             toast.innerHTML = `<i class="fas ${icons[type]||'fa-info-circle'}" style="color:${colors[type]||'#2a6eff'}"></i> ${msg}`;
             document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 4000);
+            setTimeout(function() {
+                toast.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
         }
 
-        function debounce(fn, delay) {
-            let t;
-            return function() { clearTimeout(t); t = setTimeout(() => fn.apply(this, arguments), delay); };
+        function showError(msg, el, btn) {
+            el.className = 'form-message error';
+            el.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + msg;
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit';
+            btn.disabled = false;
         }
 
-        window.onclick = function(e) {
-            if (e.target === document.getElementById('editModal')) closeEditModal();
-        };
     </script>
 </body>
 </html>
