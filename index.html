@@ -1328,6 +1328,8 @@
                     <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
                     <div style="display:flex; gap:10px; flex-wrap:wrap;">
                         <button id="testConnectionBtn" class="btn btn-warning"><i class="fas fa-vial"></i> Test Connection</button>
+                        <button class="btn btn-secondary" onclick="showSQLSetup()" title="Show SQL setup for Supabase"><i class="fas fa-database"></i> SQL Setup</button>
+                        <button class="btn btn-primary btn-small" onclick="copySQLToClipboard()" title="Copy full SQL to clipboard"><i class="fas fa-copy"></i> Copy SQL</button>
                         <button id="exportExcelBtn" class="btn btn-success"><i class="fas fa-file-excel"></i> Export</button>
                         <button class="btn btn-danger" onclick="logoutAdmin()"><i class="fas fa-sign-out-alt"></i> Logout</button>
                     </div>
@@ -1339,6 +1341,14 @@
                     <button class="btn btn-secondary btn-small" onclick="hideDebugPanel()">Hide Debug</button>
                 </div>
                 
+                <div id="schemaBanner" class="sql-info-box" style="display:none;margin-bottom:15px;padding:15px;">
+                    <h4 style="color:#ffd700;margin-bottom:8px"><i class="fas fa-exclamation-triangle"></i> Database Schema Outdated</h4>
+                    <p style="color:rgba(255,255,255,0.9);margin-bottom:10px">The Supabase table is missing columns. Run the SQL setup to fix this.</p>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap">
+                        <button class="btn btn-warning btn-small" onclick="copySQLToClipboard()"><i class="fas fa-copy"></i> Copy Full SQL</button>
+                        <button class="btn btn-secondary btn-small" onclick="document.getElementById('schemaBanner').style.display='none'"><i class="fas fa-times"></i> Dismiss</button>
+                    </div>
+                </div>
                 <div class="dashboard-tabs">
                     <div class="dashboard-tab active" onclick="switchAdminTab('requests')">Service Requests</div>
                     <div class="dashboard-tab" onclick="switchAdminTab('prices')">Price Settings</div>
@@ -1387,36 +1397,74 @@
                         <div id="sqlInfoBox" class="sql-info-box" style="display:none;">
                             <h4><i class="fas fa-database"></i> Database Setup Required</h4>
                             <p>The <strong>price_settings</strong> table was not found or cannot be accessed. Run this SQL in your <strong>Supabase → SQL Editor</strong>:</p>
-                            <pre>-- 1. Create the table
-CREATE TABLE IF NOT EXISTS price_settings (
-  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-  base numeric DEFAULT 50,
-  bedroom numeric DEFAULT 35,
-  bathroom numeric DEFAULT 40,
-  shower numeric DEFAULT 25,
-  carpet_sq_ft numeric DEFAULT 0.35,
-  carpet_min numeric DEFAULT 50,
-  move_base numeric DEFAULT 120,
-  move_bedroom numeric DEFAULT 35,
-  move_bathroom numeric DEFAULT 40,
-  construction_base numeric DEFAULT 150,
-  commercial_base numeric DEFAULT 100,
-  church_base numeric DEFAULT 120,
-  rv_medium numeric DEFAULT 200,
-  pet_fee numeric DEFAULT 10,
-  child_fee numeric DEFAULT 0,
-  updated_at timestamptz DEFAULT now()
+                            <div style="display:flex;gap:10px;margin-bottom:10px">
+                                <button class="btn btn-secondary btn-small" onclick="copySQLToClipboard()"><i class="fas fa-copy"></i> Copy Full SQL</button>
+                                <button class="btn btn-primary btn-small" onclick="document.getElementById('fullSqlBlock').style.display=document.getElementById('fullSqlBlock').style.display==='none'?'block':'none'"><i class="fas fa-code"></i> Show/Hide SQL</button>
+                            </div>
+                            <pre id="fullSqlBlock" style="display:none;max-height:400px;overflow-y:auto;font-size:0.78rem">-- Run this in Supabase SQL Editor
+-- Option A: FULL RESET (drops old table - loses data)
+DROP TABLE IF EXISTS public.service_requests CASCADE;
+
+CREATE TABLE public.service_requests (
+  id bigserial PRIMARY KEY,
+  full_name text NOT NULL, phone text NOT NULL,
+  email text NOT NULL, address text NOT NULL,
+  service_type text NOT NULL, cleaning_date date NOT NULL,
+  cleaning_time text NOT NULL, description text NOT NULL DEFAULT '',
+  status text NOT NULL DEFAULT 'pending',
+  agreed_value numeric(10,2) DEFAULT NULL,
+  estimated_value numeric(10,2) DEFAULT NULL,
+  carpet_length numeric(10,2) DEFAULT NULL,
+  carpet_width numeric(10,2) DEFAULT NULL,
+  move_bedrooms integer DEFAULT 0, move_bathrooms integer DEFAULT 0,
+  move_oven text DEFAULT 'no', move_fridge text DEFAULT 'no',
+  move_living_rooms integer DEFAULT 0, move_shower_glass integer DEFAULT 0,
+  move_pets_kids text DEFAULT '', move_sqft text DEFAULT '',
+  move_carpet text DEFAULT 'no', move_smoke text DEFAULT 'no',
+  res_bedrooms integer DEFAULT 0, res_bathrooms integer DEFAULT 0,
+  res_living_rooms integer DEFAULT 0, res_shower_glass integer DEFAULT 0,
+  res_pets_kids text DEFAULT '', res_sqft text DEFAULT '', res_smoke text DEFAULT 'no',
+  rv_length text DEFAULT '', rv_beds text DEFAULT '',
+  rv_bathrooms text DEFAULT '', rv_kitchen text DEFAULT 'yes',
+  rv_appliances text DEFAULT '', rv_last_cleaned text DEFAULT '',
+  rv_water text DEFAULT 'yes', rv_electricity text DEFAULT 'yes', rv_pets text DEFAULT 'no',
+  constr_type text DEFAULT '', constr_sqft text DEFAULT '',
+  constr_work_type text DEFAULT '', constr_completed text DEFAULT 'yes',
+  constr_level text DEFAULT '', constr_windows integer DEFAULT 0,
+  constr_bedrooms integer DEFAULT 0, constr_bathrooms integer DEFAULT 0,
+  constr_high_ceilings text DEFAULT 'no', constr_appliances text DEFAULT 'no',
+  constr_appliances_list text DEFAULT '', constr_garage text DEFAULT 'no',
+  constr_empty text DEFAULT 'yes',
+  church_bathrooms integer DEFAULT 0, church_kitchen text DEFAULT 'no',
+  church_carpet text DEFAULT 'no', church_sqft text DEFAULT '', church_offices integer DEFAULT 0,
+  comm_bathrooms integer DEFAULT 0, comm_kitchen text DEFAULT 'no',
+  comm_carpet text DEFAULT 'no', comm_sqft text DEFAULT '',
+  comm_offices text DEFAULT '0', comm_desks text DEFAULT '0',
+  bedrooms integer DEFAULT 0, bathrooms integer DEFAULT 0,
+  shower_box_count integer DEFAULT 0, has_pets boolean DEFAULT false,
+  pet_count integer DEFAULT 0, has_children boolean DEFAULT false,
+  children_count integer DEFAULT 0,
+  created_at timestamptz DEFAULT now(), updated_at timestamptz DEFAULT now()
 );
-
--- 2. Enable RLS and allow anonymous access
-ALTER TABLE price_settings ENABLE ROW LEVEL SECURITY;
-DROP POLICY IF EXISTS "anon_all_price" ON price_settings;
-CREATE POLICY "anon_all_price" ON price_settings
+ALTER TABLE public.service_requests ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "anon_all_service_requests" ON public.service_requests;
+CREATE POLICY "anon_all_service_requests" ON public.service_requests
   FOR ALL TO anon USING (true) WITH CHECK (true);
+CREATE INDEX IF NOT EXISTS idx_sr_status ON public.service_requests(status);
+CREATE INDEX IF NOT EXISTS idx_sr_created_at ON public.service_requests(created_at);
+CREATE INDEX IF NOT EXISTS idx_sr_cleaning_date ON public.service_requests(cleaning_date);
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$ BEGIN NEW.updated_at=now(); RETURN NEW; END; $$ language 'plpgsql';
+DROP TRIGGER IF EXISTS update_sr_updated_at ON public.service_requests;
+CREATE TRIGGER update_sr_updated_at BEFORE UPDATE ON public.service_requests
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
--- 3. Insert first row with defaults
-INSERT INTO price_settings (base) VALUES (50)
-ON CONFLICT DO NOTHING;</pre>
+-- Option B: KEEP DATA - just add new columns
+-- ALTER TABLE public.service_requests
+--   ADD COLUMN IF NOT EXISTS move_bedrooms integer DEFAULT 0,
+--   ADD COLUMN IF NOT EXISTS move_oven text DEFAULT 'no',
+--   ... (see the .sql file for complete ALTER TABLE)
+</pre>
                             <p style="margin-top:10px;">After running, click <strong>Reload from Database</strong> below.</p>
                         </div>
                         
@@ -2473,6 +2521,108 @@ BN: 722688363
             return function(...args) { clearTimeout(t); t = setTimeout(() => fn.apply(this,args), delay); };
         }
 
+
+        // ============================================================
+        // SQL COPY HELPER
+        // ============================================================
+        function copySQLToClipboard() {
+            const sql = `-- RIO CLEANING SERVICES CORP — Run in Supabase SQL Editor
+-- ============================================================
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$ BEGIN NEW.updated_at=now(); RETURN NEW; END; $$ language 'plpgsql';
+
+DROP TABLE IF EXISTS public.service_requests CASCADE;
+CREATE TABLE public.service_requests (
+  id bigserial PRIMARY KEY,
+  full_name text NOT NULL, phone text NOT NULL, email text NOT NULL,
+  address text NOT NULL, service_type text NOT NULL,
+  cleaning_date date NOT NULL, cleaning_time text NOT NULL,
+  description text NOT NULL DEFAULT '', status text NOT NULL DEFAULT 'pending',
+  agreed_value numeric(10,2) DEFAULT NULL, estimated_value numeric(10,2) DEFAULT NULL,
+  carpet_length numeric(10,2) DEFAULT NULL, carpet_width numeric(10,2) DEFAULT NULL,
+  move_bedrooms integer DEFAULT 0, move_bathrooms integer DEFAULT 0,
+  move_oven text DEFAULT 'no', move_fridge text DEFAULT 'no',
+  move_living_rooms integer DEFAULT 0, move_shower_glass integer DEFAULT 0,
+  move_pets_kids text DEFAULT '', move_sqft text DEFAULT '',
+  move_carpet text DEFAULT 'no', move_smoke text DEFAULT 'no',
+  res_bedrooms integer DEFAULT 0, res_bathrooms integer DEFAULT 0,
+  res_living_rooms integer DEFAULT 0, res_shower_glass integer DEFAULT 0,
+  res_pets_kids text DEFAULT '', res_sqft text DEFAULT '', res_smoke text DEFAULT 'no',
+  rv_length text DEFAULT '', rv_beds text DEFAULT '', rv_bathrooms text DEFAULT '',
+  rv_kitchen text DEFAULT 'yes', rv_appliances text DEFAULT '',
+  rv_last_cleaned text DEFAULT '', rv_water text DEFAULT 'yes',
+  rv_electricity text DEFAULT 'yes', rv_pets text DEFAULT 'no',
+  constr_type text DEFAULT '', constr_sqft text DEFAULT '',
+  constr_work_type text DEFAULT '', constr_completed text DEFAULT 'yes',
+  constr_level text DEFAULT '', constr_windows integer DEFAULT 0,
+  constr_bedrooms integer DEFAULT 0, constr_bathrooms integer DEFAULT 0,
+  constr_high_ceilings text DEFAULT 'no', constr_appliances text DEFAULT 'no',
+  constr_appliances_list text DEFAULT '', constr_garage text DEFAULT 'no',
+  constr_empty text DEFAULT 'yes',
+  church_bathrooms integer DEFAULT 0, church_kitchen text DEFAULT 'no',
+  church_carpet text DEFAULT 'no', church_sqft text DEFAULT '', church_offices integer DEFAULT 0,
+  comm_bathrooms integer DEFAULT 0, comm_kitchen text DEFAULT 'no',
+  comm_carpet text DEFAULT 'no', comm_sqft text DEFAULT '',
+  comm_offices text DEFAULT '0', comm_desks text DEFAULT '0',
+  bedrooms integer DEFAULT 0, bathrooms integer DEFAULT 0,
+  shower_box_count integer DEFAULT 0, has_pets boolean DEFAULT false,
+  pet_count integer DEFAULT 0, has_children boolean DEFAULT false,
+  children_count integer DEFAULT 0,
+  created_at timestamptz DEFAULT now(), updated_at timestamptz DEFAULT now()
+);
+ALTER TABLE public.service_requests ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "anon_all_service_requests" ON public.service_requests;
+CREATE POLICY "anon_all_service_requests" ON public.service_requests
+  FOR ALL TO anon USING (true) WITH CHECK (true);
+CREATE INDEX IF NOT EXISTS idx_sr_status ON public.service_requests(status);
+CREATE INDEX IF NOT EXISTS idx_sr_created_at ON public.service_requests(created_at);
+CREATE INDEX IF NOT EXISTS idx_sr_cleaning_date ON public.service_requests(cleaning_date);
+DROP TRIGGER IF EXISTS update_sr_updated_at ON public.service_requests;
+CREATE TRIGGER update_sr_updated_at BEFORE UPDATE ON public.service_requests
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TABLE IF NOT EXISTS public.price_settings (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  base numeric DEFAULT 50, bedroom numeric DEFAULT 35,
+  bathroom numeric DEFAULT 40, shower numeric DEFAULT 25,
+  carpet_sq_ft numeric DEFAULT 0.35, carpet_min numeric DEFAULT 50,
+  move_base numeric DEFAULT 120, move_bedroom numeric DEFAULT 35,
+  move_bathroom numeric DEFAULT 40, construction_base numeric DEFAULT 150,
+  commercial_base numeric DEFAULT 100, church_base numeric DEFAULT 120,
+  rv_medium numeric DEFAULT 200, pet_fee numeric DEFAULT 10,
+  child_fee numeric DEFAULT 0, updated_at timestamptz DEFAULT now()
+);
+ALTER TABLE public.price_settings ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "anon_price" ON public.price_settings;
+CREATE POLICY "anon_price" ON public.price_settings FOR ALL TO anon USING (true) WITH CHECK (true);
+INSERT INTO public.price_settings (base) VALUES (50) ON CONFLICT DO NOTHING;`;
+
+            navigator.clipboard.writeText(sql).then(() => {
+                showToast('✅ SQL copied to clipboard! Paste in Supabase → SQL Editor', 'success');
+            }).catch(() => {
+                // Fallback: open a textarea modal
+                const ta = document.createElement('textarea');
+                ta.value = sql;
+                ta.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:80%;height:60%;z-index:9999;padding:15px;font-family:monospace;font-size:12px;border-radius:8px;border:2px solid #2a6eff';
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                showToast('✅ SQL copied! You can also select all text from the box.', 'success');
+                setTimeout(() => ta.remove(), 5000);
+            });
+        }
+
+        // ============================================================
+        // SHOW SQL SETUP MODAL
+        // ============================================================
+        function showSQLSetup() {
+            document.getElementById('sqlInfoBox').style.display = 'block';
+            switchAdminTab('prices');
+            setTimeout(() => {
+                document.getElementById('sqlInfoBox').scrollIntoView({behavior:'smooth'});
+            }, 300);
+        }
+
         // ============================================================
         // SCHEDULE FORM SUBMISSION
         // ============================================================
@@ -2645,6 +2795,19 @@ BN: 722688363
         async function loadDashboardData() {
             await loadStats();
             await loadServiceRequests(1);
+            // Auto-check schema on load
+            checkSchemaOnLoad();
+        }
+
+        async function checkSchemaOnLoad() {
+            try {
+                const r = await fetch(`${SB_URL}/rest/v1/service_requests?select=constr_appliances,move_oven,rv_length&limit=1`, {
+                    headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
+                });
+                if (!r.ok) {
+                    document.getElementById('schemaBanner').style.display = 'block';
+                }
+            } catch(e) {}
         }
 
         async function loadStats() {
@@ -2762,10 +2925,21 @@ BN: 722688363
                 const d1 = await r1.json();
                 if (r1.ok) {
                     html += `<span class="debug-success">✅ service_requests: OK (${Array.isArray(d1)?d1.length:0} rows)</span>\n`;
+                    // Check if new columns exist by querying one record
+                    const r1b = await fetch(`${SB_URL}/rest/v1/service_requests?select=constr_appliances,move_oven,rv_length&limit=1`, { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } });
+                    if (r1b.ok) {
+                        html += `<span class="debug-success">✅ service_requests schema: All columns present ✓</span>\n`;
+                        document.getElementById('schemaBanner').style.display = 'none';
+                    } else {
+                        html += `<span class="debug-error">❌ service_requests schema OUTDATED — missing new columns!</span>\n`;
+                        html += `<span class="debug-warning">   → Click "Copy SQL" and run in Supabase SQL Editor to fix.</span>\n`;
+                        document.getElementById('schemaBanner').style.display = 'block';
+                    }
                 } else {
                     html += `<span class="debug-error">❌ service_requests: ${r1.status} — ${d1.message||d1.hint||JSON.stringify(d1)}</span>\n`;
-                    if (r1.status===401||r1.status===403) html += `<span class="debug-warning">   → RLS bloqueando. Veja SQL abaixo.</span>\n`;
-                    if (r1.status===404) html += `<span class="debug-warning">   → Tabela não existe!</span>\n`;
+                    if (r1.status===401||r1.status===403) html += `<span class="debug-warning">   → RLS bloqueando. Clique "Copy SQL" para recriar com permissões.</span>\n`;
+                    if (r1.status===404) html += `<span class="debug-warning">   → Tabela não existe! Clique "Copy SQL" para criar.</span>\n`;
+                    document.getElementById('schemaBanner').style.display = 'block';
                 }
 
                 // Test price_settings SELECT
