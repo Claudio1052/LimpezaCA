@@ -1010,10 +1010,11 @@
                         <div class="form-section">
                             <h3><i class="fas fa-broom"></i> Service Details</h3>
                             <div class="form-grid">
-                                <div class="form-group">
+                                <!-- SERVICE TYPE - always visible -->
+                                <div class="form-group" style="grid-column: span 2;">
                                     <label><i class="fas fa-tasks"></i> Service Type <span class="required">*</span></label>
                                     <select id="serviceType" required onchange="updateConditionalFields(); calculateEstimatedPrice();">
-                                        <option value="">Select</option>
+                                        <option value="">Select a service</option>
                                         <option value="move">Move In/Out Cleaning</option>
                                         <option value="construction">Post-Construction</option>
                                         <option value="commercial">Commercial Cleaning</option>
@@ -1024,56 +1025,262 @@
                                         <option value="other">Other</option>
                                     </select>
                                 </div>
-                                <!-- Bedrooms: residential, move, construction, commercial (not church, carpet, rv) -->
-                                <div class="form-group conditional-field field-bedrooms" style="display:none">
+
+                                <!-- ═══════════════════════════════════════
+                                     MOVE IN / MOVE OUT FIELDS
+                                ═══════════════════════════════════════ -->
+                                <div class="form-group cf cf-move" style="display:none">
                                     <label><i class="fas fa-bed"></i> Bedrooms</label>
-                                    <select id="bedrooms" onchange="calculateEstimatedPrice()"><option value="0">None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select>
+                                    <select id="bedrooms"><option value="0">None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select>
                                 </div>
-                                <!-- Bathrooms: residential, move, construction, commercial (not church, carpet, rv) -->
-                                <div class="form-group conditional-field field-bathrooms" style="display:none">
+                                <div class="form-group cf cf-move" style="display:none">
                                     <label><i class="fas fa-bath"></i> Bathrooms</label>
-                                    <select id="bathrooms" onchange="calculateEstimatedPrice()"><option value="0">None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select>
+                                    <select id="bathrooms"><option value="0">None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select>
                                 </div>
-                                <!-- Shower Box: residential only -->
-                                <div class="form-group conditional-field field-shower" style="display:none">
-                                    <label><i class="fas fa-shower"></i> Shower Box</label>
-                                    <select id="showerBoxCount" onchange="calculateEstimatedPrice()"><option value="0">None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4+</option></select>
+                                <div class="form-group cf cf-move" style="display:none">
+                                    <label><i class="fas fa-fire"></i> Oven</label>
+                                    <select id="moveOven"><option value="no">No</option><option value="yes">Yes</option></select>
                                 </div>
-                                <!-- Carpet dimensions -->
-                                <div class="form-group conditional-field field-carpet" style="display:none; grid-column: span 2;">
+                                <div class="form-group cf cf-move" style="display:none">
+                                    <label><i class="fas fa-temperature-low"></i> Fridge</label>
+                                    <select id="moveFridge"><option value="no">No</option><option value="yes">Yes</option></select>
+                                </div>
+                                <div class="form-group cf cf-move" style="display:none">
+                                    <label><i class="fas fa-couch"></i> # of Living / Dining Rooms</label>
+                                    <select id="moveLivingRooms"><option value="0">None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4+</option></select>
+                                </div>
+                                <div class="form-group cf cf-move" style="display:none">
+                                    <label><i class="fas fa-shower"></i> Shower Glass Door</label>
+                                    <select id="moveShowerGlass"><option value="0">None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4+</option></select>
+                                </div>
+                                <div class="form-group cf cf-move" style="display:none">
+                                    <label><i class="fas fa-users"></i> Pets / Kids?</label>
+                                    <input type="text" id="movePetsKids" placeholder="e.g. 2 dogs, 1 child">
+                                </div>
+                                <div class="form-group cf cf-move" style="display:none">
+                                    <label><i class="fas fa-ruler-combined"></i> Square Footage (sq ft)</label>
+                                    <input type="text" id="moveSqft" placeholder="e.g. 1200">
+                                </div>
+                                <div class="form-group cf cf-move" style="display:none">
+                                    <label><i class="fas fa-rug"></i> Carpet Cleaning?</label>
+                                    <select id="moveCarpet"><option value="no">No</option><option value="yes">Yes</option></select>
+                                </div>
+                                <div class="form-group cf cf-move" style="display:none">
+                                    <label><i class="fas fa-smoking"></i> Smoke Indoors?</label>
+                                    <select id="moveSmoke"><option value="no">No</option><option value="yes">Yes</option></select>
+                                </div>
+
+                                <!-- ═══════════════════════════════════════
+                                     RESIDENTIAL FIELDS
+                                ═══════════════════════════════════════ -->
+                                <div class="form-group cf cf-residential" style="display:none">
+                                    <label><i class="fas fa-bed"></i> Bedrooms</label>
+                                    <select id="resBedrooms"><option value="0">None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select>
+                                </div>
+                                <div class="form-group cf cf-residential" style="display:none">
+                                    <label><i class="fas fa-bath"></i> Bathrooms</label>
+                                    <select id="resBathrooms"><option value="0">None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select>
+                                </div>
+                                <div class="form-group cf cf-residential" style="display:none">
+                                    <label><i class="fas fa-couch"></i> # of Living / Dining Rooms</label>
+                                    <select id="resLivingRooms"><option value="0">None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4+</option></select>
+                                </div>
+                                <div class="form-group cf cf-residential" style="display:none">
+                                    <label><i class="fas fa-shower"></i> Shower Glass Door</label>
+                                    <select id="resShowerGlass"><option value="0">None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4+</option></select>
+                                </div>
+                                <div class="form-group cf cf-residential" style="display:none">
+                                    <label><i class="fas fa-users"></i> Pets / Kids?</label>
+                                    <input type="text" id="resPetsKids" placeholder="e.g. 1 dog, 2 kids">
+                                </div>
+                                <div class="form-group cf cf-residential" style="display:none">
+                                    <label><i class="fas fa-ruler-combined"></i> Square Footage (sq ft)</label>
+                                    <input type="text" id="resSqft" placeholder="e.g. 1500">
+                                </div>
+                                <div class="form-group cf cf-residential" style="display:none">
+                                    <label><i class="fas fa-smoking"></i> Smoke Indoors?</label>
+                                    <select id="resSmoke"><option value="no">No</option><option value="yes">Yes</option></select>
+                                </div>
+
+                                <!-- ═══════════════════════════════════════
+                                     RV CLEANING FIELDS
+                                ═══════════════════════════════════════ -->
+                                <div class="form-group cf cf-rv" style="display:none">
+                                    <label><i class="fas fa-ruler-horizontal"></i> RV Length (ft)</label>
+                                    <input type="text" id="rvLength" placeholder="e.g. 30">
+                                </div>
+                                <div class="form-group cf cf-rv" style="display:none">
+                                    <label><i class="fas fa-moon"></i> Sleeping Capacity / Beds</label>
+                                    <select id="rvBeds"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="8+">8+</option></select>
+                                </div>
+                                <div class="form-group cf cf-rv" style="display:none">
+                                    <label><i class="fas fa-toilet"></i> Bathrooms / Toilets</label>
+                                    <select id="rvBathrooms"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4+">4+</option></select>
+                                </div>
+                                <div class="form-group cf cf-rv" style="display:none">
+                                    <label><i class="fas fa-utensils"></i> Indoor Kitchen?</label>
+                                    <select id="rvKitchen"><option value="yes">Yes</option><option value="no">No</option></select>
+                                </div>
+                                <div class="form-group cf cf-rv" style="display:none" style="grid-column:span 2;">
+                                    <label><i class="fas fa-blender"></i> Appliances</label>
+                                    <input type="text" id="rvAppliances" placeholder="e.g. Stove, Oven, Microwave, Fridge">
+                                </div>
+                                <div class="form-group cf cf-rv" style="display:none">
+                                    <label><i class="fas fa-calendar-alt"></i> Last Cleaned</label>
+                                    <input type="text" id="rvLastCleaned" placeholder="e.g. 3 months ago">
+                                </div>
+                                <div class="form-group cf cf-rv" style="display:none">
+                                    <label><i class="fas fa-tint"></i> Water Available?</label>
+                                    <select id="rvWater"><option value="yes">Yes</option><option value="no">No</option></select>
+                                </div>
+                                <div class="form-group cf cf-rv" style="display:none">
+                                    <label><i class="fas fa-bolt"></i> Electricity Available?</label>
+                                    <select id="rvElectricity"><option value="yes">Yes</option><option value="no">No</option></select>
+                                </div>
+                                <div class="form-group cf cf-rv" style="display:none">
+                                    <label><i class="fas fa-paw"></i> Pets?</label>
+                                    <select id="rvPets"><option value="no">No</option><option value="yes">Yes</option></select>
+                                </div>
+
+                                <!-- ═══════════════════════════════════════
+                                     POST-CONSTRUCTION FIELDS
+                                ═══════════════════════════════════════ -->
+                                <div class="form-group cf cf-construction" style="display:none">
+                                    <label><i class="fas fa-building"></i> Type of Property</label>
+                                    <select id="constrType"><option value="">Select</option><option value="house">House</option><option value="apartment">Apartment</option><option value="commercial">Commercial</option></select>
+                                </div>
+                                <div class="form-group cf cf-construction" style="display:none">
+                                    <label><i class="fas fa-ruler-combined"></i> Square Footage (sq ft)</label>
+                                    <input type="text" id="constrSqft" placeholder="e.g. 2000">
+                                </div>
+                                <div class="form-group cf cf-construction" style="display:none; grid-column:span 2;">
+                                    <label><i class="fas fa-hard-hat"></i> Type of Construction Completed</label>
+                                    <select id="constrWorkType"><option value="">Select</option><option value="full_build">Full New Build</option><option value="renovation">Renovation</option><option value="partial">Partial Remodel (kitchen, bathroom, basement, etc.)</option></select>
+                                </div>
+                                <div class="form-group cf cf-construction" style="display:none">
+                                    <label><i class="fas fa-check-circle"></i> Is the Project Fully Completed?</label>
+                                    <select id="constrCompleted"><option value="yes">Yes</option><option value="no">No</option></select>
+                                </div>
+                                <div class="form-group cf cf-construction" style="display:none">
+                                    <label><i class="fas fa-layer-group"></i> Level of Cleaning Needed</label>
+                                    <select id="constrLevel"><option value="">Select</option><option value="light">Light (dust only)</option><option value="moderate">Moderate</option><option value="heavy">Heavy (construction debris, dust everywhere)</option></select>
+                                </div>
+                                <div class="form-group cf cf-construction" style="display:none">
+                                    <label><i class="fas fa-window-maximize"></i> # of Windows</label>
+                                    <input type="number" id="constrWindows" min="0" placeholder="e.g. 10">
+                                </div>
+                                <div class="form-group cf cf-construction" style="display:none">
+                                    <label><i class="fas fa-bed"></i> Bedrooms</label>
+                                    <select id="constrBedrooms"><option value="0">None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select>
+                                </div>
+                                <div class="form-group cf cf-construction" style="display:none">
+                                    <label><i class="fas fa-bath"></i> Bathrooms</label>
+                                    <select id="constrBathrooms"><option value="0">None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select>
+                                </div>
+                                <div class="form-group cf cf-construction" style="display:none">
+                                    <label><i class="fas fa-arrows-alt-v"></i> High Ceilings?</label>
+                                    <select id="constrHighCeilings"><option value="no">No</option><option value="yes">Yes</option></select>
+                                </div>
+                                <div class="form-group cf cf-construction" style="display:none">
+                                    <label><i class="fas fa-refrigerator"></i> Inside Appliances?</label>
+                                    <select id="constrAppliances" onchange="document.getElementById('constrWhichAppliances').style.display=this.value==='yes'?'block':'none'"><option value="no">No</option><option value="yes">Yes</option></select>
+                                </div>
+                                <div class="form-group cf cf-construction" id="constrWhichAppliances" style="display:none">
+                                    <label><i class="fas fa-blender"></i> Which Appliances?</label>
+                                    <input type="text" id="constrAppliancesList" placeholder="e.g. Oven, Fridge, Microwave">
+                                </div>
+                                <div class="form-group cf cf-construction" style="display:none">
+                                    <label><i class="fas fa-warehouse"></i> Garage Cleaning?</label>
+                                    <select id="constrGarage"><option value="no">No</option><option value="yes">Yes</option></select>
+                                </div>
+                                <div class="form-group cf cf-construction" style="display:none">
+                                    <label><i class="fas fa-home"></i> Is the Property Empty?</label>
+                                    <select id="constrEmpty"><option value="yes">Yes</option><option value="no">No</option></select>
+                                </div>
+
+                                <!-- ═══════════════════════════════════════
+                                     WORSHIP FACILITY FIELDS
+                                ═══════════════════════════════════════ -->
+                                <div class="form-group cf cf-church" style="display:none">
+                                    <label><i class="fas fa-bath"></i> Bathrooms</label>
+                                    <select id="churchBathrooms"><option value="0">None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select>
+                                </div>
+                                <div class="form-group cf cf-church" style="display:none">
+                                    <label><i class="fas fa-utensils"></i> Kitchen?</label>
+                                    <select id="churchKitchen"><option value="no">No</option><option value="yes">Yes</option></select>
+                                </div>
+                                <div class="form-group cf cf-church" style="display:none">
+                                    <label><i class="fas fa-rug"></i> Carpet Cleaning?</label>
+                                    <select id="churchCarpet"><option value="no">No</option><option value="yes">Yes</option></select>
+                                </div>
+                                <div class="form-group cf cf-church" style="display:none">
+                                    <label><i class="fas fa-ruler-combined"></i> Square Footage (sq ft)</label>
+                                    <input type="text" id="churchSqft" placeholder="e.g. 3000">
+                                </div>
+                                <div class="form-group cf cf-church" style="display:none">
+                                    <label><i class="fas fa-door-open"></i> Offices</label>
+                                    <select id="churchOffices"><option value="0">None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select>
+                                </div>
+
+                                <!-- ═══════════════════════════════════════
+                                     COMMERCIAL FIELDS
+                                ═══════════════════════════════════════ -->
+                                <div class="form-group cf cf-commercial" style="display:none">
+                                    <label><i class="fas fa-bath"></i> Bathrooms</label>
+                                    <select id="commBathrooms"><option value="0">None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select>
+                                </div>
+                                <div class="form-group cf cf-commercial" style="display:none">
+                                    <label><i class="fas fa-utensils"></i> Kitchen?</label>
+                                    <select id="commKitchen"><option value="no">No</option><option value="yes">Yes</option></select>
+                                </div>
+                                <div class="form-group cf cf-commercial" style="display:none">
+                                    <label><i class="fas fa-rug"></i> Carpet Cleaning?</label>
+                                    <select id="commCarpet"><option value="no">No</option><option value="yes">Yes</option></select>
+                                </div>
+                                <div class="form-group cf cf-commercial" style="display:none">
+                                    <label><i class="fas fa-ruler-combined"></i> Square Footage (sq ft)</label>
+                                    <input type="text" id="commSqft" placeholder="e.g. 2500">
+                                </div>
+                                <div class="form-group cf cf-commercial" style="display:none">
+                                    <label><i class="fas fa-door-open"></i> Office Rooms</label>
+                                    <select id="commOffices"><option value="0">None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10+">10+</option></select>
+                                </div>
+                                <div class="form-group cf cf-commercial" style="display:none">
+                                    <label><i class="fas fa-chair"></i> Desks</label>
+                                    <select id="commDesks"><option value="0">None</option><option value="1-5">1–5</option><option value="6-10">6–10</option><option value="11-20">11–20</option><option value="21-50">21–50</option><option value="50+">50+</option></select>
+                                </div>
+
+                                <!-- ═══════════════════════════════════════
+                                     CARPET CLEANING FIELDS (always keep)
+                                ═══════════════════════════════════════ -->
+                                <div class="form-group conditional-field field-carpet cf-carpet" style="display:none; grid-column: span 2;">
                                     <label><i class="fas fa-ruler"></i> Carpet Dimensions (sq ft)</label>
                                     <div class="dimension-group">
                                         <input type="number" id="carpetLength" placeholder="Length (ft)" min="0" step="0.1" onchange="calculateEstimatedPrice()">
                                         <input type="number" id="carpetWidth" placeholder="Width (ft)" min="0" step="0.1" onchange="calculateEstimatedPrice()">
                                     </div>
                                 </div>
-                                <!-- Children/Pets combined: residential, move, church only -->
-                                <div class="form-group conditional-field field-children-pets" style="display:none; grid-column: span 2;">
-                                    <label><i class="fas fa-users"></i> Children / Pets?</label>
-                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 8px;">
-                                        <div>
-                                            <label style="font-weight:500; font-size:0.85rem; margin-bottom:5px; display:block;"><i class="fas fa-child" style="color:var(--primary-color)"></i> Children?</label>
-                                            <select id="hasChildren" onchange="toggleChildrenCount(); calculateEstimatedPrice();"><option value="false">No</option><option value="true">Yes</option></select>
-                                            <div id="childrenCountGroup" style="display:none; margin-top:8px;">
-                                                <label style="font-weight:500; font-size:0.85rem; margin-bottom:5px; display:block;"><i class="fas fa-baby" style="color:var(--primary-color)"></i> How many?</label>
-                                                <input type="number" id="childrenCount" min="0" value="0" onchange="calculateEstimatedPrice()">
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <label style="font-weight:500; font-size:0.85rem; margin-bottom:5px; display:block;"><i class="fas fa-paw" style="color:var(--primary-color)"></i> Pets?</label>
-                                            <select id="hasPets" onchange="togglePetCount(); calculateEstimatedPrice();"><option value="false">No</option><option value="true">Yes</option></select>
-                                            <div id="petCountGroup" style="display:none; margin-top:8px;">
-                                                <label style="font-weight:500; font-size:0.85rem; margin-bottom:5px; display:block;"><i class="fas fa-dog" style="color:var(--primary-color)"></i> How many?</label>
-                                                <input type="number" id="petCount" min="0" value="0" onchange="calculateEstimatedPrice()">
-                                            </div>
-                                        </div>
-                                    </div>
+
+                                <!-- ═══════════════════════════════════════
+                                     DATE & TIME — always visible
+                                ═══════════════════════════════════════ -->
+                                <div class="form-group cf cf-move cf-residential cf-construction cf-commercial cf-church cf-rv cf-carpet" style="display:none">
+                                    <label><i class="fas fa-calendar"></i> Date <span class="required">*</span></label>
+                                    <input type="text" id="cleaningDate" class="datepicker" required placeholder="Select date">
                                 </div>
-                                <div class="form-group"><label><i class="fas fa-calendar"></i> Date <span class="required">*</span></label><input type="text" id="cleaningDate" class="datepicker" required placeholder="Select date"></div>
-                                <div class="form-group">
+                                <div class="form-group cf cf-move cf-residential cf-construction cf-commercial cf-church cf-rv cf-carpet" style="display:none">
                                     <label><i class="fas fa-clock"></i> Time <span class="required">*</span></label>
-                                    <select id="cleaningTime" required><option value="">Select</option><option value="morning">Morning (8-12)</option><option value="afternoon">Afternoon (1-5)</option><option value="evening">Evening (6-8)</option></select>
+                                    <select id="cleaningTime" required><option value="">Select</option><option value="morning">Morning (8–12)</option><option value="afternoon">Afternoon (1–5)</option><option value="evening">Evening (6–8)</option></select>
                                 </div>
+
+                                <!-- legacy hidden fields kept for form submission compatibility -->
+                                <input type="hidden" id="bedrooms" value="0">
+                                <input type="hidden" id="bathrooms" value="0">
+                                <input type="hidden" id="showerBoxCount" value="0">
+                                <input type="hidden" id="hasPets" value="false">
+                                <input type="hidden" id="petCount" value="0">
+                                <input type="hidden" id="hasChildren" value="false">
+                                <input type="hidden" id="childrenCount" value="0">
                             </div>
                         </div>
                         
@@ -1654,59 +1861,24 @@ ON CONFLICT DO NOTHING;</pre>
             const priceBox    = document.getElementById('estimatedPriceBox');
             const priceValueEl  = document.getElementById('estimatedPriceValue');
             const priceDetailEl = document.getElementById('estimatedPriceDetail');
-            if (!serviceType) { priceBox.style.display = 'none'; return; }
+
+            // Only show estimated price for Carpet Cleaning
+            if (serviceType !== 'carpet') {
+                priceBox.style.display = 'none';
+                return;
+            }
 
             let total = 0, details = [];
-
-            switch (serviceType) {
-                case 'residential': {
-                    const beds = parseInt(document.getElementById('bedrooms').value) || 0;
-                    const baths = parseInt(document.getElementById('bathrooms').value) || 0;
-                    const showers = parseInt(document.getElementById('showerBoxCount').value) || 0;
-                    total = priceSettings.base;
-                    details.push(`Base: $${priceSettings.base}`);
-                    if (beds)    { total += beds * priceSettings.bedroom;   details.push(`${beds} quarto(s): $${beds * priceSettings.bedroom}`); }
-                    if (baths)   { total += baths * priceSettings.bathroom; details.push(`${baths} banheiro(s): $${baths * priceSettings.bathroom}`); }
-                    if (showers) { total += showers * priceSettings.shower; details.push(`${showers} box(es): $${showers * priceSettings.shower}`); }
-                    break;
-                }
-                case 'carpet': {
-                    const len = parseFloat(document.getElementById('carpetLength').value) || 0;
-                    const wid = parseFloat(document.getElementById('carpetWidth').value) || 0;
-                    const sqft = len * wid;
-                    if (sqft > 0) {
-                        total = Math.max(sqft * priceSettings.carpetSqFt, priceSettings.carpetMin);
-                        details.push(`${sqft.toFixed(1)} sq ft @ $${priceSettings.carpetSqFt}/sqft`);
-                        if (total === priceSettings.carpetMin) details.push(`(mínimo: $${priceSettings.carpetMin})`);
-                    } else {
-                        total = priceSettings.carpetMin;
-                        details.push(`Mínimo: $${priceSettings.carpetMin}`);
-                    }
-                    break;
-                }
-                case 'move': {
-                    const beds = parseInt(document.getElementById('bedrooms').value) || 0;
-                    const baths = parseInt(document.getElementById('bathrooms').value) || 0;
-                    total = priceSettings.moveBase;
-                    details.push(`Base: $${priceSettings.moveBase}`);
-                    if (beds)  { total += beds * priceSettings.moveBedroom;   details.push(`${beds} quarto(s): $${beds * priceSettings.moveBedroom}`); }
-                    if (baths) { total += baths * priceSettings.moveBathroom; details.push(`${baths} banheiro(s): $${baths * priceSettings.moveBathroom}`); }
-                    break;
-                }
-                case 'construction': total = priceSettings.constructionBase; details.push(`Base: $${priceSettings.constructionBase}`); break;
-                case 'commercial':   total = priceSettings.commercialBase;   details.push(`Base: $${priceSettings.commercialBase}`); break;
-                case 'church':       total = priceSettings.churchBase;       details.push(`Base: $${priceSettings.churchBase}`); break;
-                case 'rv':           total = priceSettings.rvMedium;         details.push(`RV: $${priceSettings.rvMedium}`); break;
-                default: total = 100; details.push('Base: $100');
-            }
-
-            if (document.getElementById('hasPets').value === 'true') {
-                const pets = parseInt(document.getElementById('petCount').value) || 0;
-                if (pets > 0 && priceSettings.petFee > 0) { total += pets * priceSettings.petFee; details.push(`${pets} pet(s): $${pets * priceSettings.petFee}`); }
-            }
-            if (document.getElementById('hasChildren').value === 'true') {
-                const kids = parseInt(document.getElementById('childrenCount').value) || 0;
-                if (kids > 0 && priceSettings.childFee > 0) { total += kids * priceSettings.childFee; details.push(`${kids} criança(s): $${kids * priceSettings.childFee}`); }
+            const len = parseFloat(document.getElementById('carpetLength').value) || 0;
+            const wid = parseFloat(document.getElementById('carpetWidth').value) || 0;
+            const sqft = len * wid;
+            if (sqft > 0) {
+                total = Math.max(sqft * priceSettings.carpetSqFt, priceSettings.carpetMin);
+                details.push(`${sqft.toFixed(1)} sq ft @ $${priceSettings.carpetSqFt}/sqft`);
+                if (total === priceSettings.carpetMin) details.push(`(minimum: $${priceSettings.carpetMin})`);
+            } else {
+                total = priceSettings.carpetMin;
+                details.push(`Minimum: $${priceSettings.carpetMin}`);
             }
 
             priceValueEl.textContent  = `$${total.toFixed(2)}`;
@@ -1715,42 +1887,26 @@ ON CONFLICT DO NOTHING;</pre>
         }
 
         // ============================================================
-        // CONDITIONAL FIELDS
+        // CONDITIONAL FIELDS — per-service logic
         // ============================================================
         function updateConditionalFields() {
             const t = document.getElementById('serviceType').value;
+            const services = ['move','residential','rv','construction','commercial','church','carpet'];
 
-            // Define what each service shows
-            const showBedrooms     = ['move','construction','commercial','residential'].includes(t);
-            const showBathrooms    = ['move','construction','commercial','residential'].includes(t);
-            const showShower       = ['residential'].includes(t);
-            const showCarpet       = t === 'carpet';
-            const showChildrenPets = ['residential','move','church'].includes(t);
+            // Hide ALL conditional fields first
+            document.querySelectorAll('.cf').forEach(el => el.style.display = 'none');
 
-            document.querySelectorAll('.field-bedrooms').forEach(f => f.style.display = showBedrooms ? 'block' : 'none');
-            document.querySelectorAll('.field-bathrooms').forEach(f => f.style.display = showBathrooms ? 'block' : 'none');
-            document.querySelectorAll('.field-shower').forEach(f => f.style.display = showShower ? 'block' : 'none');
-            document.querySelectorAll('.field-carpet').forEach(f => f.style.display = showCarpet ? 'block' : 'none');
-            document.querySelectorAll('.field-children-pets').forEach(f => f.style.display = showChildrenPets ? 'grid' : 'none');
-
-            // Reset hidden fields values when not shown
-            if (!showBedrooms) { const el = document.getElementById('bedrooms'); if (el) el.value = '0'; }
-            if (!showBathrooms) { const el = document.getElementById('bathrooms'); if (el) el.value = '0'; }
-            if (!showShower) { const el = document.getElementById('showerBoxCount'); if (el) el.value = '0'; }
-            if (!showChildrenPets) {
-                const hp = document.getElementById('hasPets'); if (hp) hp.value = 'false';
-                const hc = document.getElementById('hasChildren'); if (hc) hc.value = 'false';
-                document.getElementById('petCountGroup').style.display = 'none';
-                document.getElementById('childrenCountGroup').style.display = 'none';
+            // Show only fields for selected service
+            if (t) {
+                document.querySelectorAll('.cf-' + t).forEach(el => {
+                    el.style.display = 'block';
+                });
             }
         }
 
-        function togglePetCount()      { document.getElementById('petCountGroup').style.display      = document.getElementById('hasPets').value === 'true' ? 'block' : 'none'; }
-        function toggleChildrenCount() { document.getElementById('childrenCountGroup').style.display = document.getElementById('hasChildren').value === 'true' ? 'block' : 'none'; }
-
+        function togglePetCount()      {}
+        function toggleChildrenCount() {}
         function initConditionalFields() {
-            document.getElementById('hasPets').addEventListener('change', togglePetCount);
-            document.getElementById('hasChildren').addEventListener('change', toggleChildrenCount);
             document.getElementById('serviceType').addEventListener('change', updateConditionalFields);
         }
 
