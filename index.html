@@ -77,27 +77,58 @@
         a { text-decoration: none; color: var(--primary-color); transition: all 0.3s ease; }
         a:hover, a:focus { color: var(--primary-dark); }
 
+        /* ── NAVBAR TWO-ROW DESKTOP LAYOUT ── */
         .navbar {
             background: white;
             box-shadow: var(--shadow-sm);
             position: sticky;
             top: 0;
             z-index: 1000;
-            padding: 10px 0;
+            padding: 0;
         }
-        .navbar .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: nowrap; padding: 0 16px; gap: 8px; }
+        /* Top bar: contact info strip */
+        .navbar-top {
+            background: var(--gray-100);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 6px 0;
+        }
+        .navbar-top .container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 20px;
+            padding: 0 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        /* Bottom bar: logo + nav links */
+        .navbar-bottom { padding: 8px 0; }
+        .navbar-bottom .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        /* Legacy .navbar .container kept for mobile toggle */
+        .navbar .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
         .logo { display: flex; align-items: center; flex-shrink: 0; }
-        .logo-img { height: 52px; width: auto; object-fit: contain; max-width: 150px; display: block; }
-        .nav-contact-info { display: flex; align-items: center; gap: 12px; margin-left: 8px; flex-wrap: nowrap; flex-shrink: 1; }
-        .nav-contact-item { display: flex; align-items: center; gap: 5px; font-size: 0.78rem; color: var(--gray-800); }
-        .nav-contact-item i { color: var(--primary-color); font-size: 0.85rem; width: 14px; }
+        .logo-img { height: 56px; width: auto; object-fit: contain; max-width: 170px; display: block; }
+        .nav-contact-info { display: flex; align-items: center; gap: 20px; }
+        .nav-contact-item { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: var(--gray-700, #4a5568); }
+        .nav-contact-item i { color: var(--primary-color); font-size: 0.85rem; }
         .nav-contact-item a { color: var(--gray-800); text-decoration: none; white-space: nowrap; }
         .nav-contact-item a:hover { color: var(--primary-color); }
         .instagram-link { color: #e4405f !important; }
-        .nav-links { display: flex; list-style: none; align-items: center; gap: 2px; margin-left: auto; flex-shrink: 0; }
-        .nav-links a { color: var(--dark-color); font-weight: 500; font-size: 0.8rem; padding: 6px 8px; border-radius: var(--border-radius); white-space: nowrap; cursor: pointer; }
+        .nav-links { display: flex; list-style: none; align-items: center; gap: 4px; margin: 0; padding: 0; }
+        .nav-links a { color: var(--dark-color); font-weight: 500; font-size: 0.88rem; padding: 7px 11px; border-radius: var(--border-radius); white-space: nowrap; cursor: pointer; transition: all 0.2s; }
         .nav-links a:hover, .nav-links a.active { color: var(--primary-color); background-color: var(--gray-100); }
-        .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; background: none; border: none; padding: 10px; border-radius: var(--border-radius); z-index: 1001; }
+        .nav-links .btn-nav-schedule { background: var(--primary-color); color: white !important; border-radius: 6px; padding: 7px 14px; }
+        .nav-links .btn-nav-schedule:hover { background: var(--primary-dark); }
+        .nav-links .btn-nav-work { background: var(--secondary-color); color: white !important; border-radius: 6px; padding: 7px 14px; }
+        .nav-links .btn-nav-work:hover { background: #008f7f; }
+        .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; background: none; border: none; padding: 10px; border-radius: var(--border-radius); z-index: 1001; flex-shrink: 0; }
 
         .hero { position: relative; color: white; padding: clamp(60px, 12vh, 100px) 0; overflow: hidden; text-align: center; min-height: 520px; }
         .hero-video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
@@ -416,12 +447,13 @@
         .modal-actions { display: flex; gap: 15px; margin-top: 25px; }
         .modal-actions .btn { flex: 1; }
 
-        @media (max-width: 1150px) {
-            .nav-contact-info { display: none; }
+        @media (max-width: 900px) {
+            .navbar-top { display: none; }
             .menu-toggle { display: block; }
-            .nav-links { position: fixed; top: 70px; left: 0; width: 100%; background: white; flex-direction: column; align-items: stretch; padding: 20px; box-shadow: var(--shadow-lg); transform: translateX(-100%); transition: transform 0.3s ease; z-index: 1000; max-height: calc(100vh - 70px); overflow-y: auto; }
+            .nav-links { position: fixed; top: 72px; left: 0; width: 100%; background: white; flex-direction: column; align-items: stretch; padding: 20px; box-shadow: var(--shadow-lg); transform: translateX(-100%); transition: transform 0.3s ease; z-index: 1000; max-height: calc(100vh - 72px); overflow-y: auto; }
             .nav-links.active { transform: translateX(0); }
-            .nav-links a { display: block; padding: 15px; border-bottom: 1px solid var(--gray-200); }
+            .nav-links a { display: block; padding: 15px; border-bottom: 1px solid var(--gray-200); font-size: 1rem; }
+            .nav-links .btn-nav-schedule, .nav-links .btn-nav-work { margin-top: 8px; text-align: center; border-radius: 8px; }
             .different-grid, .testimonials-grid, .dashboard-stats, .price-grid, .carpet-services-grid, .faq-grid { grid-template-columns: repeat(2, 1fr); }
             .gallery-grid { grid-template-columns: repeat(2, 1fr); }
             .gallery-card.featured { grid-column: span 2; grid-template-columns: 1fr; }
@@ -482,28 +514,37 @@
 </head>
 <body>
     <nav class="navbar">
-        <div class="container">
-            <div class="logo">
-                <a href="#" onclick="showHomePage()">
-                    <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/logo_marca_fundo.png" alt="Rio Cleaning" class="logo-img">
-                </a>
+        <!-- Top bar: contact strip -->
+        <div class="navbar-top">
+            <div class="container">
+                <div class="nav-contact-info">
+                    <div class="nav-contact-item"><i class="fas fa-phone"></i><a href="tel:5192806261">519-280-6261</a></div>
+                    <div class="nav-contact-item"><i class="fas fa-map-marker-alt"></i><span>Calgary, Chestermere, Airdrie, Okotoks</span></div>
+                    <div class="nav-contact-item"><i class="fab fa-instagram instagram-link"></i><a href="https://www.instagram.com/riocleaningyyc" target="_blank">@riocleaningyyc</a></div>
+                    <div class="nav-contact-item"><i class="fas fa-envelope"></i><a href="mailto:riocleaningyyc@gmail.com">riocleaningyyc@gmail.com</a></div>
+                </div>
             </div>
-            <div class="nav-contact-info">
-                <div class="nav-contact-item"><i class="fas fa-phone"></i><a href="tel:5192806261">519-280-6261</a></div>
-                <div class="nav-contact-item"><i class="fas fa-map-marker-alt"></i><span>Calgary, Chestermere, Airdrie, Okotoks</span></div>
-                <div class="nav-contact-item"><i class="fab fa-instagram instagram-link"></i><a href="https://www.instagram.com/riocleaningyyc" target="_blank">@riocleaningyyc</a></div>
+        </div>
+        <!-- Bottom bar: logo + nav links -->
+        <div class="navbar-bottom">
+            <div class="container">
+                <div class="logo">
+                    <a href="#" onclick="showHomePage()">
+                        <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/logo_marca_fundo.png" alt="Rio Cleaning" class="logo-img">
+                    </a>
+                </div>
+                <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#home" onclick="scrollToSection('home')">Home</a></li>
+                    <li><a href="#different" onclick="scrollToSection('different')">Why Choose Us</a></li>
+                    <li><a href="#services-carousel" onclick="scrollToSection('services-carousel')">Services</a></li>
+                    <li><a href="#" onclick="showCarpetPage()">Carpet</a></li>
+                    <li><a href="#testimonials" onclick="scrollToSection('testimonials')">Reviews</a></li>
+                    <li><a href="#about" onclick="scrollToSection('about')">About</a></li>
+                    <li><a href="#" onclick="showScheduleForm()" class="btn-nav-schedule">Schedule</a></li>
+                    <li><a href="#" onclick="showWorkWithUs()" class="btn-nav-work">Work With Us</a></li>
+                </ul>
             </div>
-            <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#home" onclick="scrollToSection('home')">Home</a></li>
-                <li><a href="#different" onclick="scrollToSection('different')">Why Choose Us</a></li>
-                <li><a href="#services-carousel" onclick="scrollToSection('services-carousel')">Services</a></li>
-                <li><a href="#" onclick="showCarpetPage()">Carpet</a></li>
-                <li><a href="#testimonials" onclick="scrollToSection('testimonials')">Reviews</a></li>
-                <li><a href="#about" onclick="scrollToSection('about')">About</a></li>
-                <li><a href="#" onclick="showScheduleForm()" style="background:var(--primary-color);color:white!important;border-radius:6px;">Schedule</a></li>
-                <li><a href="#" onclick="showWorkWithUs()" style="background:var(--secondary-color);color:white!important;border-radius:6px;">Work With Us</a></li>
-            </ul>
         </div>
     </nav>
 
