@@ -85,17 +85,17 @@
             z-index: 1000;
             padding: 10px 0;
         }
-        .navbar .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 0 20px; }
-        .logo { display: flex; align-items: center; }
-        .logo-img { height: 65px; width: auto; object-fit: contain; max-width: 200px; display: block; }
-        .nav-contact-info { display: flex; align-items: center; gap: 25px; margin-left: 20px; flex-wrap: wrap; }
-        .nav-contact-item { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--gray-800); }
-        .nav-contact-item i { color: var(--primary-color); font-size: 1rem; width: 16px; }
+        .navbar .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: nowrap; padding: 0 16px; gap: 8px; }
+        .logo { display: flex; align-items: center; flex-shrink: 0; }
+        .logo-img { height: 52px; width: auto; object-fit: contain; max-width: 150px; display: block; }
+        .nav-contact-info { display: flex; align-items: center; gap: 12px; margin-left: 8px; flex-wrap: nowrap; flex-shrink: 1; }
+        .nav-contact-item { display: flex; align-items: center; gap: 5px; font-size: 0.78rem; color: var(--gray-800); }
+        .nav-contact-item i { color: var(--primary-color); font-size: 0.85rem; width: 14px; }
         .nav-contact-item a { color: var(--gray-800); text-decoration: none; white-space: nowrap; }
         .nav-contact-item a:hover { color: var(--primary-color); }
         .instagram-link { color: #e4405f !important; }
-        .nav-links { display: flex; list-style: none; align-items: center; gap: 10px; margin-left: auto; }
-        .nav-links a { color: var(--dark-color); font-weight: 500; font-size: 0.9rem; padding: 8px 12px; border-radius: var(--border-radius); white-space: nowrap; cursor: pointer; }
+        .nav-links { display: flex; list-style: none; align-items: center; gap: 2px; margin-left: auto; flex-shrink: 0; }
+        .nav-links a { color: var(--dark-color); font-weight: 500; font-size: 0.8rem; padding: 6px 8px; border-radius: var(--border-radius); white-space: nowrap; cursor: pointer; }
         .nav-links a:hover, .nav-links a.active { color: var(--primary-color); background-color: var(--gray-100); }
         .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; background: none; border: none; padding: 10px; border-radius: var(--border-radius); z-index: 1001; }
 
@@ -416,7 +416,7 @@
         .modal-actions { display: flex; gap: 15px; margin-top: 25px; }
         .modal-actions .btn { flex: 1; }
 
-        @media (max-width: 992px) {
+        @media (max-width: 1150px) {
             .nav-contact-info { display: none; }
             .menu-toggle { display: block; }
             .nav-links { position: fixed; top: 70px; left: 0; width: 100%; background: white; flex-direction: column; align-items: stretch; padding: 20px; box-shadow: var(--shadow-lg); transform: translateX(-100%); transition: transform 0.3s ease; z-index: 1000; max-height: calc(100vh - 70px); overflow-y: auto; }
@@ -501,8 +501,8 @@
                 <li><a href="#" onclick="showCarpetPage()">Carpet</a></li>
                 <li><a href="#testimonials" onclick="scrollToSection('testimonials')">Reviews</a></li>
                 <li><a href="#about" onclick="scrollToSection('about')">About</a></li>
-                <li><a href="#" onclick="showScheduleForm()">Schedule</a></li>
-                <li><a href="#" onclick="showWorkWithUs()">Work With Us</a></li>
+                <li><a href="#" onclick="showScheduleForm()" style="background:var(--primary-color);color:white!important;border-radius:6px;">Schedule</a></li>
+                <li><a href="#" onclick="showWorkWithUs()" style="background:var(--secondary-color);color:white!important;border-radius:6px;">Work With Us</a></li>
             </ul>
         </div>
     </nav>
@@ -606,44 +606,6 @@
         </section>
     </div>
 
-        <section id="vision-values" style="padding: 60px 0; background: linear-gradient(135deg, #1a2a4f 0%, #0f1a33 100%); color: white;">
-            <div class="container">
-                <h2 class="section-title" style="color: white;">Our Vision & Values</h2>
-                <h2 class="section-title" style="color: white; display:block; text-align:center; width:100%; margin-bottom:3rem; font-size: clamp(1.75rem, 4vw, 2.5rem);"></h2>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; margin-top: 20px;">
-                    <div style="background: rgba(255,255,255,0.07); border-radius: 16px; padding: 30px; border-top: 4px solid #ffd700; text-align: center;">
-                        <div style="font-size: 2.5rem; margin-bottom: 15px;">🎯</div>
-                        <h3 style="color: #ffd700; font-size: 1.2rem; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Our Vision</h3>
-                        <p style="color: rgba(255,255,255,0.85); font-size: 0.97rem; line-height: 1.8; margin: 0;">To be Calgary's most trusted cleaning company — built on integrity, excellence, and genuine care for every home and business we serve.</p>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.07); border-radius: 16px; padding: 30px; border-top: 4px solid #2a6eff; text-align: center;">
-                        <div style="font-size: 2.5rem; margin-bottom: 15px;">💎</div>
-                        <h3 style="color: #2a6eff; font-size: 1.2rem; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; color: #7eb3ff;">Quality First</h3>
-                        <p style="color: rgba(255,255,255,0.85); font-size: 0.97rem; line-height: 1.8; margin: 0;">We don't cut corners. Every job is completed with attention to detail, professional-grade products, and a team that takes pride in delivering real, visible results.</p>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.07); border-radius: 16px; padding: 30px; border-top: 4px solid #00a896; text-align: center;">
-                        <div style="font-size: 2.5rem; margin-bottom: 15px;">🤝</div>
-                        <h3 style="color: #00a896; font-size: 1.2rem; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Trust & Reliability</h3>
-                        <p style="color: rgba(255,255,255,0.85); font-size: 0.97rem; line-height: 1.8; margin: 0;">Your home is your sanctuary. We are bonded, insured, and background-checked — so you can feel completely safe leaving us with what matters most to you.</p>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.07); border-radius: 16px; padding: 30px; border-top: 4px solid #ff6b6b; text-align: center;">
-                        <div style="font-size: 2.5rem; margin-bottom: 15px;">🌿</div>
-                        <h3 style="color: #ff6b6b; font-size: 1.2rem; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Eco-Conscious</h3>
-                        <p style="color: rgba(255,255,255,0.85); font-size: 0.97rem; line-height: 1.8; margin: 0;">We use environmentally preferable, non-toxic cleaning products — safe for your children, your pets, and the planet. Clean home, clean conscience.</p>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.07); border-radius: 16px; padding: 30px; border-top: 4px solid #ffd700; text-align: center;">
-                        <div style="font-size: 2.5rem; margin-bottom: 15px;">❤️</div>
-                        <h3 style="color: #ffd700; font-size: 1.2rem; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Community</h3>
-                        <p style="color: rgba(255,255,255,0.85); font-size: 0.97rem; line-height: 1.8; margin: 0;">Proudly serving Calgary, Chestermere, Airdrie, and Okotoks. As a Brazilian-Canadian owned business, we bring warmth, dedication, and passion to every clean.</p>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.07); border-radius: 16px; padding: 30px; border-top: 4px solid #7eb3ff; text-align: center;">
-                        <div style="font-size: 2.5rem; margin-bottom: 15px;">⭐</div>
-                        <h3 style="color: #7eb3ff; font-size: 1.2rem; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Satisfaction Guaranteed</h3>
-                        <p style="color: rgba(255,255,255,0.85); font-size: 0.97rem; line-height: 1.8; margin: 0;">If you're not 100% satisfied, we return within 24 hours to make it right — at no extra cost. Your happiness is our standard, not our exception.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
 
     <!-- ===================== SERVICE DETAIL PAGES ===================== -->
     <!-- Move In/Out -->
