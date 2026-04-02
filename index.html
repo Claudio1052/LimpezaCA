@@ -2898,7 +2898,7 @@ INSERT INTO public.price_settings (base) VALUES (50) ON CONFLICT DO NOTHING;`;
                 const { error } = await sb.insert('talent_bank', data);
                 if (!error) {
                     msg.className = 'form-message success';
-                    msg.innerHTML = '<i class="fas fa-check-circle"></i> Application submitted! We'll be in touch soon. 🎉';
+                    msg.innerHTML = '<i class="fas fa-check-circle"></i> Application submitted! We will be in touch soon. 🎉';
                     form.reset();
                     setTimeout(() => showHomePage(), 3000);
                 } else {
@@ -3165,8 +3165,7 @@ ${personalBody}`);
 
         function previewMarketing() {
             const subject = document.getElementById('mktSubject').value || '(no subject)';
-            const body = document.getElementById('mktBody').value.replace(/{name}/gi, 'John Doe').replace(/
-/g,'<br>');
+            const body = document.getElementById('mktBody').value.replace(/{name}/gi, 'John Doe').replace(/\n/g,'<br>');
             const win = window.open('', '_blank', 'width=700,height=500');
             win.document.write(`<html><head><title>Preview</title><style>body{font-family:Arial,sans-serif;padding:30px;max-width:600px;margin:0 auto;line-height:1.7} h2{color:#2a6eff}</style></head><body><h2>📧 ${subject}</h2><hr><div>${body}</div></body></html>`);
         }
@@ -3923,12 +3922,7 @@ INSERT INTO price_settings (base) VALUES (50) ON CONFLICT DO NOTHING;</span>`;
             }, 4000);
         }
 
-        function showError(msg, el, btn) {
-            el.className = 'form-message error';
-            el.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + msg;
-            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit';
-            btn.disabled = false;
-        }
+        
 
     </script>
 
