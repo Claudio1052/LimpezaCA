@@ -2925,6 +2925,25 @@ INSERT INTO public.price_settings (base) VALUES (50) ON CONFLICT DO NOTHING;`;
             else if (tab === 'talent') loadTalentBank();
         }
 
+
+        // ============================================================
+        // WHATSAPP PHONE NORMALIZER
+        // Canadian/US numbers: strip everything, ensure starts with 1
+        // ============================================================
+        function waPhone(raw) {
+            if (!raw) return '';
+            // Remove all non-digits
+            let digits = raw.replace(/\D/g, '');
+            // If 11 digits starting with 1 → already correct (e.g. 15192806261)
+            if (digits.length === 11 && digits.startsWith('1')) return digits;
+            // If 10 digits → add country code 1 (Canada/US)
+            if (digits.length === 10) return '1' + digits;
+            // If already has + prefix stripped and > 11 → use as-is
+            if (digits.length > 10) return digits;
+            // Fallback: return whatever we have
+            return digits;
+        }
+
         // ============================================================
         // REMARKETING
         // ============================================================
@@ -3154,7 +3173,7 @@ Sabrina & the Rio Cleaning Team`
                     const waMsg = encodeURIComponent(`*${subject}*
 
 ${personalBody}`);
-                    const waUrl = phone ? `https://wa.me/1${phone}?text=${waMsg}` : `https://wa.me/?text=${waMsg}`;
+                    const waUrl = phone ? `https://wa.me/${waPhone(phone)}?text=${waMsg}` : `https://wa.me/?text=${waMsg}`;
                     html += `<a href="${waUrl}" target="_blank" class="btn btn-success btn-small"><i class="fab fa-whatsapp"></i> WhatsApp</a>`;
                 }
                 html += '</div>';
@@ -3206,7 +3225,7 @@ ${personalBody}`);
                     <td style="padding:12px"><div style="display:flex;gap:5px;flex-wrap:wrap">
                         <button class="btn btn-primary btn-small" onclick="viewTalent('${r.id}')"><i class="fas fa-eye"></i></button>
                         <a href="mailto:${r.email||''}?subject=Rio Cleaning — Your Application&body=Hi ${r.full_name}," class="btn btn-success btn-small"><i class="fas fa-envelope"></i></a>
-                        <a href="https://wa.me/1${(r.phone||'').replace(/\D/g,'')}?text=Hi ${encodeURIComponent(r.full_name)}" target="_blank" class="btn btn-secondary btn-small"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://wa.me/${waPhone(r.phone)}?text=Hi ${encodeURIComponent(r.full_name)}" target="_blank" class="btn btn-secondary btn-small"><i class="fab fa-whatsapp"></i></a>
                         <button class="btn btn-danger btn-small" onclick="deleteTalent('${r.id}')"><i class="fas fa-trash"></i></button>
                     </div></td>
                 </tr>`).join('');
@@ -3244,7 +3263,7 @@ ${personalBody}`);
                     ${r.bio?`<div style="background:#f8fafc;border-radius:12px;padding:15px"><strong>About:</strong><p style="margin:8px 0 0">${r.bio}</p></div>`:''}
                     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:5px;">
                         <a href="mailto:${r.email}?subject=Rio Cleaning — Your Application" class="btn btn-success"><i class="fas fa-envelope"></i> Email Applicant</a>
-                        <a href="https://wa.me/1${(r.phone||'').replace(/\D/g,'')}?text=Hi ${encodeURIComponent(r.full_name)}, this is Rio Cleaning!" target="_blank" class="btn btn-primary"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                        <a href="https://wa.me/${waPhone(r.phone)}?text=Hi ${encodeURIComponent(r.full_name)}, this is Rio Cleaning!" target="_blank" class="btn btn-primary"><i class="fab fa-whatsapp"></i> WhatsApp</a>
                     </div>
                 </div>`;
             document.getElementById('talentViewModal').style.display = 'flex';
