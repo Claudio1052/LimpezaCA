@@ -87,7 +87,7 @@
         }
         .navbar .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 0 20px; }
         .logo { display: flex; align-items: center; }
-        .logo-img { height: 50px; width: auto; object-fit: contain; }
+        .logo-img { height: 65px; width: auto; object-fit: contain; max-width: 200px; display: block; }
         .nav-contact-info { display: flex; align-items: center; gap: 25px; margin-left: 20px; flex-wrap: wrap; }
         .nav-contact-item { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--gray-800); }
         .nav-contact-item i { color: var(--primary-color); font-size: 1rem; width: 16px; }
@@ -502,6 +502,7 @@
                 <li><a href="#testimonials" onclick="scrollToSection('testimonials')">Reviews</a></li>
                 <li><a href="#about" onclick="scrollToSection('about')">About</a></li>
                 <li><a href="#" onclick="showScheduleForm()">Schedule</a></li>
+                <li><a href="#" onclick="showWorkWithUs()">Work With Us</a></li>
             </ul>
         </div>
     </nav>
@@ -604,6 +605,45 @@
             </div>
         </section>
     </div>
+
+        <section id="vision-values" style="padding: 60px 0; background: linear-gradient(135deg, #1a2a4f 0%, #0f1a33 100%); color: white;">
+            <div class="container">
+                <h2 class="section-title" style="color: white;">Our Vision & Values</h2>
+                <h2 class="section-title" style="color: white; display:block; text-align:center; width:100%; margin-bottom:3rem; font-size: clamp(1.75rem, 4vw, 2.5rem);"></h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; margin-top: 20px;">
+                    <div style="background: rgba(255,255,255,0.07); border-radius: 16px; padding: 30px; border-top: 4px solid #ffd700; text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 15px;">🎯</div>
+                        <h3 style="color: #ffd700; font-size: 1.2rem; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Our Vision</h3>
+                        <p style="color: rgba(255,255,255,0.85); font-size: 0.97rem; line-height: 1.8; margin: 0;">To be Calgary's most trusted cleaning company — built on integrity, excellence, and genuine care for every home and business we serve.</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.07); border-radius: 16px; padding: 30px; border-top: 4px solid #2a6eff; text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 15px;">💎</div>
+                        <h3 style="color: #2a6eff; font-size: 1.2rem; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; color: #7eb3ff;">Quality First</h3>
+                        <p style="color: rgba(255,255,255,0.85); font-size: 0.97rem; line-height: 1.8; margin: 0;">We don't cut corners. Every job is completed with attention to detail, professional-grade products, and a team that takes pride in delivering real, visible results.</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.07); border-radius: 16px; padding: 30px; border-top: 4px solid #00a896; text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 15px;">🤝</div>
+                        <h3 style="color: #00a896; font-size: 1.2rem; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Trust & Reliability</h3>
+                        <p style="color: rgba(255,255,255,0.85); font-size: 0.97rem; line-height: 1.8; margin: 0;">Your home is your sanctuary. We are bonded, insured, and background-checked — so you can feel completely safe leaving us with what matters most to you.</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.07); border-radius: 16px; padding: 30px; border-top: 4px solid #ff6b6b; text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 15px;">🌿</div>
+                        <h3 style="color: #ff6b6b; font-size: 1.2rem; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Eco-Conscious</h3>
+                        <p style="color: rgba(255,255,255,0.85); font-size: 0.97rem; line-height: 1.8; margin: 0;">We use environmentally preferable, non-toxic cleaning products — safe for your children, your pets, and the planet. Clean home, clean conscience.</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.07); border-radius: 16px; padding: 30px; border-top: 4px solid #ffd700; text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 15px;">❤️</div>
+                        <h3 style="color: #ffd700; font-size: 1.2rem; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Community</h3>
+                        <p style="color: rgba(255,255,255,0.85); font-size: 0.97rem; line-height: 1.8; margin: 0;">Proudly serving Calgary, Chestermere, Airdrie, and Okotoks. As a Brazilian-Canadian owned business, we bring warmth, dedication, and passion to every clean.</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.07); border-radius: 16px; padding: 30px; border-top: 4px solid #7eb3ff; text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 15px;">⭐</div>
+                        <h3 style="color: #7eb3ff; font-size: 1.2rem; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Satisfaction Guaranteed</h3>
+                        <p style="color: rgba(255,255,255,0.85); font-size: 0.97rem; line-height: 1.8; margin: 0;">If you're not 100% satisfied, we return within 24 hours to make it right — at no extra cost. Your happiness is our standard, not our exception.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
     <!-- ===================== SERVICE DETAIL PAGES ===================== -->
     <!-- Move In/Out -->
@@ -985,6 +1025,85 @@
         </div>
     </div>
 
+
+    <!-- ===================== WORK WITH US PAGE ===================== -->
+    <div id="workWithUsPage" class="schedule-form" style="display:none; background: linear-gradient(135deg, #f0f4ff 0%, #e8f4ff 100%);">
+        <div class="container" style="max-width:750px;">
+            <div class="form-container">
+                <div class="form-header" style="background: linear-gradient(135deg, #1a2a4f, #0f1a33);">
+                    <div onclick="showHomePage()" style="display:inline-flex;align-items:center;gap:8px;color:rgba(255,255,255,0.7);font-size:0.9rem;margin-bottom:15px;cursor:pointer;"><i class="fas fa-arrow-left"></i> Back to Home</div>
+                    <h2 style="color:white;"><i class="fas fa-star"></i> Work With Us</h2>
+                    <p style="color:rgba(255,255,255,0.85);">Join the Rio Cleaning family! We're always looking for dedicated, hardworking people to grow with us in Calgary and surrounding areas.</p>
+                </div>
+                <div class="form-content">
+                    <div style="background: linear-gradient(135deg,rgba(42,110,255,0.06),rgba(0,168,150,0.06)); border-radius:12px; padding:20px; margin-bottom:25px; border-left:4px solid var(--secondary-color);">
+                        <h3 style="color:var(--primary-color);margin-bottom:8px;font-size:1.1rem;"><i class="fas fa-heart"></i> Why Join Us?</h3>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:0.9rem;color:var(--gray-800);">
+                            <div>✅ Flexible schedules</div><div>✅ Competitive pay</div>
+                            <div>✅ Friendly team environment</div><div>✅ Growth opportunities</div>
+                            <div>✅ Training provided</div><div>✅ Calgary & area routes</div>
+                        </div>
+                    </div>
+                    <form id="talentForm">
+                        <div class="form-section">
+                            <h3><i class="fas fa-user"></i> Personal Information</h3>
+                            <div class="form-grid">
+                                <div class="form-group"><label><i class="fas fa-user-circle"></i> Full Name <span class="required">*</span></label><input type="text" id="talentName" required placeholder="Your full name"></div>
+                                <div class="form-group"><label><i class="fas fa-phone"></i> Phone <span class="required">*</span></label><input type="tel" id="talentPhone" required placeholder="(403) 000-0000"></div>
+                                <div class="form-group"><label><i class="fas fa-envelope"></i> Email <span class="required">*</span></label><input type="email" id="talentEmail" required placeholder="your@email.com"></div>
+                                <div class="form-group"><label><i class="fas fa-map-marker-alt"></i> City / Area</label><input type="text" id="talentCity" placeholder="e.g. Calgary, Airdrie"></div>
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <h3><i class="fas fa-briefcase"></i> Experience & Availability</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label><i class="fas fa-clock"></i> Availability</label>
+                                    <select id="talentAvailability">
+                                        <option value="">Select</option>
+                                        <option value="full-time">Full-Time</option>
+                                        <option value="part-time">Part-Time</option>
+                                        <option value="weekends">Weekends Only</option>
+                                        <option value="flexible">Flexible</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fas fa-car"></i> Own Transportation?</label>
+                                    <select id="talentTransport">
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fas fa-language"></i> Languages</label>
+                                    <input type="text" id="talentLanguages" placeholder="e.g. English, Portuguese">
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fas fa-star"></i> Cleaning Experience (years)</label>
+                                    <select id="talentExperience">
+                                        <option value="none">No experience (will train)</option>
+                                        <option value="less1">Less than 1 year</option>
+                                        <option value="1-2">1–2 years</option>
+                                        <option value="3-5">3–5 years</option>
+                                        <option value="5+">5+ years</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="grid-column:span 2;">
+                                    <label><i class="fas fa-comment"></i> Tell us about yourself</label>
+                                    <textarea id="talentBio" rows="3" placeholder="Why do you want to work with us? Any special skills or experience?"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Submit Application</button>
+                        </div>
+                        <div id="talentMessage" class="form-message"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Schedule Form -->
     <div id="scheduleFormContainer" class="schedule-form" style="display: none;">
         <div class="container">
@@ -1347,9 +1466,11 @@
                         <button class="btn btn-secondary btn-small" onclick="document.getElementById('schemaBanner').style.display='none'"><i class="fas fa-times"></i> Dismiss</button>
                     </div>
                 </div>
-                <div class="dashboard-tabs">
-                    <div class="dashboard-tab active" onclick="switchAdminTab('requests')">Service Requests</div>
-                    <div class="dashboard-tab" onclick="switchAdminTab('prices')">Price Settings</div>
+                <div class="dashboard-tabs" style="flex-wrap:wrap;">
+                    <div class="dashboard-tab active" onclick="switchAdminTab('requests')"><i class="fas fa-clipboard-list"></i> Requests</div>
+                    <div class="dashboard-tab" onclick="switchAdminTab('remarketing')"><i class="fas fa-bullhorn"></i> Marketing</div>
+                    <div class="dashboard-tab" onclick="switchAdminTab('talent')"><i class="fas fa-users"></i> Talent Bank</div>
+                    <div class="dashboard-tab" onclick="switchAdminTab('prices')"><i class="fas fa-tags"></i> Prices</div>
                 </div>
                 
                 <div id="requestsTab" class="dashboard-tab-content active">
@@ -1380,6 +1501,124 @@
                     </div>
                 </div>
                 
+
+                <!-- ═══════════════════ REMARKETING TAB ═══════════════════ -->
+                <div id="remarketingTab" class="dashboard-tab-content">
+                    <div style="background:white;border-radius:16px;padding:30px;box-shadow:var(--shadow-md);margin-bottom:25px;">
+                        <h3 style="color:var(--primary-color);margin-bottom:20px;"><i class="fas fa-bullhorn"></i> Mass Marketing Campaign</h3>
+                        <p style="color:var(--gray-600);margin-bottom:20px;">Select clients and send personalized mass messages via Email or WhatsApp. Perfect for seasonal promotions, holidays, and reminders.</p>
+
+                        <!-- Campaign Templates -->
+                        <div style="margin-bottom:25px;">
+                            <label style="font-weight:600;display:block;margin-bottom:10px;"><i class="fas fa-magic"></i> Quick Campaign Templates</label>
+                            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;">
+                                <button class="btn btn-secondary btn-small" onclick="loadTemplate('spring')">🌸 Spring Cleaning</button>
+                                <button class="btn btn-secondary btn-small" onclick="loadTemplate('summer')">☀️ Summer Special</button>
+                                <button class="btn btn-secondary btn-small" onclick="loadTemplate('fall')">🍂 Fall Deep Clean</button>
+                                <button class="btn btn-secondary btn-small" onclick="loadTemplate('winter')">❄️ Winter / Holidays</button>
+                                <button class="btn btn-secondary btn-small" onclick="loadTemplate('newYear')">🎉 New Year</button>
+                                <button class="btn btn-secondary btn-small" onclick="loadTemplate('canada')">🇨🇦 Canada Day</button>
+                                <button class="btn btn-secondary btn-small" onclick="loadTemplate('referral')">🤝 Refer a Friend</button>
+                                <button class="btn btn-secondary btn-small" onclick="loadTemplate('reactivate')">💌 We Miss You</button>
+                            </div>
+                        </div>
+
+                        <!-- Message Composer -->
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+                            <div class="form-group">
+                                <label style="font-weight:600;"><i class="fas fa-envelope"></i> Email Subject</label>
+                                <input type="text" id="mktSubject" placeholder="e.g. Spring is here — Book your clean! 🌸" style="width:100%;padding:10px;border:2px solid var(--gray-300);border-radius:8px;">
+                            </div>
+                            <div class="form-group">
+                                <label style="font-weight:600;"><i class="fas fa-paper-plane"></i> Channel</label>
+                                <select id="mktChannel" style="width:100%;padding:10px;border:2px solid var(--gray-300);border-radius:8px;">
+                                    <option value="email">📧 Email (via mailto)</option>
+                                    <option value="whatsapp">💬 WhatsApp</option>
+                                    <option value="both">📧 + 💬 Both</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom:20px;">
+                            <label style="font-weight:600;"><i class="fas fa-align-left"></i> Message Body</label>
+                            <textarea id="mktBody" rows="8" style="width:100%;padding:12px;border:2px solid var(--gray-300);border-radius:8px;font-family:inherit;font-size:0.95rem;" placeholder="Write your message here... Use {name} to personalize with client name."></textarea>
+                        </div>
+
+                        <!-- Client Selection -->
+                        <div style="background:var(--gray-100);border-radius:12px;padding:20px;margin-bottom:20px;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;flex-wrap:wrap;gap:10px;">
+                                <label style="font-weight:600;"><i class="fas fa-users"></i> Select Recipients</label>
+                                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                                    <button class="btn btn-secondary btn-small" onclick="selectAllClients(true)"><i class="fas fa-check-double"></i> Select All</button>
+                                    <button class="btn btn-secondary btn-small" onclick="selectAllClients(false)"><i class="fas fa-times"></i> Deselect All</button>
+                                    <button class="btn btn-secondary btn-small" onclick="loadClientsForMarketing()"><i class="fas fa-sync-alt"></i> Refresh</button>
+                                </div>
+                            </div>
+                            <div id="mktClientList" style="max-height:300px;overflow-y:auto;">
+                                <p style="color:var(--gray-600);text-align:center;padding:20px;"><i class="fas fa-spinner fa-spin"></i> Loading clients...</p>
+                            </div>
+                            <div id="mktSelectedCount" style="margin-top:10px;font-weight:600;color:var(--primary-color);font-size:0.9rem;"></div>
+                        </div>
+
+                        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                            <button class="btn btn-primary" onclick="sendMassMarketing()"><i class="fas fa-paper-plane"></i> Send Campaign</button>
+                            <button class="btn btn-secondary" onclick="previewMarketing()"><i class="fas fa-eye"></i> Preview</button>
+                        </div>
+                        <div id="mktResult" style="margin-top:15px;"></div>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════ TALENT BANK TAB ═══════════════════ -->
+                <div id="talentTab" class="dashboard-tab-content">
+                    <div style="background:white;border-radius:16px;padding:30px;box-shadow:var(--shadow-md);">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;flex-wrap:wrap;gap:15px;">
+                            <h3 style="color:var(--primary-color);margin:0;"><i class="fas fa-users"></i> Talent Bank — Job Applications</h3>
+                            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                                <button class="btn btn-secondary btn-small" onclick="loadTalentBank()"><i class="fas fa-sync-alt"></i> Refresh</button>
+                                <button class="btn btn-primary btn-small" onclick="exportTalent()"><i class="fas fa-download"></i> Export</button>
+                            </div>
+                        </div>
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:15px;margin-bottom:25px;">
+                            <div style="background:linear-gradient(135deg,#f0f5ff,#e8f4ff);border-radius:12px;padding:15px;text-align:center;border-left:4px solid var(--primary-color);">
+                                <div style="font-size:1.8rem;font-weight:800;color:var(--primary-color)" id="talentTotal">0</div>
+                                <div style="font-size:0.85rem;color:var(--gray-600)">Total</div>
+                            </div>
+                            <div style="background:linear-gradient(135deg,#f0fff4,#e8fff0);border-radius:12px;padding:15px;text-align:center;border-left:4px solid #00c853;">
+                                <div style="font-size:1.8rem;font-weight:800;color:#00c853" id="talentNew">0</div>
+                                <div style="font-size:0.85rem;color:var(--gray-600)">New</div>
+                            </div>
+                            <div style="background:linear-gradient(135deg,#fffbf0,#fff8e0);border-radius:12px;padding:15px;text-align:center;border-left:4px solid #ff9800;">
+                                <div style="font-size:1.8rem;font-weight:800;color:#ff9800" id="talentReviewing">0</div>
+                                <div style="font-size:0.85rem;color:var(--gray-600)">Reviewing</div>
+                            </div>
+                            <div style="background:linear-gradient(135deg,#f0f5ff,#e8f4ff);border-radius:12px;padding:15px;text-align:center;border-left:4px solid #9c27b0;">
+                                <div style="font-size:1.8rem;font-weight:800;color:#9c27b0" id="talentHired">0</div>
+                                <div style="font-size:0.85rem;color:var(--gray-600)">Hired</div>
+                            </div>
+                        </div>
+                        <!-- Filter -->
+                        <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+                            <select id="talentStatusFilter" onchange="loadTalentBank()" style="padding:8px 12px;border:2px solid var(--gray-300);border-radius:8px;">
+                                <option value="all">All Status</option>
+                                <option value="new">New</option>
+                                <option value="reviewing">Reviewing</option>
+                                <option value="hired">Hired</option>
+                                <option value="declined">Declined</option>
+                            </select>
+                            <input type="text" id="talentSearch" placeholder="Search name or email..." onkeyup="loadTalentBank()" style="flex:1;padding:8px 12px;border:2px solid var(--gray-300);border-radius:8px;min-width:150px;">
+                        </div>
+                        <div class="table-container">
+                            <table style="width:100%;border-collapse:collapse;min-width:700px;">
+                                <thead style="background:linear-gradient(135deg,var(--dark-color),#1a202c);">
+                                    <tr><th style="padding:12px;text-align:left;color:white">Name</th><th style="padding:12px;text-align:left;color:white">Contact</th><th style="padding:12px;text-align:left;color:white">Availability</th><th style="padding:12px;text-align:left;color:white">Experience</th><th style="padding:12px;text-align:left;color:white">Transport</th><th style="padding:12px;text-align:left;color:white">Status</th><th style="padding:12px;text-align:left;color:white">Actions</th></tr>
+                                </thead>
+                                <tbody id="talentTableBody">
+                                    <tr><td colspan="7" style="text-align:center;padding:30px;color:var(--gray-600)"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Price Settings Tab - Enhanced with DB integration -->
                 <div id="pricesTab" class="dashboard-tab-content">
                     <div class="price-settings">
@@ -1708,6 +1947,7 @@ CREATE TRIGGER update_sr_updated_at BEFORE UPDATE ON public.service_requests
             initAdminPanel();
             initEditModal();
             initConditionalFields();
+            initTalentForm();
             document.getElementById('currentYear').textContent = new Date().getFullYear();
             updateConditionalFields();
             loadPriceSettings(false); // load for schedule form estimate
@@ -2039,6 +2279,7 @@ CREATE TRIGGER update_sr_updated_at BEFORE UPDATE ON public.service_requests
             document.getElementById('carpetPage').style.display = 'none';
             document.getElementById('scheduleFormContainer').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'none';
+            const wwu = document.getElementById('workWithUsPage'); if (wwu) wwu.style.display = 'none';
             ['move','construction','commercial','church','residential','rv'].forEach(s => {
                 const el = document.getElementById('servicePage-' + s);
                 if (el) el.style.display = 'none';
@@ -2621,6 +2862,470 @@ INSERT INTO public.price_settings (base) VALUES (50) ON CONFLICT DO NOTHING;`;
             }, 300);
         }
 
+
+        // ============================================================
+        // WORK WITH US — FORM + NAVIGATION
+        // ============================================================
+        function showWorkWithUs() {
+            hideAllPages();
+            document.getElementById('workWithUsPage').style.display = 'block';
+            window.scrollTo(0,0);
+            closeMobileMenu();
+        }
+
+        function initTalentForm() {
+            const form = document.getElementById('talentForm');
+            if (!form) return;
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const btn = form.querySelector('button[type="submit"]');
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+                btn.disabled = true;
+                const data = {
+                    full_name:    document.getElementById('talentName').value,
+                    phone:        document.getElementById('talentPhone').value,
+                    email:        document.getElementById('talentEmail').value,
+                    city:         document.getElementById('talentCity').value,
+                    availability: document.getElementById('talentAvailability').value,
+                    has_transport:document.getElementById('talentTransport').value,
+                    languages:    document.getElementById('talentLanguages').value,
+                    experience:   document.getElementById('talentExperience').value,
+                    bio:          document.getElementById('talentBio').value,
+                    status:       'new',
+                    created_at:   new Date().toISOString()
+                };
+                const msg = document.getElementById('talentMessage');
+                const { error } = await sb.insert('talent_bank', data);
+                if (!error) {
+                    msg.className = 'form-message success';
+                    msg.innerHTML = '<i class="fas fa-check-circle"></i> Application submitted! We'll be in touch soon. 🎉';
+                    form.reset();
+                    setTimeout(() => showHomePage(), 3000);
+                } else {
+                    msg.className = 'form-message error';
+                    msg.style.display = 'block';
+                    msg.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error: ' + (error.message || JSON.stringify(error));
+                }
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Application';
+                btn.disabled = false;
+            });
+        }
+
+        // ============================================================
+        // ADMIN — SWITCH TABS (extended)
+        // ============================================================
+        function switchAdminTab(tab) {
+            const tabMap = { requests:0, remarketing:1, talent:2, prices:3 };
+            const idx = tabMap[tab] ?? 0;
+            document.querySelectorAll('.dashboard-tab').forEach((t,i) => t.classList.toggle('active', i === idx));
+            document.querySelectorAll('.dashboard-tab-content').forEach((c,i) => c.classList.toggle('active', i === idx));
+            if (tab === 'requests') loadServiceRequests(1);
+            else if (tab === 'prices') loadPriceSettings(true);
+            else if (tab === 'remarketing') loadClientsForMarketing();
+            else if (tab === 'talent') loadTalentBank();
+        }
+
+        // ============================================================
+        // REMARKETING
+        // ============================================================
+        let mktClients = [];
+
+        const MKT_TEMPLATES = {
+            spring: {
+                subject: '🌸 Spring Cleaning Special — Rio Cleaning is Ready!',
+                body: `Hi {name},
+
+Spring has arrived in Calgary and there's no better time to freshen up your home! 🌸
+
+At Rio Cleaning, we specialize in deep cleaning that goes beyond the surface — removing winter grime, salt residue, and allergens from every corner.
+
+✅ Professional & Insured
+✅ Eco-friendly products
+✅ Satisfaction Guaranteed
+
+Book your Spring clean this week and enjoy priority scheduling!
+
+📞 519-280-6261
+📧 riocleaningyyc@gmail.com
+
+Best regards,
+Rio Cleaning Services Corp.
+Calgary, AB | BN: 722688363`
+            },
+            summer: {
+                subject: '☀️ Summer Refresh — Rio Cleaning Has You Covered!',
+                body: `Hey {name}! ☀️
+
+Summer is here and we want to help you enjoy it in a spotless home!
+
+Whether it's a move-out clean, a summer deep clean, or commercial maintenance — Rio Cleaning delivers real results, not just surface wipes.
+
+🏡 Residential | 🏢 Commercial | 🚐 RV Cleaning | 🛋️ Carpet
+
+Call or text us to schedule your summer clean:
+📞 519-280-6261
+
+See you soon!
+Sabrina & the Rio Cleaning Team
+riocleaningyyc@gmail.com`
+            },
+            fall: {
+                subject: '🍂 Fall Deep Clean — Get Ready for Winter!',
+                body: `Hi {name},
+
+Fall is the perfect time to deep clean your home before the long Canadian winter sets in! 🍂❄️
+
+Our fall deep clean includes:
+• Thorough kitchen and bathroom cleaning
+• Carpet and upholstery freshening
+• Window tracks, baseboards, and vents
+• Full interior from top to bottom
+
+Don't wait — spots fill up fast in October!
+
+📞 519-280-6261
+📍 Calgary, Chestermere, Airdrie, Okotoks
+
+Warm regards,
+Rio Cleaning Services Corp.`
+            },
+            winter: {
+                subject: '❄️ Happy Holidays from Rio Cleaning! 🎄',
+                body: `Dear {name},
+
+Wishing you and your family a warm and joyful holiday season! 🎄❄️
+
+Before your guests arrive, let Rio Cleaning make your home shine! We offer last-minute bookings throughout December.
+
+🎁 Gift a cleaning to someone you love — a spotless home is the best gift!
+
+Book now:
+📞 519-280-6261
+📧 riocleaningyyc@gmail.com
+
+Happy Holidays!
+Rio Cleaning Services Corp.
+Calgary, AB`
+            },
+            newYear: {
+                subject: '🎉 New Year, Fresh Start — Book Your Clean!',
+                body: `Happy New Year, {name}! 🎉
+
+Start 2025 fresh with a professional deep clean from Rio Cleaning! New year, clean slate — let us take care of the cleaning so you can focus on your goals.
+
+✨ First-time deep clean special available for January!
+
+Reach out today:
+📞 519-280-6261
+📧 riocleaningyyc@gmail.com
+
+Cheers to a clean and happy new year!
+Rio Cleaning Team`
+            },
+            canada: {
+                subject: '🇨🇦 Happy Canada Day from Rio Cleaning!',
+                body: `Hi {name}! 🇨🇦
+
+Happy Canada Day from all of us at Rio Cleaning!
+
+We're proud to serve the beautiful city of Calgary and surrounding areas. Thank you for being part of our community — clients like you are what make our work so meaningful.
+
+Have a wonderful long weekend! And whenever you need a spotless space, we're just a message away. 🏡
+
+📞 519-280-6261
+@riocleaningyyc
+
+With gratitude,
+Rio Cleaning Services Corp.`
+            },
+            referral: {
+                subject: '🤝 Refer a Friend & Save — Rio Cleaning',
+                body: `Hi {name}!
+
+Do you know someone who could use a great cleaning service? 🏡
+
+Refer a friend to Rio Cleaning and BOTH of you get a discount on your next service!
+
+📣 How it works:
+1. Share our number: 519-280-6261
+2. Have them mention your name when booking
+3. You both save on your next clean!
+
+Thank you for trusting us with your home. We appreciate your support!
+
+Rio Cleaning Services Corp.
+riocleaningyyc@gmail.com`
+            },
+            reactivate: {
+                subject: '💌 We Miss You! — Rio Cleaning',
+                body: `Hi {name},
+
+It's been a while and we miss taking care of your space! 💌
+
+At Rio Cleaning, we're always here when you need us — whether it's a quick refresh or a full deep clean. We've been serving Calgary since day one with the same commitment to quality.
+
+Ready to book? We'd love to have you back!
+
+📞 519-280-6261
+📧 riocleaningyyc@gmail.com
+💬 WhatsApp: 519-280-6261
+
+See you soon!
+Sabrina & the Rio Cleaning Team`
+            }
+        };
+
+        function loadTemplate(key) {
+            const t = MKT_TEMPLATES[key];
+            if (!t) return;
+            document.getElementById('mktSubject').value = t.subject;
+            document.getElementById('mktBody').value = t.body;
+            showToast('Template loaded! Customize as needed.', 'success');
+        }
+
+        async function loadClientsForMarketing() {
+            const container = document.getElementById('mktClientList');
+            container.innerHTML = '<p style="text-align:center;padding:20px;color:var(--gray-600)"><i class="fas fa-spinner fa-spin"></i> Loading...</p>';
+            try {
+                const { data, error } = await sb.select('service_requests', 'select=id,full_name,email,phone,service_type,cleaning_date&order=created_at.desc');
+                if (error) throw new Error(error.message);
+                mktClients = data || [];
+                // Deduplicate by email
+                const seen = new Set();
+                const unique = mktClients.filter(r => {
+                    if (seen.has(r.email)) return false;
+                    seen.add(r.email); return true;
+                });
+                mktClients = unique;
+                if (!mktClients.length) { container.innerHTML = '<p style="text-align:center;padding:20px;color:var(--gray-600)">No clients found.</p>'; return; }
+                container.innerHTML = mktClients.map(r => `
+                    <label style="display:flex;align-items:center;gap:12px;padding:10px;border-radius:8px;cursor:pointer;margin-bottom:6px;background:white;border:1px solid var(--gray-200);transition:all 0.2s;" onmouseover="this.style.borderColor='var(--primary-color)'" onmouseout="this.style.borderColor='var(--gray-200)'">
+                        <input type="checkbox" class="mkt-client-cb" data-id="${r.id}" data-name="${r.full_name}" data-email="${r.email}" data-phone="${r.phone||''}" checked style="width:16px;height:16px;" onchange="updateMktCount()">
+                        <div style="flex:1;">
+                            <div style="font-weight:600">${r.full_name}</div>
+                            <div style="font-size:0.82rem;color:var(--gray-600)">${r.email} · ${r.phone||''} · ${r.service_type||''}</div>
+                        </div>
+                    </label>`).join('');
+                updateMktCount();
+            } catch(e) {
+                container.innerHTML = `<p style="color:var(--accent-color);padding:20px">Error: ${e.message}</p>`;
+            }
+        }
+
+        function selectAllClients(sel) {
+            document.querySelectorAll('.mkt-client-cb').forEach(cb => cb.checked = sel);
+            updateMktCount();
+        }
+
+        function updateMktCount() {
+            const sel = document.querySelectorAll('.mkt-client-cb:checked').length;
+            const total = document.querySelectorAll('.mkt-client-cb').length;
+            document.getElementById('mktSelectedCount').textContent = `${sel} of ${total} clients selected`;
+        }
+
+        function sendMassMarketing() {
+            const subject = document.getElementById('mktSubject').value.trim();
+            const body = document.getElementById('mktBody').value.trim();
+            const channel = document.getElementById('mktChannel').value;
+            if (!subject || !body) { showToast('Please fill in subject and message', 'error'); return; }
+            const selected = [...document.querySelectorAll('.mkt-client-cb:checked')];
+            if (!selected.length) { showToast('Please select at least one client', 'error'); return; }
+
+            const result = document.getElementById('mktResult');
+            result.innerHTML = `<div style="background:var(--gray-100);border-radius:12px;padding:20px;">
+                <p style="font-weight:600;margin-bottom:15px"><i class="fas fa-info-circle" style="color:var(--primary-color)"></i> Opening ${selected.length} message(s)... Your browser may block multiple popups — please allow them.</p>
+                <div id="mktLinks" style="display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto;"></div>
+            </div>`;
+
+            const links = document.getElementById('mktLinks');
+            selected.forEach(cb => {
+                const name = cb.dataset.name;
+                const email = cb.dataset.email;
+                const phone = (cb.dataset.phone||'').replace(/\D/g,'');
+                const personalBody = body.replace(/{name}/gi, name);
+
+                let html = `<div style="display:flex;align-items:center;gap:8px;padding:8px;background:white;border-radius:8px;border:1px solid var(--gray-200);">
+                    <span style="flex:1;font-size:0.9rem;font-weight:600">${name}</span>`;
+                if (channel === 'email' || channel === 'both') {
+                    const mailto = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(personalBody)}`;
+                    html += `<a href="${mailto}" target="_blank" class="btn btn-primary btn-small"><i class="fas fa-envelope"></i> Email</a>`;
+                }
+                if (channel === 'whatsapp' || channel === 'both') {
+                    const waMsg = encodeURIComponent(`*${subject}*
+
+${personalBody}`);
+                    const waUrl = phone ? `https://wa.me/1${phone}?text=${waMsg}` : `https://wa.me/?text=${waMsg}`;
+                    html += `<a href="${waUrl}" target="_blank" class="btn btn-success btn-small"><i class="fab fa-whatsapp"></i> WhatsApp</a>`;
+                }
+                html += '</div>';
+                links.innerHTML += html;
+            });
+            showToast(`Campaign ready for ${selected.length} clients!`, 'success');
+        }
+
+        function previewMarketing() {
+            const subject = document.getElementById('mktSubject').value || '(no subject)';
+            const body = document.getElementById('mktBody').value.replace(/{name}/gi, 'John Doe').replace(/
+/g,'<br>');
+            const win = window.open('', '_blank', 'width=700,height=500');
+            win.document.write(`<html><head><title>Preview</title><style>body{font-family:Arial,sans-serif;padding:30px;max-width:600px;margin:0 auto;line-height:1.7} h2{color:#2a6eff}</style></head><body><h2>📧 ${subject}</h2><hr><div>${body}</div></body></html>`);
+        }
+
+        // ============================================================
+        // TALENT BANK — ADMIN
+        // ============================================================
+        async function loadTalentBank() {
+            const tbody = document.getElementById('talentTableBody');
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px"><i class="fas fa-spinner fa-spin"></i></td></tr>';
+            const statusFilter = document.getElementById('talentStatusFilter')?.value || 'all';
+            const search = document.getElementById('talentSearch')?.value.trim() || '';
+            try {
+                let qs = 'select=*&order=created_at.desc';
+                if (statusFilter !== 'all') qs += `&status=eq.${statusFilter}`;
+                if (search) qs += `&or=(full_name.ilike.*${search}*,email.ilike.*${search}*)`;
+                const { data, error } = await sb.select('talent_bank', qs);
+                if (error) throw new Error(error.message || JSON.stringify(error));
+                const all = data || [];
+                document.getElementById('talentTotal').textContent = all.length;
+                document.getElementById('talentNew').textContent = all.filter(r=>r.status==='new').length;
+                document.getElementById('talentReviewing').textContent = all.filter(r=>r.status==='reviewing').length;
+                document.getElementById('talentHired').textContent = all.filter(r=>r.status==='hired').length;
+                if (!all.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:#718096">📭 No applications found</td></tr>'; return; }
+                const statusColors = {new:'#00c853',reviewing:'#ff9800',hired:'#9c27b0',declined:'#ff6b6b'};
+                tbody.innerHTML = all.map(r => `<tr style="border-bottom:1px solid var(--gray-200)">
+                    <td style="padding:12px"><strong>${r.full_name||'N/A'}</strong><br><small>${r.city||''}</small></td>
+                    <td style="padding:12px">${r.phone||'N/A'}<br><small><a href="mailto:${r.email||''}">${r.email||''}</a></small></td>
+                    <td style="padding:12px">${r.availability||'—'}</td>
+                    <td style="padding:12px">${r.experience||'—'}</td>
+                    <td style="padding:12px">${r.has_transport==='yes'?'✅ Yes':'❌ No'}</td>
+                    <td style="padding:12px"><select onchange="updateTalentStatus('${r.id}',this.value)" style="padding:5px 8px;border-radius:8px;border:2px solid ${statusColors[r.status]||'#ccc'};font-weight:600;color:${statusColors[r.status]||'#333'}">
+                        <option value="new" ${r.status==='new'?'selected':''}>New</option>
+                        <option value="reviewing" ${r.status==='reviewing'?'selected':''}>Reviewing</option>
+                        <option value="hired" ${r.status==='hired'?'selected':''}>Hired</option>
+                        <option value="declined" ${r.status==='declined'?'selected':''}>Declined</option>
+                    </select></td>
+                    <td style="padding:12px"><div style="display:flex;gap:5px;flex-wrap:wrap">
+                        <button class="btn btn-primary btn-small" onclick="viewTalent('${r.id}')"><i class="fas fa-eye"></i></button>
+                        <a href="mailto:${r.email||''}?subject=Rio Cleaning — Your Application&body=Hi ${r.full_name}," class="btn btn-success btn-small"><i class="fas fa-envelope"></i></a>
+                        <a href="https://wa.me/1${(r.phone||'').replace(/\D/g,'')}?text=Hi ${encodeURIComponent(r.full_name)}" target="_blank" class="btn btn-secondary btn-small"><i class="fab fa-whatsapp"></i></a>
+                        <button class="btn btn-danger btn-small" onclick="deleteTalent('${r.id}')"><i class="fas fa-trash"></i></button>
+                    </div></td>
+                </tr>`).join('');
+            } catch(e) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:30px;color:#ff6b6b">❌ ${e.message}<br><small>Make sure the talent_bank table exists in Supabase.</small></td></tr>`;
+            }
+        }
+
+        async function updateTalentStatus(id, status) {
+            const { error } = await sb.update('talent_bank', { status }, { id });
+            if (!error) showToast('Status updated!', 'success');
+            else showToast('Error updating status', 'error');
+        }
+
+        async function viewTalent(id) {
+            const { data } = await sb.select('talent_bank', `select=*&id=eq.${id}&limit=1`);
+            if (!data || !data.length) return;
+            const r = data[0];
+            const dt = r.created_at ? new Date(r.created_at).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}) : 'N/A';
+            document.getElementById('talentViewBody').innerHTML = `
+                <div style="display:grid;gap:12px;">
+                    <div style="background:#f8fafc;border-radius:12px;padding:20px;border-left:4px solid var(--primary-color)">
+                        <h4 style="color:var(--primary-color);margin-bottom:10px"><i class="fas fa-user"></i> ${r.full_name}</h4>
+                        <p style="margin:4px 0">📞 ${r.phone||'N/A'}</p>
+                        <p style="margin:4px 0">📧 <a href="mailto:${r.email}">${r.email}</a></p>
+                        <p style="margin:4px 0">📍 ${r.city||'N/A'}</p>
+                        <p style="margin:4px 0">🗓️ Applied: ${dt}</p>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <div style="background:#f8fafc;border-radius:12px;padding:15px"><strong>Availability:</strong><br>${r.availability||'—'}</div>
+                        <div style="background:#f8fafc;border-radius:12px;padding:15px"><strong>Experience:</strong><br>${r.experience||'—'}</div>
+                        <div style="background:#f8fafc;border-radius:12px;padding:15px"><strong>Transport:</strong><br>${r.has_transport==='yes'?'✅ Yes':'❌ No'}</div>
+                        <div style="background:#f8fafc;border-radius:12px;padding:15px"><strong>Languages:</strong><br>${r.languages||'—'}</div>
+                    </div>
+                    ${r.bio?`<div style="background:#f8fafc;border-radius:12px;padding:15px"><strong>About:</strong><p style="margin:8px 0 0">${r.bio}</p></div>`:''}
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:5px;">
+                        <a href="mailto:${r.email}?subject=Rio Cleaning — Your Application" class="btn btn-success"><i class="fas fa-envelope"></i> Email Applicant</a>
+                        <a href="https://wa.me/1${(r.phone||'').replace(/\D/g,'')}?text=Hi ${encodeURIComponent(r.full_name)}, this is Rio Cleaning!" target="_blank" class="btn btn-primary"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                    </div>
+                </div>`;
+            document.getElementById('talentViewModal').style.display = 'flex';
+        }
+
+        async function deleteTalent(id) {
+            if (!confirm('Delete this application?')) return;
+            const { error } = await sb.delete('talent_bank', { id });
+            if (!error) { loadTalentBank(); showToast('Deleted', 'success'); }
+        }
+
+        function exportTalent() { showToast('Export: copy data from the table above', 'info'); }
+
+        // ============================================================
+        // FILE MANAGER — ATTACHMENTS
+        // ============================================================
+        let currentFileRequestId = null;
+        let attachedFiles = [];
+
+        function openFileManager(requestId) {
+            currentFileRequestId = requestId;
+            attachedFiles = [];
+            renderFileList();
+            document.getElementById('fileManagerModal').style.display = 'flex';
+        }
+
+        function handleFileSelect(event) {
+            const files = [...event.target.files];
+            files.forEach(f => { if (f.size <= 10*1024*1024) attachedFiles.push(f); else showToast(`${f.name} is too large (max 10MB)`, 'error'); });
+            renderFileList();
+        }
+
+        function handleFileDrop(event) {
+            event.preventDefault();
+            document.getElementById('fileUploadArea').style.background = 'var(--gray-100)';
+            const files = [...event.dataTransfer.files];
+            files.forEach(f => { if (f.size <= 10*1024*1024) attachedFiles.push(f); else showToast(`${f.name} is too large`, 'error'); });
+            renderFileList();
+        }
+
+        function renderFileList() {
+            const list = document.getElementById('attachedFilesList');
+            if (!attachedFiles.length) { list.innerHTML = ''; return; }
+            list.innerHTML = '<h4 style="margin-bottom:10px;color:var(--primary-color)"><i class="fas fa-paperclip"></i> Attached Files</h4>' +
+                attachedFiles.map((f,i) => {
+                    const icon = f.name.endsWith('.pdf') ? 'fa-file-pdf' : f.name.match(/\.(doc|docx)$/) ? 'fa-file-word' : 'fa-file-image';
+                    const color = f.name.endsWith('.pdf') ? '#ff6b6b' : f.name.match(/\.(doc|docx)$/) ? '#2a6eff' : '#00a896';
+                    return `<div style="display:flex;align-items:center;gap:10px;padding:10px;background:white;border-radius:8px;border:1px solid var(--gray-200);margin-bottom:6px;">
+                        <i class="fas ${icon}" style="color:${color};font-size:1.3rem;"></i>
+                        <div style="flex:1"><div style="font-weight:600;font-size:0.9rem">${f.name}</div><div style="font-size:0.8rem;color:var(--gray-600)">${(f.size/1024).toFixed(1)} KB</div></div>
+                        <button onclick="removeFile(${i})" style="background:none;border:none;cursor:pointer;color:var(--accent-color);font-size:1.1rem;"><i class="fas fa-times"></i></button>
+                    </div>`;
+                }).join('');
+        }
+
+        function removeFile(idx) {
+            attachedFiles.splice(idx, 1);
+            renderFileList();
+        }
+
+        function emailWithAttachments() {
+            const r = currentViewRequest;
+            if (!r && !currentFileRequestId) { showToast('No request selected', 'error'); return; }
+            const fileNames = attachedFiles.map(f => f.name).join(', ');
+            const subject = encodeURIComponent(`Rio Cleaning — Service Agreement${attachedFiles.length ? ' + Attachments' : ''}`);
+            const body = encodeURIComponent(`Please find attached the following files:
+${fileNames || '(no files selected)'}
+
+---
+Rio Cleaning Services Corp.
+519-280-6261 | riocleaningyyc@gmail.com`);
+            const email = r ? r.email : '';
+            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+            showToast('Email client opened. Please attach the files manually.', 'info');
+        }
+
+        // ============================================================
+        // HIDE ALL PAGES — update to include workWithUs
+        // ============================================================
+
         // ============================================================
         // SCHEDULE FORM SUBMISSION
         // ============================================================
@@ -2761,12 +3466,7 @@ INSERT INTO public.price_settings (base) VALUES (50) ON CONFLICT DO NOTHING;`;
             document.getElementById('searchFilter')?.addEventListener('input', debounce(function() { currentFilters.search = this.value; loadServiceRequests(1); }, 500));
         }
 
-        function switchAdminTab(tab) {
-            document.querySelectorAll('.dashboard-tab').forEach((t,i) => t.classList.toggle('active', (tab==='requests' && i===0)||(tab==='prices' && i===1)));
-            document.querySelectorAll('.dashboard-tab-content').forEach((c,i) => c.classList.toggle('active', (tab==='requests' && i===0)||(tab==='prices' && i===1)));
-            if (tab === 'requests') loadServiceRequests(1);
-            else loadPriceSettings(true);
-        }
+// switchAdminTab replaced by extended version above
 
         function handleAdminLogin() {
             const user = document.getElementById('adminUsername').value;
@@ -2890,6 +3590,7 @@ INSERT INTO public.price_settings (base) VALUES (50) ON CONFLICT DO NOTHING;`;
                             <button class="btn btn-secondary btn-small" onclick="editServiceRequest('${r.id}')" title="Edit"><i class="fas fa-edit"></i></button>
                             <button class="btn btn-success btn-small" onclick="printContract('${r.id}')" title="Print Contract"><i class="fas fa-print"></i></button>
                             <button class="btn btn-warning btn-small" onclick="emailContract('${r.id}')" title="Email Contract"><i class="fas fa-envelope"></i></button>
+                            <button class="btn btn-secondary btn-small" onclick="openFileManager('${r.id}')" title="Attachments"><i class="fas fa-paperclip"></i></button>
                             <button class="btn btn-danger btn-small" onclick="deleteServiceRequest('${r.id}')" title="Delete"><i class="fas fa-trash"></i></button>
                         </div></td>
                     </tr>`;
@@ -3230,5 +3931,41 @@ INSERT INTO price_settings (base) VALUES (50) ON CONFLICT DO NOTHING;</span>`;
         }
 
     </script>
+
+    <!-- ===================== FILE MANAGER MODAL ===================== -->
+    <div id="fileManagerModal" class="modal" style="display:none;">
+        <div class="modal-content" style="max-width:600px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-paperclip"></i> Attachments</h3>
+                <button class="close-modal" onclick="document.getElementById('fileManagerModal').style.display='none'">&times;</button>
+            </div>
+            <div class="modal-body" style="padding:25px;">
+                <p style="color:var(--gray-600);margin-bottom:20px;font-size:0.9rem;">Upload PDF or Word documents (contract, quote, photos) for this client. Files are stored in your browser for this session — use the email button to attach them manually.</p>
+                <div id="fileUploadArea" style="border:2px dashed var(--primary-color);border-radius:12px;padding:30px;text-align:center;cursor:pointer;transition:all 0.3s;background:var(--gray-100);" onclick="document.getElementById('fileInput').click()" ondragover="event.preventDefault();this.style.background='#e8f0ff'" ondragleave="this.style.background='var(--gray-100)'" ondrop="handleFileDrop(event)">
+                    <i class="fas fa-cloud-upload-alt" style="font-size:2rem;color:var(--primary-color);margin-bottom:10px;display:block;"></i>
+                    <strong>Click or drag & drop files here</strong>
+                    <p style="color:var(--gray-600);font-size:0.85rem;margin-top:5px;">PDF, DOC, DOCX, JPG, PNG — Max 10MB each</p>
+                    <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none;" onchange="handleFileSelect(event)">
+                </div>
+                <div id="attachedFilesList" style="margin-top:20px;"></div>
+                <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
+                    <button class="btn btn-success" onclick="emailWithAttachments()"><i class="fas fa-envelope"></i> Open Email with Attachments Note</button>
+                    <button class="btn btn-secondary" onclick="document.getElementById('fileManagerModal').style.display='none'"><i class="fas fa-times"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== TALENT VIEW MODAL ===================== -->
+    <div id="talentViewModal" class="modal" style="display:none;">
+        <div class="modal-content" style="max-width:600px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-tie"></i> Applicant Details</h3>
+                <button class="close-modal" onclick="document.getElementById('talentViewModal').style.display='none'">&times;</button>
+            </div>
+            <div class="modal-body" id="talentViewBody" style="padding:25px;"></div>
+        </div>
+    </div>
+
 </body>
 </html>
