@@ -275,9 +275,9 @@ canvas#sig-canvas{display:block;touch-action:none;width:100%;height:180px}
 .toast.err i{color:#f87171}
 
 /* ── EYE TOGGLE (senha visível) ── */
-.pw-wrap{position:relative}
-.pw-wrap .fi{padding-right:2.8rem}
-.btn-eye{position:absolute;right:.75rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--gray-400);font-size:.95rem;line-height:1;padding:0;transition:color .15s}
+.pw-wrap{display:flex;align-items:center;gap:.5rem}
+.pw-wrap .fi{flex:1}
+.btn-eye{background:none;border:none;cursor:pointer;color:var(--gray-400);font-size:1rem;line-height:1;padding:.3rem .4rem;transition:color .15s;flex-shrink:0}
 .btn-eye:hover{color:var(--navy-light)}
 
 /* ── SELEÇÃO TIPO (Associado / Doador) ── */
@@ -1206,12 +1206,6 @@ tr:hover td{background:var(--gray-50)}
         <div class="field"><label class="fl"><i class="fas fa-coins"></i> Valor da Contribuição Mensal <span class="req">*</span></label>
           <div class="ai-wrap" style="background:var(--white);border:1.5px solid var(--gray-200)"><span class="ai-cur">R$</span><input class="ai-input" id="df-valor" type="text" value="30,00" style="font-size:1.2rem"></div>
           <span style="font-size:.75rem;color:var(--gray-400);margin-top:.3rem">Mínimo: <strong style="color:var(--teal)">R$ 10,00</strong></span>
-        </div>
-        <div class="field"><label class="fl"><i class="fas fa-lock"></i> Senha <span class="req">*</span></label>
-          <div class="pw-wrap">
-            <input class="fi" id="df-senha" type="password" placeholder="Mínimo 6 caracteres">
-            <button class="btn-eye" type="button" onclick="togglePw('df-senha',this)" tabindex="-1"><i class="fas fa-eye"></i></button>
-          </div>
         </div>
       </div>
       <div style="display:flex;gap:.8rem;margin-top:1.5rem">
@@ -3794,7 +3788,6 @@ async function submitDonorForm(){
   const dia   = g('df-dia')?.value;
   const pgto  = g('df-pgto')?.value;
   const valor = parseFloat((g('df-valor')?.value||'30').replace(',','.'));
-  const senha = g('df-senha')?.value||'';
 
   if(!nome || nome.length < 3){ errMsg.textContent='Nome obrigatório (mín. 3 letras).'; errEl.classList.add('show'); return; }
   if(!email || !email.includes('@')){ errMsg.textContent='E-mail inválido.'; errEl.classList.add('show'); return; }
@@ -3802,25 +3795,18 @@ async function submitDonorForm(){
   if(!dia){ errMsg.textContent='Selecione o dia de pagamento.'; errEl.classList.add('show'); return; }
   if(!pgto){ errMsg.textContent='Selecione o tipo de pagamento.'; errEl.classList.add('show'); return; }
   if(isNaN(valor) || valor < 10){ errMsg.textContent='Valor mínimo: R$ 10,00.'; errEl.classList.add('show'); return; }
-  if(senha.length < 6){ errMsg.textContent='Senha deve ter mínimo 6 caracteres.'; errEl.classList.add('show'); return; }
 
   const btn = g('btn-donor-submit');
   btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Salvando...';
 
   try {
-    // Verifica se já existe como usuário
-    const {data: existeUser} = await sb.from('usuarios_associados').select('id').eq('email', email).maybeSingle();
+    // Usa a conta já logada (associadoLogado vem do cadastro de conta)
+    let userId = associadoLogado?.id || null;
 
-    let userId;
-    if(existeUser){
-      userId = existeUser.id;
-    } else {
-      const senhaHash = btoa(unescape(encodeURIComponent(senha)));
-      const {data: novoUser, error: errUser} = await sb.from('usuarios_associados').insert([{
-        nome, email, senha_hash: senhaHash, tipo: 'doador', criado_em: new Date().toISOString()
-      }]).select().single();
-      if(errUser) throw errUser;
-      userId = novoUser.id;
+    // Se não tiver conta logada, verifica se já existe pelo email
+    if(!userId){
+      const {data: existeUser} = await sb.from('usuarios_associados').select('id').eq('email', email).maybeSingle();
+      if(existeUser) userId = existeUser.id;
     }
 
     // Verifica se já existe como doador
@@ -3848,9 +3834,12 @@ async function submitDonorForm(){
     fecharDonorForm();
     toast('Cadastro como Doador realizado! ❤️');
 
-    // Loga automaticamente como doador
-    doadorLogado = {...novoDoador, usuario_id: userId};
+    // Redireciona para área do doador
+    doadorLogado = {...(associadoLogado||{}), ...novoDoador};
+    fichaDoador = novoDoador;
+    if(associadoLogado) localStorage.removeItem('assoc_sessao'); // era conta sem tipo definido
     localStorage.setItem('doador_sessao', JSON.stringify(doadorLogado));
+    associadoLogado = null;
     pagamentosDoador = await _buscarPagamentosDoador();
     renderAreaDoador();
     showView('view-doador');
