@@ -629,11 +629,11 @@
 
         /* Mobile menu toggle */
         .menu-toggle {
+            display: none;
             color: var(--dark-color);
             font-size: 1.4rem;
             width: 44px;
             height: 44px;
-            display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 10px;
@@ -1032,7 +1032,7 @@
         /* ── MOBILE ── */
         @media (max-width: 900px) {
             .navbar-top { display: none; }
-            .menu-toggle { display: flex; }
+            .menu-toggle { display: flex !important; }
             .nav-links {
                 position: fixed;
                 top: 72px; left: 0;
