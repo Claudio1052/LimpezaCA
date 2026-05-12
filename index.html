@@ -133,6 +133,8 @@
         .hero { position: relative; color: white; padding: clamp(60px, 12vh, 100px) 0; overflow: hidden; text-align: center; min-height: 520px; }
         .hero-video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
         .hero-video { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+        .hero-video-container picture { width: 100%; height: 100%; display: block; }
+        .hero-video-container picture img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
         .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 100%); z-index: 2; }
         .hero-content { max-width: 800px; margin: 0 auto; position: relative; z-index: 3; }
         @media (max-width: 768px) {
@@ -1175,7 +1177,10 @@
     <div id="mainContent">
         <section id="home" class="hero">
             <div class="hero-video-container">
-                <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/website%20rio%20cleaning2.png" alt="Rio Cleaning" class="hero-video">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Banner_Rio_Cleaning_Mobile.png">
+                    <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Banner_Rio_Cleaning_desktop.png" alt="Rio Cleaning" class="hero-video">
+                </picture>
                 <div class="hero-overlay"></div>
             </div>
             <div class="container">
