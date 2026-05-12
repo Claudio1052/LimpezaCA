@@ -141,6 +141,8 @@
             .hero {
                 min-height: unset;
                 padding: 0;
+                position: relative;
+                overflow: hidden;
             }
             .hero-video-container {
                 position: relative;
@@ -149,14 +151,17 @@
             }
             .hero-video-container picture {
                 width: 100%;
-                height: auto;
                 display: block;
+                /* crop bottom ~18% of mobile banner */
+                max-height: 82vw;
+                overflow: hidden;
             }
             .hero-video-container picture img {
                 width: 100%;
                 height: auto;
-                object-fit: unset;
                 display: block;
+                object-fit: unset;
+                margin-bottom: -18%;
             }
             .hero-overlay {
                 position: absolute;
@@ -165,7 +170,8 @@
             }
             .hero-content {
                 position: absolute;
-                top: 20%;
+                /* ~38% from top = below logo, above face */
+                top: 36%;
                 left: 50%;
                 transform: translateX(-50%);
                 width: 100%;
