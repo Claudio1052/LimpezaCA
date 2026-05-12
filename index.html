@@ -152,16 +152,15 @@
             .hero-video-container picture {
                 width: 100%;
                 display: block;
-                /* crop bottom ~18% of mobile banner */
-                max-height: 82vw;
                 overflow: hidden;
+                /* show top 78% of image, cutting the bottom text/button strip */
+                max-height: 78vw;
             }
             .hero-video-container picture img {
                 width: 100%;
                 height: auto;
                 display: block;
                 object-fit: unset;
-                margin-bottom: -18%;
             }
             .hero-overlay {
                 position: absolute;
@@ -170,8 +169,8 @@
             }
             .hero-content {
                 position: absolute;
-                /* ~38% from top = below logo, above face */
-                top: 36%;
+                /* below logo, above chest — roughly 52% down */
+                top: 52%;
                 left: 50%;
                 transform: translateX(-50%);
                 width: 100%;
