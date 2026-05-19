@@ -1211,8 +1211,8 @@
         <section id="home" class="hero">
             <div class="hero-video-container">
                 <picture>
-                    <source media="(max-width: 768px)" srcset="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Banner_Rio_Cleaning_Mobile.png">
-                    <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/Banner_Rio_Cleaning_desktop.png" alt="Rio Cleaning" class="hero-video">
+                    <source media="(max-width: 768px)" srcset="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/rio1.png">
+                    <img src="https://nekbbkenxcukoortusge.supabase.co/storage/v1/object/public/imagens_ca/rio4.png" alt="Rio Cleaning" class="hero-video">
                 </picture>
                 <div class="hero-overlay"></div>
             </div>
@@ -2696,11 +2696,30 @@ CREATE TRIGGER update_sr_updated_at BEFORE UPDATE ON public.service_requests
         // ============================================================
         async function loadPriceSettings(showInAdmin = true) {
             if (showInAdmin) updatePriceUI('loading', 'Loading from database...');
+
+            // Retry helper: up to 3 attempts with exponential back-off
+            async function fetchWithRetry(fn, retries, delayMs) {
+                retries = retries || 3; delayMs = delayMs || 800;
+                for (var attempt = 1; attempt <= retries; attempt++) {
+                    try {
+                        return await fn();
+                    } catch (err) {
+                        var isFetchErr = err instanceof TypeError && err.message === 'Failed to fetch';
+                        if (!isFetchErr || attempt === retries) throw err;
+                        console.warn('loadPriceSettings: fetch failed (attempt ' + attempt + '/' + retries + '), retrying in ' + delayMs + 'ms...');
+                        await new Promise(function(res){ setTimeout(res, delayMs); });
+                        delayMs *= 2;
+                    }
+                }
+            }
+
             try {
-                const { data, error } = await sb.select('price_settings', 'select=*&order=updated_at.desc&limit=1');
+                var result = await fetchWithRetry(function(){ return sb.select('price_settings', 'select=*&order=updated_at.desc&limit=1'); });
+                var data = result.data, error = result.error;
+
                 if (error) {
-                    const msg = error.message || error.hint || JSON.stringify(error);
-                    console.error('❌ price_settings load error:', error);
+                    var msg = error.message || error.hint || JSON.stringify(error);
+                    console.error('price_settings load error:', error);
                     priceSettings = getDefaultPriceSettings();
                     if (showInAdmin) {
                         updatePriceUI('error', 'Erro DB: ' + msg);
@@ -2712,41 +2731,50 @@ CREATE TRIGGER update_sr_updated_at BEFORE UPDATE ON public.service_requests
                 if (showInAdmin) document.getElementById('sqlInfoBox').style.display = 'none';
 
                 if (data && data.length > 0) {
-                    const row = data[0];
+                    var row = data[0];
                     priceSettingsDbId = row.id;
                     priceSettings = mapDbToSettings(row);
                     priceSettingsLoaded = true;
-                    console.log('✅ Prices loaded from DB, id:', priceSettingsDbId);
+                    console.log('Prices loaded from DB, id:', priceSettingsDbId);
                     if (showInAdmin) {
-                        const ts = row.updated_at ? new Date(row.updated_at).toLocaleString() : 'N/A';
-                        updatePriceUI('loaded', '✓ Carregado do banco de dados');
-                        const el = document.getElementById('priceLastUpdated');
-                        if (el) { el.textContent = `Última atualização: ${ts}`; el.style.display = 'block'; }
+                        var ts = row.updated_at ? new Date(row.updated_at).toLocaleString() : 'N/A';
+                        updatePriceUI('loaded', 'Carregado do banco de dados');
+                        var el = document.getElementById('priceLastUpdated');
+                        if (el) { el.textContent = 'Ultima atualizacao: ' + ts; el.style.display = 'block'; }
                     }
                 } else {
-                    // Table empty — insert defaults
-                    console.log('price_settings vazio, inserindo padrões...');
+                    console.log('price_settings vazio, inserindo padroes...');
                     priceSettings = getDefaultPriceSettings();
-                    const { data: ins, error: insErr } = await sb.insert('price_settings', settingsToDbRow(priceSettings));
-                    if (!insErr && ins && ins.length > 0) {
-                        priceSettingsDbId = ins[0].id;
-                        priceSettingsLoaded = true;
+                    try {
+                        var ins_result = await fetchWithRetry(function(){ return sb.insert('price_settings', settingsToDbRow(priceSettings)); });
+                        if (!ins_result.error && ins_result.data && ins_result.data.length > 0) {
+                            priceSettingsDbId = ins_result.data[0].id;
+                            priceSettingsLoaded = true;
+                        }
+                    } catch (insErr) {
+                        console.warn('Could not insert default price_settings — running with local defaults.');
                     }
-                    if (showInAdmin) updatePriceUI('loaded', '✓ Valores padrão criados no banco');
+                    if (showInAdmin) updatePriceUI('loaded', 'Valores padrao (offline)');
                 }
                 updatePriceInputFields();
             } catch (err) {
-                console.error('❌ Unexpected loadPriceSettings error:', err);
+                var isNetwork = err instanceof TypeError && err.message === 'Failed to fetch';
+                console.error('Unexpected loadPriceSettings error:', err);
                 priceSettings = getDefaultPriceSettings();
-                if (showInAdmin) updatePriceUI('error', 'Erro inesperado: ' + err.message);
                 updatePriceInputFields();
+                if (showInAdmin) {
+                    var errMsg = isNetwork
+                        ? 'Sem conexao com o servidor. Usando valores padrao.'
+                        : 'Erro inesperado: ' + err.message;
+                    updatePriceUI('error', errMsg);
+                }
+                if (!showInAdmin && isNetwork) {
+                    setTimeout(function(){ loadPriceSettings(false); }, 5000);
+                }
             }
         }
 
-        // ============================================================
-        // PRICE SETTINGS — SAVE TO DB
-        // ============================================================
-        async function savePriceSettings() {
+                async function savePriceSettings() {
             const btn = document.getElementById('savePricesBtn');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
             btn.disabled = true;
