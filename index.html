@@ -3963,13 +3963,25 @@ ${personalBody}`);
         // FILE MANAGER — ATTACHMENTS
         // ============================================================
         let currentFileRequestId = null;
+        let currentFileClient = null;
         let attachedFiles = [];
 
-        function openFileManager(requestId) {
+        async function openFileManager(requestId) {
             currentFileRequestId = requestId;
+            currentFileClient = null;
             attachedFiles = [];
             renderFileList();
             document.getElementById('fileManagerModal').style.display = 'flex';
+            // Load the client so the email is addressed correctly even when opened
+            // directly from the table (without viewing the request first).
+            try {
+                const { data, error } = await sb.select('service_requests', `select=*&id=eq.${requestId}&limit=1`);
+                if (!error && data && data.length) {
+                    currentFileClient = data[0];
+                    const hdr = document.getElementById('fileManagerClientName');
+                    if (hdr) hdr.textContent = currentFileClient.full_name || '';
+                }
+            } catch (e) { /* keep modal usable even if lookup fails */ }
         }
 
         function handleFileSelect(event) {
@@ -4006,20 +4018,114 @@ ${personalBody}`);
             renderFileList();
         }
 
-        function emailWithAttachments() {
-            const r = currentViewRequest;
-            if (!r && !currentFileRequestId) { showToast('No request selected', 'error'); return; }
-            const fileNames = attachedFiles.map(f => f.name).join(', ');
-            const subject = encodeURIComponent(`Rio Cleaning — Service Agreement${attachedFiles.length ? ' + Attachments' : ''}`);
-            const body = encodeURIComponent(`Please find attached the following files:
-${fileNames || '(no files selected)'}
+        // Resolve the client tied to the current attachments modal.
+        function getFileClient() {
+            return currentFileClient || currentViewRequest || null;
+        }
 
----
+        // Build the full Rio Cleaning email (subject + body) for a client.
+        function buildRioEmail(client) {
+            const name = (client && client.full_name) ? client.full_name : '';
+            const fileNames = attachedFiles.map(f => f.name).join('\n• ');
+            const subject = `Rio Cleaning — Service Documents${attachedFiles.length ? ' (Attachments enclosed)' : ''}`;
+            const body =
+`Dear ${name || 'Customer'},
+
+Thank you for choosing Rio Cleaning Services. Please find enclosed the following document(s) regarding your service:
+
+• ${fileNames || '(see attachments)'}
+
+If you have any questions, feel free to reply to this email or contact us directly. We look forward to serving you.
+
+Warm regards,
+
 Rio Cleaning Services Corp.
-519-280-6261 | riocleaningyyc@gmail.com`);
-            const email = r ? r.email : '';
-            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-            showToast('Email client opened. Please attach the files manually.', 'info');
+BN 722688363 · Calgary, AB
+📞 519-280-6261
+📧 riocleaningyyc@gmail.com
+📷 @riocleaningyyc
+🌐 riocleaningyyc.com`;
+            return { subject, body };
+        }
+
+        // Trigger a real browser download for each attached file so they are
+        // ready in the Downloads folder to drag into the email.
+        function downloadAttachedFiles() {
+            attachedFiles.forEach((f, i) => {
+                setTimeout(() => {
+                    const url = URL.createObjectURL(f);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = f.name;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    setTimeout(() => URL.revokeObjectURL(url), 4000);
+                }, i * 350); // small stagger so the browser allows multiple downloads
+            });
+        }
+
+        // PRIMARY action: try to attach the files for real via the Web Share API
+        // (works on mobile + Windows, letting the user pick Outlook with files
+        // already attached). Falls back to download + Outlook compose.
+        async function emailWithAttachments() {
+            const client = getFileClient();
+            const email = client && client.email ? client.email : '';
+            const { subject, body } = buildRioEmail(client);
+
+            if (!attachedFiles.length) {
+                showToast('Add at least one file first.', 'error');
+                return;
+            }
+
+            // 1) True attachment path (Web Share API Level 2)
+            try {
+                if (navigator.canShare && navigator.canShare({ files: attachedFiles })) {
+                    await navigator.share({
+                        files: attachedFiles,
+                        title: subject,
+                        text: body
+                    });
+                    showToast('Share sheet opened — choose Outlook/Mail to send with the files attached.', 'success');
+                    return;
+                }
+            } catch (e) {
+                if (e && e.name === 'AbortError') { return; } // user cancelled the share sheet
+                // otherwise fall through to the download path
+            }
+
+            // 2) Fallback: download the files automatically, then open Outlook
+            openOutlookCompose(email, subject, body, /*downloadFirst*/ true);
+        }
+
+        // Open Outlook (desktop default mail client) via mailto, after optionally
+        // downloading the attachments so they can be dragged in.
+        function openOutlookCompose(email, subject, body, downloadFirst) {
+            if (downloadFirst && attachedFiles.length) {
+                downloadAttachedFiles();
+            }
+            const mailto = `mailto:${email || ''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailto;
+            if (attachedFiles.length) {
+                showToast(`${attachedFiles.length} file(s) downloaded. Outlook opened — drag the downloaded file(s) into the email to attach.`, 'info');
+            } else {
+                showToast('Outlook opened.', 'info');
+            }
+        }
+
+        // Open Outlook on the WEB (Office 365 / outlook.com) in a new tab and
+        // download the files so they can be attached in the web composer.
+        function emailWithAttachmentsOutlookWeb() {
+            const client = getFileClient();
+            const email = client && client.email ? client.email : '';
+            const { subject, body } = buildRioEmail(client);
+            if (attachedFiles.length) downloadAttachedFiles();
+            const url = `https://outlook.office.com/mail/deeplink/compose?to=${encodeURIComponent(email)}` +
+                        `&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.open(url, '_blank');
+            if (attachedFiles.length) {
+                showToast(`${attachedFiles.length} file(s) downloaded. Outlook Web opened — attach the downloaded file(s) in the composer.`, 'info');
+            }
         }
 
         // ============================================================
@@ -4635,16 +4741,18 @@ INSERT INTO price_settings (base) VALUES (50) ON CONFLICT DO NOTHING;</span>`;
                 <button class="close-modal" onclick="document.getElementById('fileManagerModal').style.display='none'">&times;</button>
             </div>
             <div class="modal-body" style="padding:25px;">
-                <p style="color:var(--gray-600);margin-bottom:20px;font-size:0.9rem;">Upload PDF or Word documents (contract, quote, photos) for this client. Files are stored in your browser for this session — use the email button to attach them manually.</p>
+                <p style="color:var(--gray-600);margin-bottom:16px;font-size:0.9rem;">Upload PDF or Word documents (contract, quote, photos) for <strong id="fileManagerClientName" style="color:var(--primary-color)"></strong>. On phones and Windows, "Attach & Send" attaches the files automatically — just pick Outlook. On other devices the files are downloaded so you can drag them into Outlook.</p>
                 <div id="fileUploadArea" style="border:2px dashed var(--primary-color);border-radius:12px;padding:30px;text-align:center;cursor:pointer;transition:all 0.3s;background:var(--gray-100);" onclick="document.getElementById('fileInput').click()" ondragover="event.preventDefault();this.style.background='#e8f0ff'" ondragleave="this.style.background='var(--gray-100)'" ondrop="handleFileDrop(event)">
                     <i class="fas fa-cloud-upload-alt" style="font-size:2rem;color:var(--primary-color);margin-bottom:10px;display:block;"></i>
-                    <strong>Click or drag & drop files here</strong>
+                    <strong>Click or drag &amp; drop files here</strong>
                     <p style="color:var(--gray-600);font-size:0.85rem;margin-top:5px;">PDF, DOC, DOCX, JPG, PNG — Max 10MB each</p>
                     <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none;" onchange="handleFileSelect(event)">
                 </div>
                 <div id="attachedFilesList" style="margin-top:20px;"></div>
                 <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
-                    <button class="btn btn-success" onclick="emailWithAttachments()"><i class="fas fa-envelope"></i> Open Email with Attachments Note</button>
+                    <button class="btn btn-success" onclick="emailWithAttachments()"><i class="fas fa-paper-plane"></i> Attach &amp; Send Email</button>
+                    <button class="btn btn-primary" onclick="emailWithAttachmentsOutlookWeb()"><i class="fas fa-envelope-open-text"></i> Open in Outlook Web</button>
+                    <button class="btn btn-secondary" onclick="downloadAttachedFiles()"><i class="fas fa-download"></i> Download Files</button>
                     <button class="btn btn-secondary" onclick="document.getElementById('fileManagerModal').style.display='none'"><i class="fas fa-times"></i> Close</button>
                 </div>
             </div>
