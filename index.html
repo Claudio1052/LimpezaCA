@@ -4128,6 +4128,23 @@ BN 722688363 · Calgary, AB
             }
         }
 
+        // Open Gmail on the WEB in a new tab (compose window, ready to review and
+        // send) and download the files so they can be attached in the composer.
+        function emailWithAttachmentsGmail() {
+            const client = getFileClient();
+            const email = client && client.email ? client.email : '';
+            const { subject, body } = buildRioEmail(client);
+            if (attachedFiles.length) downloadAttachedFiles();
+            const url = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}` +
+                        `&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.open(url, '_blank');
+            if (attachedFiles.length) {
+                showToast(`${attachedFiles.length} file(s) downloaded. Gmail opened — drag the downloaded file(s) into the message, then send it yourself.`, 'info');
+            } else {
+                showToast('Gmail opened, ready for you to review and send.', 'info');
+            }
+        }
+
         // ============================================================
         // HIDE ALL PAGES — update to include workWithUs
         // ============================================================
@@ -4741,7 +4758,7 @@ INSERT INTO price_settings (base) VALUES (50) ON CONFLICT DO NOTHING;</span>`;
                 <button class="close-modal" onclick="document.getElementById('fileManagerModal').style.display='none'">&times;</button>
             </div>
             <div class="modal-body" style="padding:25px;">
-                <p style="color:var(--gray-600);margin-bottom:16px;font-size:0.9rem;">Upload PDF or Word documents (contract, quote, photos) for <strong id="fileManagerClientName" style="color:var(--primary-color)"></strong>. "Open Email with Attachment" opens a ready-to-review email with the file already attached — <strong>nothing is sent automatically</strong>; you click Send. On desktop browsers without share support, the file is downloaded and Outlook opens pre-filled so you can drag it in.</p>
+                <p style="color:var(--gray-600);margin-bottom:16px;font-size:0.9rem;">Upload PDF or Word documents (contract, quote, photos) for <strong id="fileManagerClientName" style="color:var(--primary-color)"></strong>. Choose <strong>Gmail</strong> or <strong>Outlook</strong> — the email opens pre-filled and ready to review; <strong>nothing is sent automatically</strong>, you click Send. The file(s) are downloaded so you can drag them into the message. ("Open Email with Attachment" attaches the file directly on phones and supported desktops.)</p>
                 <div id="fileUploadArea" style="border:2px dashed var(--primary-color);border-radius:12px;padding:30px;text-align:center;cursor:pointer;transition:all 0.3s;background:var(--gray-100);" onclick="document.getElementById('fileInput').click()" ondragover="event.preventDefault();this.style.background='#e8f0ff'" ondragleave="this.style.background='var(--gray-100)'" ondrop="handleFileDrop(event)">
                     <i class="fas fa-cloud-upload-alt" style="font-size:2rem;color:var(--primary-color);margin-bottom:10px;display:block;"></i>
                     <strong>Click or drag &amp; drop files here</strong>
@@ -4751,6 +4768,7 @@ INSERT INTO price_settings (base) VALUES (50) ON CONFLICT DO NOTHING;</span>`;
                 <div id="attachedFilesList" style="margin-top:20px;"></div>
                 <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
                     <button class="btn btn-success" onclick="emailWithAttachments()"><i class="fas fa-envelope"></i> Open Email with Attachment</button>
+                    <button class="btn btn-danger" onclick="emailWithAttachmentsGmail()"><i class="fab fa-google"></i> Open in Gmail</button>
                     <button class="btn btn-primary" onclick="emailWithAttachmentsOutlookWeb()"><i class="fas fa-envelope-open-text"></i> Open in Outlook Web</button>
                     <button class="btn btn-secondary" onclick="downloadAttachedFiles()"><i class="fas fa-download"></i> Download Files</button>
                     <button class="btn btn-secondary" onclick="document.getElementById('fileManagerModal').style.display='none'"><i class="fas fa-times"></i> Close</button>
