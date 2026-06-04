@@ -4086,7 +4086,7 @@ BN 722688363 · Calgary, AB
                         title: subject,
                         text: body
                     });
-                    showToast('Share sheet opened — choose Outlook/Mail to send with the files attached.', 'success');
+                    showToast('Email opened with the file attached. Review it and click Send yourself — nothing is sent automatically.', 'success');
                     return;
                 }
             } catch (e) {
@@ -4107,9 +4107,9 @@ BN 722688363 · Calgary, AB
             const mailto = `mailto:${email || ''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             window.location.href = mailto;
             if (attachedFiles.length) {
-                showToast(`${attachedFiles.length} file(s) downloaded. Outlook opened — drag the downloaded file(s) into the email to attach.`, 'info');
+                showToast(`Outlook opened pre-filled and ${attachedFiles.length} file(s) downloaded. Drag the file(s) into the email, then send it yourself.`, 'info');
             } else {
-                showToast('Outlook opened.', 'info');
+                showToast('Outlook opened, ready for you to review and send.', 'info');
             }
         }
 
@@ -4741,7 +4741,7 @@ INSERT INTO price_settings (base) VALUES (50) ON CONFLICT DO NOTHING;</span>`;
                 <button class="close-modal" onclick="document.getElementById('fileManagerModal').style.display='none'">&times;</button>
             </div>
             <div class="modal-body" style="padding:25px;">
-                <p style="color:var(--gray-600);margin-bottom:16px;font-size:0.9rem;">Upload PDF or Word documents (contract, quote, photos) for <strong id="fileManagerClientName" style="color:var(--primary-color)"></strong>. On phones and Windows, "Attach & Send" attaches the files automatically — just pick Outlook. On other devices the files are downloaded so you can drag them into Outlook.</p>
+                <p style="color:var(--gray-600);margin-bottom:16px;font-size:0.9rem;">Upload PDF or Word documents (contract, quote, photos) for <strong id="fileManagerClientName" style="color:var(--primary-color)"></strong>. "Open Email with Attachment" opens a ready-to-review email with the file already attached — <strong>nothing is sent automatically</strong>; you click Send. On desktop browsers without share support, the file is downloaded and Outlook opens pre-filled so you can drag it in.</p>
                 <div id="fileUploadArea" style="border:2px dashed var(--primary-color);border-radius:12px;padding:30px;text-align:center;cursor:pointer;transition:all 0.3s;background:var(--gray-100);" onclick="document.getElementById('fileInput').click()" ondragover="event.preventDefault();this.style.background='#e8f0ff'" ondragleave="this.style.background='var(--gray-100)'" ondrop="handleFileDrop(event)">
                     <i class="fas fa-cloud-upload-alt" style="font-size:2rem;color:var(--primary-color);margin-bottom:10px;display:block;"></i>
                     <strong>Click or drag &amp; drop files here</strong>
@@ -4750,7 +4750,7 @@ INSERT INTO price_settings (base) VALUES (50) ON CONFLICT DO NOTHING;</span>`;
                 </div>
                 <div id="attachedFilesList" style="margin-top:20px;"></div>
                 <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
-                    <button class="btn btn-success" onclick="emailWithAttachments()"><i class="fas fa-paper-plane"></i> Attach &amp; Send Email</button>
+                    <button class="btn btn-success" onclick="emailWithAttachments()"><i class="fas fa-envelope"></i> Open Email with Attachment</button>
                     <button class="btn btn-primary" onclick="emailWithAttachmentsOutlookWeb()"><i class="fas fa-envelope-open-text"></i> Open in Outlook Web</button>
                     <button class="btn btn-secondary" onclick="downloadAttachedFiles()"><i class="fas fa-download"></i> Download Files</button>
                     <button class="btn btn-secondary" onclick="document.getElementById('fileManagerModal').style.display='none'"><i class="fas fa-times"></i> Close</button>
