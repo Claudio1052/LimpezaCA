@@ -4027,17 +4027,17 @@ ${personalBody}`);
         function buildRioEmail(client) {
             const name = (client && client.full_name) ? client.full_name : '';
             const fileNames = attachedFiles.map(f => f.name).join('\n• ');
-            const subject = `Rio Cleaning — Service Documents${attachedFiles.length ? ' (Attachments enclosed)' : ''}`;
+            const subject = `Your Cleaning Service Document – Rio Cleaning Services${attachedFiles.length ? ' (Attachments enclosed)' : ''}`;
             const body =
 `Dear ${name || 'Customer'},
 
-Thank you for choosing Rio Cleaning Services. Please find enclosed the following document(s) regarding your service:
+Thank you for choosing Rio Cleaning Services. Please find attached the document(s) related to your service:
 
 • ${fileNames || '(see attachments)'}
 
-If you have any questions, feel free to reply to this email or contact us directly. We look forward to serving you.
+If you have any questions, feel free to reply to this email or contact us directly. We’ll be happy to help.
 
-Warm regards,
+We look forward to serving you.
 
 Rio Cleaning Services Corp.
 BN 722688363 · Calgary, AB
