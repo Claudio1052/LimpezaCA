@@ -1887,7 +1887,7 @@
                                     <label><i class="fas fa-utensils"></i> Indoor Kitchen?</label>
                                     <select id="rvKitchen"><option value="yes">Yes</option><option value="no">No</option></select>
                                 </div>
-                                <div class="form-group cf cf-rv" style="display:none" style="grid-column:span 2;">
+                                <div class="form-group cf cf-rv" style="display:none; grid-column:span 2;">
                                     <label><i class="fas fa-blender"></i> Appliances</label>
                                     <input type="text" id="rvAppliances" placeholder="e.g. Stove, Oven, Microwave, Fridge">
                                 </div>
@@ -2028,6 +2028,91 @@
                                 </div>
 
                                 <!-- ═══════════════════════════════════════
+                                     CARPET CLEANING — SUB-SERVICE SUBFILTER
+                                ═══════════════════════════════════════ -->
+                                <div class="form-group cf cf-carpet" style="display:none; grid-column: span 2;">
+                                    <label><i class="fas fa-list"></i> Carpet Service Type</label>
+                                    <select id="carpetSubType" onchange="updateCarpetSubFields()">
+                                        <option value="">Select a service type</option>
+                                        <option value="area_rug">Area Rug Cleaning</option>
+                                        <option value="carpet_res">Carpet Cleaning (Residential)</option>
+                                        <option value="mattress">Mattress Cleaning</option>
+                                        <option value="upholstery">Upholstery Cleaning</option>
+                                        <option value="commercial_carpet">Commercial Carpet Cleaning</option>
+                                    </select>
+                                </div>
+
+                                <!-- AREA RUG QUESTIONNAIRE -->
+                                <div class="form-group carpet-sub cs-area_rug" style="display:none; grid-column: span 2;"><label class="cf-section-label"><i class="fas fa-rug"></i> Rug Information</label></div>
+                                <div class="form-group carpet-sub cs-area_rug" style="display:none"><label>Small Rug (qty)</label><input type="number" id="rugSmall" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-area_rug" style="display:none"><label>Medium Rug (qty)</label><input type="number" id="rugMedium" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-area_rug" style="display:none"><label>Large Rug (qty)</label><input type="number" id="rugLarge" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-area_rug" style="display:none"><label>Extra Large Rug (qty)</label><input type="number" id="rugXLarge" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-area_rug" style="display:none"><label>Approximate Dimensions</label><input type="text" id="rugDimensions" placeholder="e.g. 5x8 ft"></div>
+                                <div class="form-group carpet-sub cs-area_rug" style="display:none"><label>Brand / Manufacturer (if known)</label><input type="text" id="rugBrand"></div>
+                                <div class="form-group carpet-sub cs-area_rug" style="display:none"><label>Material / Fiber (if known)</label><input type="text" id="rugMaterial"></div>
+                                <div class="form-group carpet-sub cs-area_rug" style="display:none; grid-column: span 2;"><label class="cf-section-label">Condition</label></div>
+                                <div class="form-group carpet-sub cs-area_rug" style="display:none"><label>Pet Stains</label><select id="rugPetStains"><option value="no">No</option><option value="yes">Yes</option></select></div>
+                                <div class="form-group carpet-sub cs-area_rug" style="display:none"><label>Urine</label><select id="rugUrine"><option value="no">No</option><option value="yes">Yes</option></select></div>
+                                <div class="form-group carpet-sub cs-area_rug" style="display:none"><label>Heavy Stains</label><select id="rugHeavyStains"><option value="no">No</option><option value="yes">Yes</option></select></div>
+                                <div class="form-group carpet-sub cs-area_rug" style="display:none"><label>Strong Odour</label><select id="rugOdour"><option value="no">No</option><option value="yes">Yes</option></select></div>
+                                <div class="form-group carpet-sub cs-area_rug" style="display:none"><label>Fringe</label><select id="rugFringe"><option value="no">No</option><option value="yes">Yes</option></select></div>
+                                <div class="form-group carpet-sub cs-area_rug" style="display:none"><label>Fabric Protector</label><select id="rugFabricProtector"><option value="no">No</option><option value="yes">Yes</option></select></div>
+
+                                <!-- CARPET CLEANING (RESIDENTIAL) QUESTIONNAIRE -->
+                                <div class="form-group carpet-sub cs-carpet_res" style="display:none; grid-column: span 2;"><label class="cf-section-label"><i class="fas fa-rug"></i> Carpet Areas (enter quantity)</label></div>
+                                <div class="form-group carpet-sub cs-carpet_res" style="display:none"><label>Small Bedroom (up to 250 sq ft)</label><input type="number" id="crpSmallBedroom" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-carpet_res" style="display:none"><label>Large Bedroom (251-400 sq ft)</label><input type="number" id="crpLargeBedroom" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-carpet_res" style="display:none"><label>Living Room</label><input type="number" id="crpLivingRoom" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-carpet_res" style="display:none"><label>Bonus Room</label><input type="number" id="crpBonusRoom" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-carpet_res" style="display:none"><label>Rec Room</label><input type="number" id="crpRecRoom" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-carpet_res" style="display:none"><label>Basement</label><input type="number" id="crpBasement" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-carpet_res" style="display:none"><label>Hallway</label><input type="number" id="crpHallway" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-carpet_res" style="display:none"><label>Stairs (up to 13 steps)</label><input type="number" id="crpStairs" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-carpet_res" style="display:none"><label>Extra Steps</label><input type="number" id="crpExtraSteps" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-carpet_res" style="display:none; grid-column: span 2;"><label class="cf-section-label">Additional Information</label></div>
+                                <div class="form-group carpet-sub cs-carpet_res" style="display:none"><label>Pet Stains</label><select id="crpPetStains"><option value="no">No</option><option value="yes">Yes</option></select></div>
+                                <div class="form-group carpet-sub cs-carpet_res" style="display:none"><label>Urine</label><select id="crpUrine"><option value="no">No</option><option value="yes">Yes</option></select></div>
+                                <div class="form-group carpet-sub cs-carpet_res" style="display:none"><label>Strong Odour</label><select id="crpOdour"><option value="no">No</option><option value="yes">Yes</option></select></div>
+                                <div class="form-group carpet-sub cs-carpet_res" style="display:none"><label>Heavy Stains</label><select id="crpHeavyStains"><option value="no">No</option><option value="yes">Yes</option></select></div>
+
+                                <!-- MATTRESS CLEANING QUESTIONNAIRE -->
+                                <div class="form-group carpet-sub cs-mattress" style="display:none; grid-column: span 2;"><label class="cf-section-label"><i class="fas fa-bed"></i> Mattress Quantity</label></div>
+                                <div class="form-group carpet-sub cs-mattress" style="display:none"><label>Twin / Single</label><input type="number" id="matTwin" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-mattress" style="display:none"><label>Double / Full</label><input type="number" id="matDouble" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-mattress" style="display:none"><label>Queen</label><input type="number" id="matQueen" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-mattress" style="display:none"><label>King</label><input type="number" id="matKing" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-mattress" style="display:none; grid-column: span 2;"><label class="cf-section-label">Mattress Condition</label></div>
+                                <div class="form-group carpet-sub cs-mattress" style="display:none"><label>Urine</label><select id="matUrine"><option value="no">No</option><option value="yes">Yes</option></select></div>
+                                <div class="form-group carpet-sub cs-mattress" style="display:none"><label>Pet Stains</label><select id="matPetStains"><option value="no">No</option><option value="yes">Yes</option></select></div>
+                                <div class="form-group carpet-sub cs-mattress" style="display:none"><label>Heavy Stains</label><select id="matHeavyStains"><option value="no">No</option><option value="yes">Yes</option></select></div>
+                                <div class="form-group carpet-sub cs-mattress" style="display:none"><label>Strong Odour</label><select id="matOdour"><option value="no">No</option><option value="yes">Yes</option></select></div>
+                                <div class="form-group carpet-sub cs-mattress" style="display:none"><label>Need Deodorizer</label><select id="matDeodorizer"><option value="no">No</option><option value="yes">Yes</option></select></div>
+
+                                <!-- UPHOLSTERY CLEANING QUESTIONNAIRE -->
+                                <div class="form-group carpet-sub cs-upholstery" style="display:none; grid-column: span 2;"><label class="cf-section-label"><i class="fas fa-couch"></i> Furniture Quantity</label></div>
+                                <div class="form-group carpet-sub cs-upholstery" style="display:none"><label>Loveseat (2-Seater Sofa)</label><input type="number" id="uphLoveseat" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-upholstery" style="display:none"><label>3-Seater Sofa</label><input type="number" id="uph3Seater" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-upholstery" style="display:none"><label>Sectional Sofa (L-Shape / Modular)</label><input type="number" id="uphSectional" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-upholstery" style="display:none"><label>Armchair (Single Chair)</label><input type="number" id="uphArmchair" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-upholstery" style="display:none"><label>Recliner (Reclining Chair)</label><input type="number" id="uphRecliner" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-upholstery" style="display:none"><label>Ottoman (Footrest / Upholstered Bench)</label><input type="number" id="uphOttoman" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-upholstery" style="display:none"><label>Dining Chairs (Upholstered)</label><input type="number" id="uphDiningChairs" min="0" placeholder="0"></div>
+                                <div class="form-group carpet-sub cs-upholstery" style="display:none; grid-column: span 2;"><label class="cf-section-label">Condition</label></div>
+                                <div class="form-group carpet-sub cs-upholstery" style="display:none"><label>Pet Stains</label><select id="uphPetStains"><option value="no">No</option><option value="yes">Yes</option></select></div>
+                                <div class="form-group carpet-sub cs-upholstery" style="display:none"><label>Urine</label><select id="uphUrine"><option value="no">No</option><option value="yes">Yes</option></select></div>
+                                <div class="form-group carpet-sub cs-upholstery" style="display:none"><label>Heavy Stains</label><select id="uphHeavyStains"><option value="no">No</option><option value="yes">Yes</option></select></div>
+                                <div class="form-group carpet-sub cs-upholstery" style="display:none"><label>Strong Odour</label><select id="uphOdour"><option value="no">No</option><option value="yes">Yes</option></select></div>
+                                <div class="form-group carpet-sub cs-upholstery" style="display:none"><label>Fabric Type (if known)</label><input type="text" id="uphFabricType"></div>
+                                <div class="form-group carpet-sub cs-upholstery" style="display:none; grid-column: span 2;"><p style="margin:0;color:var(--gray-600);font-size:0.9rem"><i class="fas fa-camera"></i> Please attach 2-4 photos of each piece of furniture (you can email/WhatsApp them after submitting).</p></div>
+
+                                <!-- COMMERCIAL CARPET CLEANING QUESTIONNAIRE -->
+                                <div class="form-group carpet-sub cs-commercial_carpet" style="display:none"><label>Company Name</label><input type="text" id="ccmCompanyName" placeholder="Company name"></div>
+                                <div class="form-group carpet-sub cs-commercial_carpet" style="display:none"><label>Approximate Carpet Area (sq ft)</label><input type="text" id="ccmSqft" placeholder="e.g. 5000"></div>
+                                <div class="form-group carpet-sub cs-commercial_carpet" style="display:none"><label>Number of Floors</label><input type="number" id="ccmFloors" min="0" placeholder="e.g. 2"></div>
+                                <div class="form-group carpet-sub cs-commercial_carpet" style="display:none; grid-column: span 2;"><p style="margin:0;color:var(--gray-600);font-size:0.9rem"><i class="fas fa-camera"></i> Please attach 2-4 photos of the carpeted areas (you can email/WhatsApp them after submitting).</p></div>
+
+                                <!-- ═══════════════════════════════════════
                                      DATE & TIME — always visible
                                 ═══════════════════════════════════════ -->
                                 <div class="form-group cf cf-move cf-residential cf-construction cf-commercial cf-church cf-rv cf-carpet" style="display:none">
@@ -2040,8 +2125,6 @@
                                 </div>
 
                                 <!-- legacy hidden fields kept for form submission compatibility -->
-                                <input type="hidden" id="bedrooms" value="0">
-                                <input type="hidden" id="bathrooms" value="0">
                                 <input type="hidden" id="showerBoxCount" value="0">
                                 <input type="hidden" id="hasPets" value="false">
                                 <input type="hidden" id="petCount" value="0">
@@ -2299,6 +2382,23 @@ CREATE TABLE public.service_requests (
   estimated_value numeric(10,2) DEFAULT NULL,
   carpet_length numeric(10,2) DEFAULT NULL,
   carpet_width numeric(10,2) DEFAULT NULL,
+  carpet_sub_type text DEFAULT '',
+  rug_small integer DEFAULT 0, rug_medium integer DEFAULT 0, rug_large integer DEFAULT 0, rug_xlarge integer DEFAULT 0,
+  rug_dimensions text DEFAULT '', rug_brand text DEFAULT '', rug_material text DEFAULT '',
+  rug_pet_stains text DEFAULT 'no', rug_urine text DEFAULT 'no', rug_heavy_stains text DEFAULT 'no',
+  rug_odour text DEFAULT 'no', rug_fringe text DEFAULT 'no', rug_fabric_protector text DEFAULT 'no',
+  crp_small_bedroom integer DEFAULT 0, crp_large_bedroom integer DEFAULT 0, crp_living_room integer DEFAULT 0,
+  crp_bonus_room integer DEFAULT 0, crp_rec_room integer DEFAULT 0, crp_basement integer DEFAULT 0,
+  crp_hallway integer DEFAULT 0, crp_stairs integer DEFAULT 0, crp_extra_steps integer DEFAULT 0,
+  crp_pet_stains text DEFAULT 'no', crp_urine text DEFAULT 'no', crp_odour text DEFAULT 'no', crp_heavy_stains text DEFAULT 'no',
+  mat_twin integer DEFAULT 0, mat_double integer DEFAULT 0, mat_queen integer DEFAULT 0, mat_king integer DEFAULT 0,
+  mat_urine text DEFAULT 'no', mat_pet_stains text DEFAULT 'no', mat_heavy_stains text DEFAULT 'no',
+  mat_odour text DEFAULT 'no', mat_deodorizer text DEFAULT 'no',
+  uph_loveseat integer DEFAULT 0, uph_3seater integer DEFAULT 0, uph_sectional integer DEFAULT 0,
+  uph_armchair integer DEFAULT 0, uph_recliner integer DEFAULT 0, uph_ottoman integer DEFAULT 0, uph_dining_chairs integer DEFAULT 0,
+  uph_pet_stains text DEFAULT 'no', uph_urine text DEFAULT 'no', uph_heavy_stains text DEFAULT 'no', uph_odour text DEFAULT 'no',
+  uph_fabric_type text DEFAULT '',
+  ccm_company text DEFAULT '', ccm_sqft text DEFAULT '', ccm_floors integer DEFAULT 0,
   move_bedrooms integer DEFAULT 0, move_bathrooms integer DEFAULT 0,
   move_oven text DEFAULT 'no', move_fridge text DEFAULT 'no',
   move_living_rooms integer DEFAULT 0, move_shower_glass integer DEFAULT 0,
@@ -2893,6 +2993,25 @@ CREATE TRIGGER update_sr_updated_at BEFORE UPDATE ON public.service_requests
                     el.style.display = 'block';
                 });
             }
+
+            if (t === 'carpet') {
+                updateCarpetSubFields();
+            } else {
+                const carpetSub = document.getElementById('carpetSubType');
+                if (carpetSub) carpetSub.value = '';
+                document.querySelectorAll('.carpet-sub').forEach(el => el.style.display = 'none');
+            }
+        }
+
+        // ============================================================
+        // CARPET CLEANING — SUB-SERVICE SUBFILTER
+        // ============================================================
+        function updateCarpetSubFields() {
+            const sub = document.getElementById('carpetSubType').value;
+            document.querySelectorAll('.carpet-sub').forEach(el => el.style.display = 'none');
+            if (sub) {
+                document.querySelectorAll('.cs-' + sub).forEach(el => el.style.display = 'block');
+            }
         }
 
         function togglePetCount()      {}
@@ -3034,6 +3153,71 @@ CREATE TRIGGER update_sr_updated_at BEFORE UPDATE ON public.service_requests
 
 
         // ============================================================
+        // ADMIN — CARPET SUB-SERVICE DETAILS (shared by view modal & contract)
+        // ============================================================
+        function carpetSubDetailsRows(r, cols) {
+            const sub = r.carpet_sub_type;
+            if (!sub) return '';
+            const subNames = {area_rug:'Area Rug Cleaning',carpet_res:'Carpet Cleaning (Residential)',mattress:'Mattress Cleaning',upholstery:'Upholstery Cleaning',commercial_carpet:'Commercial Carpet Cleaning'};
+            let pairs = [['Carpet Service Type', subNames[sub] || sub]];
+
+            if (sub === 'area_rug') {
+                pairs.push(
+                    ['Small Rug', r.rug_small||0], ['Medium Rug', r.rug_medium||0],
+                    ['Large Rug', r.rug_large||0], ['Extra Large Rug', r.rug_xlarge||0],
+                    ['Approximate Dimensions', r.rug_dimensions||'—'],
+                    ['Brand / Manufacturer', r.rug_brand||'—'], ['Material / Fiber', r.rug_material||'—'],
+                    ['Pet Stains', r.rug_pet_stains||'no'], ['Urine', r.rug_urine||'no'],
+                    ['Heavy Stains', r.rug_heavy_stains||'no'], ['Strong Odour', r.rug_odour||'no'],
+                    ['Fringe', r.rug_fringe||'no'], ['Fabric Protector', r.rug_fabric_protector||'no']
+                );
+            } else if (sub === 'carpet_res') {
+                pairs.push(
+                    ['Small Bedroom', r.crp_small_bedroom||0], ['Large Bedroom', r.crp_large_bedroom||0],
+                    ['Living Room', r.crp_living_room||0], ['Bonus Room', r.crp_bonus_room||0],
+                    ['Rec Room', r.crp_rec_room||0], ['Basement', r.crp_basement||0],
+                    ['Hallway', r.crp_hallway||0], ['Stairs', r.crp_stairs||0], ['Extra Steps', r.crp_extra_steps||0],
+                    ['Pet Stains', r.crp_pet_stains||'no'], ['Urine', r.crp_urine||'no'],
+                    ['Strong Odour', r.crp_odour||'no'], ['Heavy Stains', r.crp_heavy_stains||'no']
+                );
+            } else if (sub === 'mattress') {
+                pairs.push(
+                    ['Twin / Single', r.mat_twin||0], ['Double / Full', r.mat_double||0],
+                    ['Queen', r.mat_queen||0], ['King', r.mat_king||0],
+                    ['Urine', r.mat_urine||'no'], ['Pet Stains', r.mat_pet_stains||'no'],
+                    ['Heavy Stains', r.mat_heavy_stains||'no'], ['Strong Odour', r.mat_odour||'no'],
+                    ['Need Deodorizer', r.mat_deodorizer||'no']
+                );
+            } else if (sub === 'upholstery') {
+                pairs.push(
+                    ['Loveseat', r.uph_loveseat||0], ['3-Seater Sofa', r.uph_3seater||0],
+                    ['Sectional Sofa', r.uph_sectional||0], ['Armchair', r.uph_armchair||0],
+                    ['Recliner', r.uph_recliner||0], ['Ottoman', r.uph_ottoman||0],
+                    ['Dining Chairs', r.uph_dining_chairs||0],
+                    ['Pet Stains', r.uph_pet_stains||'no'], ['Urine', r.uph_urine||'no'],
+                    ['Heavy Stains', r.uph_heavy_stains||'no'], ['Strong Odour', r.uph_odour||'no'],
+                    ['Fabric Type', r.uph_fabric_type||'—']
+                );
+            } else if (sub === 'commercial_carpet') {
+                pairs.push(
+                    ['Company Name', r.ccm_company||'—'],
+                    ['Approximate Area', (r.ccm_sqft||'—') + (r.ccm_sqft?' sq ft':'')],
+                    ['Number of Floors', r.ccm_floors||0]
+                );
+            }
+
+            if (cols === 4) {
+                let rows = '';
+                for (let i = 0; i < pairs.length; i += 2) {
+                    const a = pairs[i], b = pairs[i+1];
+                    rows += `<tr><td>${a[0]}</td><td>${a[1]}</td>${b ? `<td>${b[0]}</td><td>${b[1]}</td>` : '<td></td><td></td>'}</tr>`;
+                }
+                return rows;
+            }
+            return pairs.map(([label, val]) => `<tr><td>${label}</td><td>${val}</td></tr>`).join('');
+        }
+
+        // ============================================================
         // ADMIN — BUILD DETAILS SNIPPET (for table cell)
         // ============================================================
         function buildDetailsSnippet(r) {
@@ -3054,6 +3238,8 @@ CREATE TRIGGER update_sr_updated_at BEFORE UPDATE ON public.service_requests
                 if (r.res_smoke==='yes') parts.push('🚬 Smoke');
             } else if (svc==='carpet') {
                 if (r.carpet_length && r.carpet_width) parts.push(`${r.carpet_length}×${r.carpet_width} ft`);
+                const subNames = {area_rug:'Area Rug',carpet_res:'Carpet (Residential)',mattress:'Mattress',upholstery:'Upholstery',commercial_carpet:'Commercial Carpet'};
+                if (r.carpet_sub_type) parts.push(subNames[r.carpet_sub_type] || r.carpet_sub_type);
             } else if (svc==='rv') {
                 if (r.rv_length) parts.push(`${r.rv_length} ft`);
                 if (r.rv_beds) parts.push(`${r.rv_beds} beds`);
@@ -3110,7 +3296,8 @@ CREATE TRIGGER update_sr_updated_at BEFORE UPDATE ON public.service_requests
             else if (svc==='carpet') serviceDetails = `
                 <tr><td>Carpet Length</td><td>${r.carpet_length||0} ft</td></tr>
                 <tr><td>Carpet Width</td><td>${r.carpet_width||0} ft</td></tr>
-                <tr><td>Area</td><td>${((r.carpet_length||0)*(r.carpet_width||0)).toFixed(1)} sq ft</td></tr>`;
+                <tr><td>Area</td><td>${((r.carpet_length||0)*(r.carpet_width||0)).toFixed(1)} sq ft</td></tr>
+                ${carpetSubDetailsRows(r, 2)}`;
             else if (svc==='rv') serviceDetails = `
                 <tr><td>RV Length</td><td>${r.rv_length||'—'} ft</td></tr>
                 <tr><td>Sleeping Capacity</td><td>${r.rv_beds||'—'}</td></tr>
@@ -3229,7 +3416,8 @@ CREATE TRIGGER update_sr_updated_at BEFORE UPDATE ON public.service_requests
                 <tr><td>Pets / Kids</td><td colspan="3">${r.res_pets_kids||'—'}</td></tr>`;
             else if (svc==='carpet') detailRows = `
                 <tr><td>Length</td><td>${r.carpet_length||0} ft</td><td>Width</td><td>${r.carpet_width||0} ft</td></tr>
-                <tr><td>Total Area</td><td colspan="3">${((r.carpet_length||0)*(r.carpet_width||0)).toFixed(1)} sq ft</td></tr>`;
+                <tr><td>Total Area</td><td colspan="3">${((r.carpet_length||0)*(r.carpet_width||0)).toFixed(1)} sq ft</td></tr>
+                ${carpetSubDetailsRows(r, 4)}`;
             else if (svc==='rv') detailRows = `
                 <tr><td>RV Length</td><td>${r.rv_length||'—'} ft</td><td>Sleeping Capacity</td><td>${r.rv_beds||'—'}</td></tr>
                 <tr><td>Bathrooms/Toilets</td><td>${r.rv_bathrooms||'—'}</td><td>Indoor Kitchen</td><td>${r.rv_kitchen||'—'}</td></tr>
@@ -3461,6 +3649,23 @@ CREATE TABLE public.service_requests (
   description text NOT NULL DEFAULT '', status text NOT NULL DEFAULT 'pending',
   agreed_value numeric(10,2) DEFAULT NULL, estimated_value numeric(10,2) DEFAULT NULL,
   carpet_length numeric(10,2) DEFAULT NULL, carpet_width numeric(10,2) DEFAULT NULL,
+  carpet_sub_type text DEFAULT '',
+  rug_small integer DEFAULT 0, rug_medium integer DEFAULT 0, rug_large integer DEFAULT 0, rug_xlarge integer DEFAULT 0,
+  rug_dimensions text DEFAULT '', rug_brand text DEFAULT '', rug_material text DEFAULT '',
+  rug_pet_stains text DEFAULT 'no', rug_urine text DEFAULT 'no', rug_heavy_stains text DEFAULT 'no',
+  rug_odour text DEFAULT 'no', rug_fringe text DEFAULT 'no', rug_fabric_protector text DEFAULT 'no',
+  crp_small_bedroom integer DEFAULT 0, crp_large_bedroom integer DEFAULT 0, crp_living_room integer DEFAULT 0,
+  crp_bonus_room integer DEFAULT 0, crp_rec_room integer DEFAULT 0, crp_basement integer DEFAULT 0,
+  crp_hallway integer DEFAULT 0, crp_stairs integer DEFAULT 0, crp_extra_steps integer DEFAULT 0,
+  crp_pet_stains text DEFAULT 'no', crp_urine text DEFAULT 'no', crp_odour text DEFAULT 'no', crp_heavy_stains text DEFAULT 'no',
+  mat_twin integer DEFAULT 0, mat_double integer DEFAULT 0, mat_queen integer DEFAULT 0, mat_king integer DEFAULT 0,
+  mat_urine text DEFAULT 'no', mat_pet_stains text DEFAULT 'no', mat_heavy_stains text DEFAULT 'no',
+  mat_odour text DEFAULT 'no', mat_deodorizer text DEFAULT 'no',
+  uph_loveseat integer DEFAULT 0, uph_3seater integer DEFAULT 0, uph_sectional integer DEFAULT 0,
+  uph_armchair integer DEFAULT 0, uph_recliner integer DEFAULT 0, uph_ottoman integer DEFAULT 0, uph_dining_chairs integer DEFAULT 0,
+  uph_pet_stains text DEFAULT 'no', uph_urine text DEFAULT 'no', uph_heavy_stains text DEFAULT 'no', uph_odour text DEFAULT 'no',
+  uph_fabric_type text DEFAULT '',
+  ccm_company text DEFAULT '', ccm_sqft text DEFAULT '', ccm_floors integer DEFAULT 0,
   move_bedrooms integer DEFAULT 0, move_bathrooms integer DEFAULT 0,
   move_oven text DEFAULT 'no', move_fridge text DEFAULT 'no',
   move_living_rooms integer DEFAULT 0, move_shower_glass integer DEFAULT 0,
@@ -4207,6 +4412,44 @@ BN 722688363 · Calgary, AB
                 if (svc === 'carpet') {
                     formData.carpet_length = gf('carpetLength');
                     formData.carpet_width  = gf('carpetWidth');
+                    const carpetSub = gv('carpetSubType');
+                    formData.carpet_sub_type = carpetSub;
+                    if (carpetSub === 'area_rug') {
+                        Object.assign(formData, {
+                            rug_small: gi('rugSmall'), rug_medium: gi('rugMedium'),
+                            rug_large: gi('rugLarge'), rug_xlarge: gi('rugXLarge'),
+                            rug_dimensions: gv('rugDimensions'), rug_brand: gv('rugBrand'), rug_material: gv('rugMaterial'),
+                            rug_pet_stains: gv('rugPetStains'), rug_urine: gv('rugUrine'), rug_heavy_stains: gv('rugHeavyStains'),
+                            rug_odour: gv('rugOdour'), rug_fringe: gv('rugFringe'), rug_fabric_protector: gv('rugFabricProtector')
+                        });
+                    } else if (carpetSub === 'carpet_res') {
+                        Object.assign(formData, {
+                            crp_small_bedroom: gi('crpSmallBedroom'), crp_large_bedroom: gi('crpLargeBedroom'),
+                            crp_living_room: gi('crpLivingRoom'), crp_bonus_room: gi('crpBonusRoom'),
+                            crp_rec_room: gi('crpRecRoom'), crp_basement: gi('crpBasement'),
+                            crp_hallway: gi('crpHallway'), crp_stairs: gi('crpStairs'), crp_extra_steps: gi('crpExtraSteps'),
+                            crp_pet_stains: gv('crpPetStains'), crp_urine: gv('crpUrine'),
+                            crp_odour: gv('crpOdour'), crp_heavy_stains: gv('crpHeavyStains')
+                        });
+                    } else if (carpetSub === 'mattress') {
+                        Object.assign(formData, {
+                            mat_twin: gi('matTwin'), mat_double: gi('matDouble'), mat_queen: gi('matQueen'), mat_king: gi('matKing'),
+                            mat_urine: gv('matUrine'), mat_pet_stains: gv('matPetStains'), mat_heavy_stains: gv('matHeavyStains'),
+                            mat_odour: gv('matOdour'), mat_deodorizer: gv('matDeodorizer')
+                        });
+                    } else if (carpetSub === 'upholstery') {
+                        Object.assign(formData, {
+                            uph_loveseat: gi('uphLoveseat'), uph_3seater: gi('uph3Seater'), uph_sectional: gi('uphSectional'),
+                            uph_armchair: gi('uphArmchair'), uph_recliner: gi('uphRecliner'), uph_ottoman: gi('uphOttoman'),
+                            uph_dining_chairs: gi('uphDiningChairs'),
+                            uph_pet_stains: gv('uphPetStains'), uph_urine: gv('uphUrine'), uph_heavy_stains: gv('uphHeavyStains'),
+                            uph_odour: gv('uphOdour'), uph_fabric_type: gv('uphFabricType')
+                        });
+                    } else if (carpetSub === 'commercial_carpet') {
+                        Object.assign(formData, {
+                            ccm_company: gv('ccmCompanyName'), ccm_sqft: gv('ccmSqft'), ccm_floors: gi('ccmFloors')
+                        });
+                    }
                 }
                 // RV
                 if (svc === 'rv') {
@@ -4539,6 +4782,62 @@ CREATE TABLE public.service_requests (
   -- Carpet
   carpet_length numeric(10,2) DEFAULT NULL,
   carpet_width numeric(10,2) DEFAULT NULL,
+  carpet_sub_type text DEFAULT '',
+  -- Carpet: Area Rug
+  rug_small integer DEFAULT 0,
+  rug_medium integer DEFAULT 0,
+  rug_large integer DEFAULT 0,
+  rug_xlarge integer DEFAULT 0,
+  rug_dimensions text DEFAULT '',
+  rug_brand text DEFAULT '',
+  rug_material text DEFAULT '',
+  rug_pet_stains text DEFAULT 'no',
+  rug_urine text DEFAULT 'no',
+  rug_heavy_stains text DEFAULT 'no',
+  rug_odour text DEFAULT 'no',
+  rug_fringe text DEFAULT 'no',
+  rug_fabric_protector text DEFAULT 'no',
+  -- Carpet: Residential
+  crp_small_bedroom integer DEFAULT 0,
+  crp_large_bedroom integer DEFAULT 0,
+  crp_living_room integer DEFAULT 0,
+  crp_bonus_room integer DEFAULT 0,
+  crp_rec_room integer DEFAULT 0,
+  crp_basement integer DEFAULT 0,
+  crp_hallway integer DEFAULT 0,
+  crp_stairs integer DEFAULT 0,
+  crp_extra_steps integer DEFAULT 0,
+  crp_pet_stains text DEFAULT 'no',
+  crp_urine text DEFAULT 'no',
+  crp_odour text DEFAULT 'no',
+  crp_heavy_stains text DEFAULT 'no',
+  -- Carpet: Mattress
+  mat_twin integer DEFAULT 0,
+  mat_double integer DEFAULT 0,
+  mat_queen integer DEFAULT 0,
+  mat_king integer DEFAULT 0,
+  mat_urine text DEFAULT 'no',
+  mat_pet_stains text DEFAULT 'no',
+  mat_heavy_stains text DEFAULT 'no',
+  mat_odour text DEFAULT 'no',
+  mat_deodorizer text DEFAULT 'no',
+  -- Carpet: Upholstery
+  uph_loveseat integer DEFAULT 0,
+  uph_3seater integer DEFAULT 0,
+  uph_sectional integer DEFAULT 0,
+  uph_armchair integer DEFAULT 0,
+  uph_recliner integer DEFAULT 0,
+  uph_ottoman integer DEFAULT 0,
+  uph_dining_chairs integer DEFAULT 0,
+  uph_pet_stains text DEFAULT 'no',
+  uph_urine text DEFAULT 'no',
+  uph_heavy_stains text DEFAULT 'no',
+  uph_odour text DEFAULT 'no',
+  uph_fabric_type text DEFAULT '',
+  -- Carpet: Commercial
+  ccm_company text DEFAULT '',
+  ccm_sqft text DEFAULT '',
+  ccm_floors integer DEFAULT 0,
   -- Move In/Out
   move_bedrooms integer DEFAULT 0,
   move_bathrooms integer DEFAULT 0,
